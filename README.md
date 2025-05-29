@@ -13,8 +13,8 @@
 <a href="https://arxiv.org/abs/2406.16860" target="_blank">
     <img alt="arXiv" src="https://img.shields.io/badge/arXiv-ViGal-red?logo=arxiv" height="25" />
 </a>
-<a href="https://cambrian-mllm.github.io/" target="_blank">
-    <img alt="Website" src="https://img.shields.io/badge/🌎_Website-cambrian--mllm.github.io-blue.svg" height="25" />
+<a href="https://yunfeixie233.github.io/ViGaL/" target="_blank">
+    <img alt="Website" src="https://img.shields.io/badge/🌎_Website-yunfeixie233.github.io/ViGaL/-blue.svg" height="25" />
 </a>
 <br>
 <a href="" target="_blank">
