@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -225,17 +226,17 @@
           <h1 class="title is-1 publication-title">Play to Reason:<br>Learning Math through Visual Games</h1>
           <div class="is-size-5 publication-authors">
             <div style="font-family: charter;">
-              <a href="https://yunfeixie233.github.io/" target="_blank">Yunfei Xie</a>,
-              <a href="https://openreview.net/profile?id=~Yinsong_Ma1" target="_blank">Yinsong Ma</a>,
-              <a href="https://voidrank.github.io/" target="_blank">Shiyi Lan</a>,
+              <a href="https://yunfeixie233.github.io/" target="_blank">Yunfei Xie<sup>1</sup></a>,
+              <a href="https://openreview.net/profile?id=~Yinsong_Ma1" target="_blank">Yinsong Ma<sup>3</sup></a>,
+              <a href="https://voidrank.github.io/" target="_blank">Shiyi Lan<sup>2</sup></a>,
               <br>
-              <a href="https://www.cs.jhu.edu/~ayuille/" target="_blank">Alan Yuille</a>,
-              <a href="https://lambert-x.github.io/" target="_blank">Junfei Xiao†</a>,
-              <a href="https://weichen582.github.io/" target="_blank">Chen Wei§</a>
+              <a href="https://www.cs.jhu.edu/~ayuille/" target="_blank">Alan Yuille<sup>3</sup></a>,
+              <a href="https://lambert-x.github.io/" target="_blank">Junfei Xiao<sup>3†</sup></a>,
+              <a href="https://weichen582.github.io/" target="_blank">Chen Wei<sup>1§</sup></a>
             </div>
           </div>
           <div class="is-size-5 publication-authors">
-            <span class="author-block">Rice University, NVIDIA, Johns Hopkins University</span>
+            <span class="author-block"><sup>1</sup>Rice University, <sup>2</sup>NVIDIA, <sup>3</sup>Johns Hopkins University</span>
           </div>
           <div class="is-size-5 publication-authors">
             <span class="author-block">§Corresponding Author, †Project lead</span>
@@ -455,7 +456,6 @@
                 <th colspan="4">Math</th>
                 <th colspan="3">CLEVR+</th>
                 <th colspan="3">Geometry</th>
-                <th colspan="3">Multi-Discipline</th>
               </tr>
               <tr>
                 <th>Avg.</th>
@@ -464,42 +464,40 @@
                 <th>CLEVR-M</th><th>S-CLEVR</th>
                 <th>Avg.</th>
                 <th>GeoMath</th><th>Geo3K</th>
-                <th>Avg.</th>
-                <th>MMMU-val</th><th>MMMU-Pro-overall</th>
               </tr>
             </thead>
 
             <tbody>
               <!-- ---------- Proprietary ---------- -->
-              <tr><td colspan="15" class="has-text-centered" style="font-style:italic;">Proprietary Model</td></tr>
-              <tr><td>GPT-4o</td><td>51.7</td><td>48.1</td><td>61.4</td><td>50.2</td><td>30.4</td><td>51.2</td><td>68.1</td><td>34.3</td><td>46.8</td><td>50.2</td><td>43.5</td><td>60.5</td><td>69.1</td><td>51.9</td></tr>
-              <tr><td>Gemini-2.0-Flash</td><td>53.8</td><td>56.4</td><td>73.4</td><td>54.6</td><td>41.3</td><td>46.3</td><td>64.9</td><td>27.6</td><td>54.4</td><td>55.3</td><td>53.5</td><td>61.2</td><td>70.7</td><td>51.7</td></tr>
+              <tr><td colspan="12" class="has-text-centered" style="font-style:italic;">Proprietary Model</td></tr>
+              <tr><td>GPT-4o</td><td>48.7</td><td>48.1</td><td>61.4</td><td>50.2</td><td>30.4</td><td>51.2</td><td>68.1</td><td>34.3</td><td>46.8</td><td>50.2</td><td>43.5</td></tr>
+              <tr><td>Gemini-2.0-Flash</td><td>52.4</td><td>56.4</td><td>73.4</td><td>54.6</td><td>41.3</td><td>46.3</td><td>64.9</td><td>27.6</td><td>54.4</td><td>55.3</td><td>53.5</td></tr>
 
               <!-- ---------- General MLLM ---------- -->
-              <tr><td colspan="15" class="has-text-centered" style="font-style:italic;">General Multimodal Language Model</td></tr>
-              <tr><td>InternVL2.5-8B</td><td>51.0</td><td>41.2</td><td>64.4</td><td>39.5</td><td>19.7</td><td>64.4</td><td>93.5</td><td>35.3</td><td>55.2</td><td>63.0</td><td>47.3</td><td>45.2</td><td>56.0</td><td>34.3</td></tr>
-              <tr><td>Llava-OV-7B</td><td>--</td><td>--</td><td>63.2</td><td>26.2</td><td>--</td><td>49.4</td><td>69.7</td><td>29.1</td><td>60.7</td><td>77.6</td><td>43.7</td><td>36.5</td><td>48.8</td><td>24.1</td></tr>
-              <tr><td>Qwen2.5-VL-7B</td><td>49.3</td><td>47.7</td><td>68.0</td><td>49.0</td><td>26.0</td><td>54.9</td><td>74.6</td><td>35.2</td><td>44.8</td><td>44.0</td><td>45.6</td><td>45.7</td><td>54.3</td><td>37.0</td></tr>
+              <tr><td colspan="12" class="has-text-centered" style="font-style:italic;">General Multimodal Language Model</td></tr>
+              <tr><td>InternVL2.5-8B</td><td>53.6</td><td>41.2</td><td>64.4</td><td>39.5</td><td>19.7</td><td>64.4</td><td>93.5</td><td>35.3</td><td>55.2</td><td>63.0</td><td>47.3</td></tr>
+              <tr><td>Llava-OV-7B</td><td>55.0</td><td>--</td><td>63.2</td><td>26.2</td><td>--</td><td>49.4</td><td>69.7</td><td>29.1</td><td>60.7</td><td>77.6</td><td>43.7</td></tr>
+              <tr><td>Qwen2.5-VL-7B</td><td>49.1</td><td>47.7</td><td>68.0</td><td>49.0</td><td>26.0</td><td>54.9</td><td>74.6</td><td>35.2</td><td>44.8</td><td>44.0</td><td>45.6</td></tr>
 
               <!-- ---------- Post-trained on Qwen ---------- -->
-              <tr><td colspan="15" class="has-text-centered" style="font-style:italic;">Multimodal Reasoning Model Post-Trained on Qwen2.5-VL-7B</td></tr>
-              <tr><td>R1-Onevision-7B</td><td>47.1</td><td><span style="color:var(--gray-color);">46.8</span></td><td><span style="color:var(--gray-color);">64.1</span></td><td><span style="color:var(--gray-color);">46.4</span></td><td><span style="color:var(--gray-color);">29.9</span></td><td><span style="color:var(--gray-color);">65.1</span></td><td><span style="color:var(--gray-color);">75.5</span></td><td><span style="color:var(--gray-color);">54.7</span></td><td>35.0</td><td>45.4</td><td>24.5</td><td><span style="color:var(--gray-color);">42.3</span></td><td><span style="color:var(--gray-color);">51.9</span></td><td><span style="color:var(--gray-color);">32.6</span></td></tr>
-              <tr><td>R1-VL-7B</td><td>47.3</td><td><span style="color:var(--gray-color);">42.7</span></td><td><span style="color:var(--gray-color);">63.5</span></td><td><span style="color:var(--gray-color);">40.0</span></td><td><span style="color:var(--gray-color);">24.7</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">87.4</span></td><td><span style="color:var(--gray-color);">48.6</span></td><td><span style="color:var(--gray-color);">39.0</span></td><td><span style="color:var(--gray-color);">42.0</span></td><td><span style="color:var(--gray-color);">36.1</span></td><td><span style="color:var(--gray-color);">39.7</span></td><td><span style="color:var(--gray-color);">50.0</span></td><td><span style="color:var(--gray-color);">29.4</span></td></tr>
-              <tr><td>MM-Eureka-Qwen-7B</td><td>53.1</td><td><span style="color:var(--gray-color);">50.1</span></td><td><span style="color:var(--gray-color);">73.0</span></td><td><span style="color:var(--gray-color);">50.3</span></td><td><span style="color:var(--gray-color);">26.9</span></td><td><strong>79.3</strong></td><td><strong>98.4</strong></td><td><strong>60.1</strong></td><td><span style="color:var(--gray-color);">28.4</span></td><td><span style="color:var(--gray-color);">53.1</span></td><td><span style="color:var(--gray-color);">3.8</span></td><td><span style="color:var(--gray-color);">46.4</span></td><td><span style="color:var(--gray-color);">55.8</span></td><td><span style="color:var(--gray-color);">36.9</span></td></tr>
-              <tr><td>Reason-RFT-Zero-7B</td><td>53.7</td><td>38.1</td><td>60.7</td><td>35.3</td><td>18.3</td><td><span style="color:var(--gray-color);">76.2</span></td><td><span style="color:var(--gray-color);">99.4</span></td><td><span style="color:var(--gray-color);">53.0</span></td><td><span style="color:var(--gray-color);">54.9</span></td><td><span style="color:var(--gray-color);">55.0</span></td><td><span style="color:var(--gray-color);">54.8</span></td><td><span style="color:var(--gray-color);">40.9</span></td><td><span style="color:var(--gray-color);">51.2</span></td><td><span style="color:var(--gray-color);">30.6</span></td></tr>
-              <tr><td>VLAA-Thinker-7B</td><td>56.2</td><td><span style="color:var(--gray-color);">48.7</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">51.7</span></td><td><span style="color:var(--gray-color);">26.4</span></td><td><span style="color:var(--gray-color);">83.4</span></td><td><span style="color:var(--gray-color);">94.7</span></td><td><span style="color:var(--gray-color);">72.1</span></td><td><span style="color:var(--gray-color);">53.9</span></td><td><span style="color:var(--gray-color);">51.1</span></td><td><span style="color:var(--gray-color);">56.6</span></td><td><span style="color:var(--gray-color);">40.1</span></td><td><span style="color:var(--gray-color);">48.2</span></td><td><span style="color:var(--gray-color);">31.9</span></td></tr>
-              <tr><td>OpenVLThinker-7B</td><td>54.7</td><td><span style="color:var(--gray-color);">47.8</span></td><td><span style="color:var(--gray-color);">70.2</span></td><td><span style="color:var(--gray-color);">47.9</span></td><td><span style="color:var(--gray-color);">25.3</span></td><td><span style="color:var(--gray-color);">82.4</span></td><td><span style="color:var(--gray-color);">93.8</span></td><td><span style="color:var(--gray-color);">71.0</span></td><td><span style="color:var(--gray-color);">56.4</span></td><td><span style="color:var(--gray-color);">49.2</span></td><td><span style="color:var(--gray-color);">63.5</span></td><td><span style="color:var(--gray-color);">38.5</span></td><td><span style="color:var(--gray-color);">54.8</span></td><td><span style="color:var(--gray-color);">22.1</span></td></tr>
+              <tr><td colspan="12" class="has-text-centered" style="font-style:italic;">Multimodal Reasoning Model Post-Trained on Qwen2.5-VL-7B</td></tr>
+              <tr><td>R1-Onevision-7B</td><td>49.0</td><td><span style="color:var(--gray-color);">46.8</span></td><td><span style="color:var(--gray-color);">64.1</span></td><td><span style="color:var(--gray-color);">46.4</span></td><td><span style="color:var(--gray-color);">29.9</span></td><td><span style="color:var(--gray-color);">65.1</span></td><td><span style="color:var(--gray-color);">75.5</span></td><td><span style="color:var(--gray-color);">54.7</span></td><td>35.0</td><td>45.4</td><td>24.5</td></tr>
+              <tr><td>R1-VL-7B</td><td>49.9</td><td><span style="color:var(--gray-color);">42.7</span></td><td><span style="color:var(--gray-color);">63.5</span></td><td><span style="color:var(--gray-color);">40.0</span></td><td><span style="color:var(--gray-color);">24.7</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">87.4</span></td><td><span style="color:var(--gray-color);">48.6</span></td><td><span style="color:var(--gray-color);">39.0</span></td><td><span style="color:var(--gray-color);">42.0</span></td><td><span style="color:var(--gray-color);">36.1</span></td></tr>
+              <tr><td>MM-Eureka-Qwen-7B</td><td>52.6</td><td><span style="color:var(--gray-color);">50.1</span></td><td><span style="color:var(--gray-color);">73.0</span></td><td><span style="color:var(--gray-color);">50.3</span></td><td><span style="color:var(--gray-color);">26.9</span></td><td><strong>79.3</strong></td><td><strong>98.4</strong></td><td><strong>60.1</strong></td><td><span style="color:var(--gray-color);">28.4</span></td><td><span style="color:var(--gray-color);">53.1</span></td><td><span style="color:var(--gray-color);">3.8</span></td></tr>
+              <tr><td>Reason-RFT-Zero-7B</td><td>56.4</td><td>38.1</td><td>60.7</td><td>35.3</td><td>18.3</td><td><span style="color:var(--gray-color);">76.2</span></td><td><span style="color:var(--gray-color);">99.4</span></td><td><span style="color:var(--gray-color);">53.0</span></td><td><span style="color:var(--gray-color);">54.9</span></td><td><span style="color:var(--gray-color);">55.0</span></td><td><span style="color:var(--gray-color);">54.8</span></td></tr>
+              <tr><td>VLAA-Thinker-7B</td><td>62.0</td><td><span style="color:var(--gray-color);">48.7</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">51.7</span></td><td><span style="color:var(--gray-color);">26.4</span></td><td><span style="color:var(--gray-color);">83.4</span></td><td><span style="color:var(--gray-color);">94.7</span></td><td><span style="color:var(--gray-color);">72.1</span></td><td><span style="color:var(--gray-color);">53.9</span></td><td><span style="color:var(--gray-color);">51.1</span></td><td><span style="color:var(--gray-color);">56.6</span></td></tr>
+              <tr><td>OpenVLThinker-7B</td><td>62.2</td><td><span style="color:var(--gray-color);">47.8</span></td><td><span style="color:var(--gray-color);">70.2</span></td><td><span style="color:var(--gray-color);">47.9</span></td><td><span style="color:var(--gray-color);">25.3</span></td><td><span style="color:var(--gray-color);">82.4</span></td><td><span style="color:var(--gray-color);">93.8</span></td><td><span style="color:var(--gray-color);">71.0</span></td><td><span style="color:var(--gray-color);">56.4</span></td><td><span style="color:var(--gray-color);">49.2</span></td><td><span style="color:var(--gray-color);">63.5</span></td></tr>
 
               <!-- ---------- ViGaL ---------- -->
-              <tr><td>ViGaL-Snake</td><td>--</td><td>49.4</td><td>70.9</td><td>49.7</td><td>27.5</td><td><strong>82.8</strong></td><td>92.7</td><td>72.8</td><td>52.1</td><td>47.5</td><td>56.8</td><td>--</td><td>--</td><td>--</td></tr>
-              <tr><td>ViGaL-Rotation</td><td>--</td><td>49.6</td><td>71.0</td><td>51.0</td><td>27.3</td><td>81.0</td><td>91.7</td><td>70.2</td><td>56.1</td><td>51.3</td><td>60.9</td><td>--</td><td>--</td><td>--</td></tr>
-              <tr><td><strong>ViGaL-Snake + Rotation</strong></td><td><strong>59.1</strong></td><td><strong>50.6</strong></td><td>71.9</td><td>52.4</td><td>27.5</td><td>81.7</td><td>91.9</td><td>71.4</td><td><strong>57.1</strong></td><td>51.0</td><td>63.3</td><td><strong>47.7</strong></td><td><strong>58.0</strong></td><td><strong>37.4</strong></td></tr>
+              <tr><td>ViGaL Snake</td><td>61.4</td><td>49.4</td><td>70.9</td><td>49.7</td><td>27.5</td><td><strong>82.8</strong></td><td>92.7</td><td>72.8</td><td>52.1</td><td>47.5</td><td>56.8</td></tr>
+              <tr><td>ViGaL Rotation</td><td>62.2</td><td>49.6</td><td>71.0</td><td>51.0</td><td>27.3</td><td>81.0</td><td>91.7</td><td>70.2</td><td>56.1</td><td>51.3</td><td>60.9</td></tr>
+              <tr><td><strong>ViGaL Snake + Rotation</strong></td><td><strong>63.1</strong></td><td><strong>50.6</strong></td><td>71.9</td><td>52.4</td><td>27.5</td><td>81.7</td><td>91.9</td><td>71.4</td><td><strong>57.1</strong></td><td>51.0</td><td>63.3</td></tr>
             </tbody>
           </table>
         </div>
 
         <p class="has-text-left">
-          Main results on multimodal reasoning benchmarks. CLEVR-M denotes CLEVR-Math and S-CLEVR denotes Super-CLEVR. We primarily compare with reasoning models post-trained on Qwen2.5-VL-7B. Results from models that used in-domain data are <span style="color:var(--gray-color);">de-emphasized</span>. Best averages per column are shown in <strong>bold</strong>.
+          Main results on multimodal reasoning benchmarks. CLEVR-M denotes CLEVR-Math and S-CLEVR stands for Super-CLEVR. We primarily compare with multimodal reasoning models post-trained on Qwen2.5-VL-7B. Results from reasoning models post-trained with in-domain data are <span style="color:var(--gray-color);">de-emphasized</span>, while our ViGaL models are exclusively post-trained using visual games. Best scores of post-trained model in each average column are highlighted in <strong>bold</strong>.
         </p>
 
       </div>
