@@ -38,6 +38,12 @@
     /* Vertically centre multi-row header cells */
     th[rowspan="2"]{vertical-align:middle!important;}
 
+    /* Remove vertical borders from table cells, keep horizontal borders */
+    .table td, .table th {
+      border-left: none !important;
+      border-right: none !important;
+    }
+
     /* Sidebar navigation */
     .sidebar-nav {
       position: fixed;
@@ -218,11 +224,56 @@
         <div class="column has-text-centered">
           <h1 class="title is-1 publication-title">Play to Reason:<br>Learning Math through Visual Games</h1>
           <div class="is-size-5 publication-authors">
-            <span class="author-block">Anonymous Author(s)</span>
+            <div style="font-family: charter;">
+              <a href="https://yunfeixie233.github.io/" target="_blank">Yunfei Xie</a>,
+              <a href="https://openreview.net/profile?id=~Yinsong_Ma1" target="_blank">Yinsong Ma</a>,
+              <a href="https://voidrank.github.io/" target="_blank">Shiyi Lan</a>,
+              <br>
+              <a href="https://www.cs.jhu.edu/~ayuille/" target="_blank">Alan Yuille</a>,
+              <a href="https://lambert-x.github.io/" target="_blank">Junfei Xiao†</a>,
+              <a href="https://weichen582.github.io/" target="_blank">Chen Wei§</a>
+            </div>
           </div>
           <div class="is-size-5 publication-authors">
-            <span class="author-block">Affiliation</span>
+            <span class="author-block">Rice University, NVIDIA, Johns Hopkins University</span>
           </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">§Corresponding Author, †Project lead</span>
+          </div>
+          <div class="publication-links">
+            <!-- PDF Link. -->
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/2408.02900"
+                 class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fa-solid fa-face-smiling-hands"></i>
+                  <img src="./resources/ar.svg" alt="img" style="width: 100%; height: 100%" /> 
+                </span>
+                <span>Paper</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://huggingface.co/datasets/UCSC-VLAA/MedTrinity-25M"
+                 class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fa-solid fa-face-smiling-hands"></i>
+                  <img src="./resources/gr.svg" alt="img" style="width: 100%; height: 100%" /> 
+                </span>
+                <span>Data</span>
+              </a>
+            </span>              
+            <!-- Code Link. -->
+            <span class="link-block">
+              <a href="https://github.com/UCSC-VLAA/MedTrinity-25M"
+                 class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
+                </a>
+            </span>
+
+          </div>          
         </div>
       </div>
     </div>
