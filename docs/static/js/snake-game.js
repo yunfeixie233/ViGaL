@@ -161,10 +161,12 @@
       }
   
       /* —— thoughts —— */
-      const parseTag = (txt, tag) => {
-        const m = txt.match(new RegExp(`<${tag}>([\s\S]*?)<\/${tag}>`));
-        return m ? m[1].trim() : null;
-      };
+      function parseTag(src = '', tag) {
+        //  ⬇  the “s” flag makes the dot match new‑lines   ↓  non‑greedy capture
+        const re = new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'is');
+        const m  = src.match(re);
+        return m ? m[1].trim() : '';       // always return a string
+      }
       const makeThoughts = (rd, pid) => {
         const out = [];
         if (!rd.alive?.[pid]) {
