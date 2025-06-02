@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Play to Reason: Learning Math through Visual Games</title>
 
-  <!-- Bulma &amp; site CSS -->
+  <!-- Bulma & site CSS -->
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
+
+  <!-- Snake Game CSS -->
+  <link rel="stylesheet" href="./static/css/snake-game.css">
 
   <!-- Project-specific overrides -->
   <style>
@@ -199,6 +201,8 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -292,21 +296,12 @@
   </div>
 </section>
 
-<!-- ---------- ABSTRACT ---------- -->
-<!-- <section class="section">
+<!-- ---------- SNAKE GAME DEMO ---------- -->
+<section class="section">
   <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            Developing generalizable reasoning capabilities in multimodal large language models (MLLMs) remains challenging. Motivated by cognitive-science findings that gameplay promotes transferable cognitive skills, we introduce <em>Visual Game Learning</em> (ViGaL), a post-training paradigm in which an MLLM develops out-of-domain multimodal reasoning abilities by playing arcade-like games. Concretely, we post-train a 7-billion-parameter MLLM with reinforcement learning on two simple games--Snake and a Rotation puzzle--without exposing it to any worked equations, diagrams, or step-by-step solutions. The resulting model exhibits substantial gains on diverse multimodal reasoning benchmarks, including MathVista, MathVerse, and MathVision, outperforming much larger proprietary models and models fine-tuned directly on visual-math corpora. Ablation studies show that each game cultivates complementary reasoning skills that combine synergistically. Our results suggest that synthetic, rule-based games are an effective, scalable pre-text task for unlocking generalizable multimodal reasoning in MLLMs.
-          </p>
-        </div>
-      </div>
-    </div>
+    <div id="snake-game-container"></div>
   </div>
-</section> -->
+</section>
 
 <!-- ---------- GAME PIPELINE ---------- -->
 <section id="game-pipeline" class="section">
@@ -641,6 +636,9 @@
     </div>
   </div>
 </footer>
+
+<!-- Snake Game JavaScript -->
+<script src="./static/js/snake-game.js"></script>
 
 <!-- Carousel JavaScript -->
 <script>
