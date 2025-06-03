@@ -209,22 +209,22 @@
       }
   
       /* Precompile regexes for performance */
-      const thinkRegex    = /<think>([\s\S]*?)<\/think>/i;
-      const bestRegex     = /<best_answer>([\s\S]*?)<\/best_answer>/i;
-      const worstRegex    = /<worst_answer>([\s\S]*?)<\/worst_answer>/i;
+      const thinkRegex = /<think>([\s\S]*?)<\/think>/i;
+      const bestRegex  = /<best_answer>([\s\S]*?)<\/best_answer>/i;
+      const worstRegex = /<worst_answer>([\s\S]*?)<\/worst_answer>/i;
   
       /**
-       * Build an array of HTML lines for this player’s rationales
-       * based on the last move in move_history.
+       * Build an array of HTML snippets for this player's rationales,
+       * with a toggle <details> for the “Thought” content.
        */
       function thoughtLines(rd, pid) {
-        const lines = [];
+        const snippets = [];
   
-        /* If eliminated, show only elimination info */
+        /* If eliminated, show elimination info */
         if (!rd.alive?.[pid]) {
-          lines.push(`Round ${rd.round_number}: ELIMINATED`);
-          lines.push(`Score: ${rd.scores[pid]}`);
-          return lines;
+          snippets.push(`<p>Round ${rd.round_number}: ELIMINATED</p>`);
+          snippets.push(`<p>Score: ${rd.scores[pid]}</p>`);
+          return snippets;
         }
   
         const mv = rd.move_history?.at(-1)?.[pid];
@@ -236,26 +236,39 @@
           const mWorst = worstRegex.exec(txt);
   
           if (mThink && mThink[1]) {
-            const content = mThink[1].trim();
-            lines.push(
-              `Thought:<br>${escapeHTML(content).replace(/\n/g, '<br>')}`
-            );
+            const content = mThink[1].trim().split('\n').map(line =>
+              escapeHTML(line)
+            ).join('<br>');
+  
+            snippets.push(`
+              <details class="group mb-1">
+                <summary class="font-mono text-xs cursor-pointer list-none flex items-center gap-1">
+                  <svg class="w-3 h-3 stroke-current text-gray-600 group-open:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 12 12">
+                    <path d="M3 4.5l3 3 3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Thought:</span>
+                </summary>
+                <div class="pl-4 text-xs text-gray-700 mt-1">${content}</div>
+              </details>
+            `);
           }
+  
           if (mBest && mBest[1]) {
-            const content = mBest[1].trim();
-            lines.push(`Best move: <b>${escapeHTML(content)}</b>`);
+            const content = escapeHTML(mBest[1].trim());
+            snippets.push(`<p class="font-mono text-xs">Best move: <b>${content}</b></p>`);
           }
           if (mWorst && mWorst[1]) {
-            const content = mWorst[1].trim();
-            lines.push(`Worst move: <b>${escapeHTML(content)}</b>`);
+            const content = escapeHTML(mWorst[1].trim());
+            snippets.push(`<p class="font-mono text-xs">Worst move: <b>${content}</b></p>`);
           }
         }
   
         /* Always include score & snake length */
-        lines.push(`Score: ${rd.scores[pid]}`);
-        lines.push(`Snake length: ${rd.snake_positions?.[pid]?.length ?? 0}`);
+        snippets.push(`<p class="font-mono text-xs">Score: ${rd.scores[pid]}</p>`);
+        const length = rd.snake_positions?.[pid]?.length ?? 0;
+        snippets.push(`<p class="font-mono text-xs">Snake length: ${length}</p>`);
   
-        return lines;
+        return snippets;
       }
   
       /* ======================= RENDER LOOP ======================= */
@@ -282,9 +295,7 @@
   
           /* Populate thoughts panel via innerHTML */
           document.getElementById(`player${pid}Thoughts`).innerHTML =
-            thoughtLines(rd, pid)
-              .map(t => `<p>${t}</p>`)
-              .join('');
+            thoughtLines(rd, pid).join('');
         });
   
         /* Toggle play/pause label */
