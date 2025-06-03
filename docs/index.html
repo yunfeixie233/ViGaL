@@ -211,11 +211,12 @@
   <h3>CONTENTS</h3>
   <ul>
     <li><a href="#game-pipeline">Game Pipeline</a></li>
+    <li><a href="#snake-game-visualization">Snake Game Visualization</a></li>
     <li><a href="#evaluation-benchmark">Generalization Evaluation Benchmark</a></li>
     <li><a href="#in-distribution-results"> Excel at Seen and Unseen Games</a></li>
-    <li><a href="#out-of-domain-results">Out-of-Domain Results</a></li>
+    <li><a href="#out-of-domain-results">Improvement on Unseen Tasks</a></li>
     <li><a href="#different-games-benefit">Different Games Benefit Distinct Math Subfields</a></li>
-    <li><a href="#games-visualization">Games Visualization</a></li>
+    <li><a href="#games-visualization">Rotation Game Visualization</a></li>
     <li><a href="#case-study">Case Study</a></li>
     <!-- <li><a href="#BibTeX">BibTeX</a></li> -->
   </ul>
@@ -352,7 +353,7 @@
   <div class="container main-content-with-sidebar">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-left">In-Distribution And Out-of-Distribution Generalization Results</h2>
+        <h2 class="title is-3 has-text-left">Excel at Seen and Unseen Games</h2>
 
         <p class="has-text-left">
           We evaluate ViGaL on Snake game and Rotation game for in-distribution performance, and on Atari games, an unseen game environment, to evaluate out-of-distribution generalization ability.
@@ -430,7 +431,7 @@
   <div class="container main-content-with-sidebar">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-left">Out-of-Domain Generalization Results</h2>
+        <h2 class="title is-3 has-text-left">Improvement on Unseen Tasks</h2>
         
         <p class="has-text-left">
           We evaluate ViGaL trained on game on out-of-domain tasks that demand mathematical reasoning, spatial reasoning and multi-discipline reasoning, including Math, CLEVR+, Geomery and MMMU series.
@@ -521,36 +522,9 @@
   <div class="container main-content-with-sidebar">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-left">Games Visualization</h2>
+        <h2 class="title is-3 has-text-left">Rotation Game Visualization</h2>
         
-        <!-- Snake Game Subsection -->
-        <h3 class="title is-4 has-text-left">Snake Game</h3>
-        <div class="carousel-wrapper">
-          <!-- Snake Game Carousel -->
-          <div class="game-carousel" id="snake-carousel">
-            <div class="carousel-container">
-              <div class="carousel-slide active">
-                <img src="./resources/snake_claude3-7.gif" alt="Snake Game - Claude 3.7">
-              </div>
-              <div class="carousel-slide">
-                <img src="./resources/snake_o4mini.gif" alt="Snake Game - o4mini">
-              </div>
-            </div>
-            
-            <!-- Navigation buttons -->
-            <button class="carousel-nav carousel-prev" onclick="changeSlide('snake-carousel', -1)">&#10094;</button>
-            <button class="carousel-nav carousel-next" onclick="changeSlide('snake-carousel', 1)">&#10095;</button>
-            
-            <!-- Indicators -->
-            <div class="carousel-indicators">
-              <span class="carousel-indicator active" onclick="goToSlide('snake-carousel', 0)"></span>
-              <span class="carousel-indicator" onclick="goToSlide('snake-carousel', 1)"></span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Rotation Game Subsection -->
-        <h3 class="title is-4 has-text-left">Rotation Game</h3>
+
         <div class="carousel-wrapper">
           <!-- Rotation Game Carousel -->
           <div class="game-carousel" id="rotation-carousel">
