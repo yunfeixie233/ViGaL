@@ -56,6 +56,8 @@
         
         nextMatchBtn.onclick = () => {
             console.log('Next Match clicked. Current index:', currentJsonIndex, 'JSON list length:', jsonList.length);
+            console.log('Current absolute URL:', currentAbsoluteURL);
+            console.log('JSON list:', jsonList);
             
             if (jsonList.length === 0) {
                 console.error('JSON list is empty. Cannot switch to next match.');
@@ -74,9 +76,11 @@
             if (currentJsonIndex === -1) {
                 // Current file not in list, start from beginning
                 nextIdx = 0;
+                console.log('Current file not found in list, starting from index 0');
             } else {
                 // Move to next file in list
                 nextIdx = (currentJsonIndex + 1) % jsonList.length;
+                console.log('Moving from index', currentJsonIndex, 'to index', nextIdx);
             }
 
             const nextJsonPath = jsonList[nextIdx];
@@ -116,6 +120,9 @@
         // Get canvas and context
         canvas = document.getElementById('gameCanvas');
         ctx = canvas ? canvas.getContext('2d') : null;
+        
+        // Normalize jsonList to absolute URLs
+        normalizeJsonList();
         
         // Set up Next Match button (only once)
         setupNextMatchButton();
@@ -235,7 +242,7 @@
                         .filter(p => p !== null); // Remove invalid paths
 
                     if (metadataFiles.length > 0) {
-                        jsonList = metadataFiles; // Replace global jsonList
+                        jsonList = metadataFiles; // Replace global jsonList (already normalized)
                         console.log('Updated jsonList from metadata:', jsonList);
                     }
                 }
@@ -520,5 +527,24 @@
     if (canvas && ctx) {
         ctx.fillStyle = '#f3f4f6'; // Page background color
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    /**
+     * Convert jsonList entries to absolute URLs
+     */
+    function normalizeJsonList() {
+        jsonList = jsonList.map(path => {
+            if (path && typeof path === 'string') {
+                try {
+                    return new URL(path, window.location.href).toString();
+                } catch (e) {
+                    console.warn(`Invalid path in jsonList: '${path}'. Error: ${e.message}`);
+                    return null;
+                }
+            }
+            return null;
+        }).filter(url => url !== null);
+        
+        console.log('Normalized jsonList:', jsonList);
     }
 })();
