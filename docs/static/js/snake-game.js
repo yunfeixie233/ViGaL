@@ -23,67 +23,64 @@
     /* ========================= TEMPLATE ============================ */
     function markup() {
       return `
-        <div class="bg-gray-100 py-6 rounded-lg">
-          <!-- Status line -->
-          <div class="bg-white shadow rounded-lg p-4 mb-4 text-center">
-            <span id="fileStatus" class="font-mono text-sm text-gray-600">Loading…</span>
-          </div>
+        <div>
+          <!-- Title -->
+          <h1 class="text-center text-2xl font-bold mb-4 font-mono">Snake Game Visualization</h1>
   
-          <!-- Grid -->
-          <div class="grid grid-cols-1 lg:grid-cols-[1fr_min-content_1fr] gap-4 mb-6">
-            <!-- ViGaL (Ours) thoughts / status -->
-            <div class="thoughts-panel player1-border flex flex-col">
-              <div class="p-3 border-b border-gray-100 sticky top-0 z-10 text-center player1-bg bg-opacity-50">
-                <h2 id="player1Name" class="font-mono text-sm">ViGaL (Ours)</h2>
+          <div class="bg-gray-100 py-6 rounded-lg">
+            <!-- Status line -->
+            <div class="bg-white shadow rounded-lg p-4 mb-4 text-center">
+              <span id="fileStatus" class="font-mono text-sm text-black font-bold">Loading…</span>
+            </div>
+  
+            <!-- Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-[1fr_min-content_1fr] gap-4 mb-6">
+              <!-- ViGaL (Ours) thoughts / status -->
+              <div class="thoughts-panel player1-border flex flex-col">
+                <div class="p-3 border-b border-gray-100 sticky top-0 z-10 text-center player1-bg bg-opacity-50">
+                  <h2 id="player1Name" class="font-mono text-sm text-black font-bold">ViGaL (Ours)</h2>
+                </div>
+                <div class="flex-1 p-4 overflow-auto">
+                  <div id="player1Thoughts" class="font-mono text-xs"></div>
+                </div>
+                <div class="p-3 border-t border-gray-100 flex justify-between">
+                  <span id="player1Status" class="text-green-500 font-bold text-sm">WAITING</span>
+                </div>
               </div>
-              <div class="flex-1 p-4 overflow-auto">
-                <div id="player1Thoughts" class="font-mono text-xs"></div>
+  
+              <!-- Canvas -->
+              <div class="flex justify-center">
+                <canvas id="gameCanvas" width="400" height="400" class="game-canvas"></canvas>
               </div>
-              <div class="p-3 border-t border-gray-100 flex justify-between">
-                <span id="player1Status" class="text-green-500 font-bold text-sm">WAITING</span>
-                <span class="flex gap-1 font-mono text-sm">
-                  <span id="player1Score" class="text-gray-400">0</span>
-                  <span id="player1Apples"></span>
-                </span>
+  
+              <!-- Player 2 thoughts / status -->
+              <div class="thoughts-panel player2-border flex flex-col">
+                <div class="p-3 border-b border-gray-100 sticky top-0 z-10 text-center player2-bg bg-opacity-50">
+                  <h2 id="player2Name" class="font-mono text-sm text-black font-bold">Player 2</h2>
+                </div>
+                <div class="flex-1 p-4 overflow-auto">
+                  <div id="player2Thoughts" class="font-mono text-xs"></div>
+                </div>
+                <div class="p-3 border-t border-gray-100 flex justify-between">
+                  <span id="player2Status" class="text-red-500 font-bold text-sm">WAITING</span>
+                </div>
               </div>
             </div>
   
-            <!-- Canvas -->
-            <div class="flex justify-center">
-              <canvas id="gameCanvas" width="400" height="400" class="game-canvas"></canvas>
-            </div>
-  
-            <!-- Player 2 thoughts / status -->
-            <div class="thoughts-panel player2-border flex flex-col">
-              <div class="p-3 border-b border-gray-100 sticky top-0 z-10 text-center player2-bg bg-opacity-50">
-                <h2 id="player2Name" class="font-mono text-sm">Player 2</h2>
+            <!-- Controls -->
+            <div class="bg-white shadow rounded-lg p-4 mb-4 text-center">
+              <div class="flex justify-center gap-4">
+                <button id="playBtn"  class="bg-blue-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏸️ Pause</button>
+                <button id="prevBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏮️ Prev</button>
+                <span id="roundInfo" class="font-mono text-sm text-gray-600">Round 0/0</span>
+                <button id="nextBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏭️ Next</button>
+                <button id="endBtn"   class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏩ End</button>
               </div>
-              <div class="flex-1 p-4 overflow-auto">
-                <div id="player2Thoughts" class="font-mono text-xs"></div>
+              <input id="progressBar" type="range" min="0" max="100" value="0"
+                     class="w-full max-w-md mt-2" disabled>
+              <div class="mt-2">
+                <span id="gameInfo" class="font-mono text-xs text-gray-500">Waiting…</span>
               </div>
-              <div class="p-3 border-t border-gray-100 flex justify-between">
-                <span id="player2Status" class="text-red-500 font-bold text-sm">WAITING</span>
-                <span class="flex gap-1 font-mono text-sm">
-                  <span id="player2Apples"></span>
-                  <span id="player2Score" class="text-gray-400">0</span>
-                </span>
-              </div>
-            </div>
-          </div>
-  
-          <!-- Controls -->
-          <div class="bg-white shadow rounded-lg p-4 mb-4 text-center">
-            <div class="flex justify-center gap-4">
-              <button id="playBtn"  class="bg-blue-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏸️ Pause</button>
-              <button id="prevBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏮️ Prev</button>
-              <span   id="roundInfo" class="font-mono text-sm text-gray-600">Round 0/0</span>
-              <button id="nextBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏭️ Next</button>
-              <button id="endBtn"   class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏩ End</button>
-            </div>
-            <input id="progressBar" type="range" min="0" max="100" value="0"
-                   class="w-full max-w-md mt-2" disabled>
-            <div class="mt-2">
-              <span id="gameInfo" class="font-mono text-xs text-gray-500">Waiting…</span>
             </div>
           </div>
         </div>`;
@@ -104,8 +101,13 @@
         })
         .then((json) => {
           gameJsonData = json;
-          fileStatus.textContent = `Loaded ${absoluteURL}`;
-          fileStatus.className   = 'font-mono text-sm text-green-600';
+  
+          // Display "ViGaL (Ours) vs <OpponentName>" instead of Loaded URL
+          const p1 = gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
+          const p2 = gameJsonData.metadata?.models?.['2'] || 'Opponent';
+          fileStatus.textContent = `${p1} vs ${p2}`;
+          fileStatus.className   = 'font-mono text-sm text-black font-bold';
+  
           initGame();
         })
         .catch((err) => {
@@ -132,15 +134,14 @@
         maxRounds = gameJsonData.metadata?.actual_rounds || gameJsonData.rounds.length;
         ({ width: W = 10, height: H = 10 } = gameJsonData.rounds[0] || {});
   
-        // Use metadata name or fallback to "ViGaL (Ours)"
+        // Set player names (dark black bold)
         document.getElementById('player1Name').textContent =
           gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
         document.getElementById('player2Name').textContent =
-          gameJsonData.metadata?.models?.['2'] || 'Player 2';
+          gameJsonData.metadata?.models?.['2'] || 'Opponent';
   
         document.getElementById('gameInfo').textContent =
-          `Game ID: ${gameJsonData.metadata?.game_id ?? 'N/A'} ` +
-          `| Time: ${(gameJsonData.metadata?.time_taken ?? 0).toFixed(1)} s`;
+          `Game ID: ${gameJsonData.metadata?.game_id ?? 'N/A'} | Time: ${(gameJsonData.metadata?.time_taken ?? 0).toFixed(1)}s`;
   
         const pb = document.getElementById('progressBar');
         pb.max      = maxRounds - 1;
@@ -183,7 +184,7 @@
         ctx.fillStyle = '#ef4444';
         rd.apples?.forEach(([x, y]) => {
           ctx.beginPath();
-          ctx.arc(x * s + s / 2, (H - 1 - y) * s + s / 2, s / 3, 0, 2 * Math.PI);
+          ctx.arc(x * s + s / 2, (H - 1 - y) * s + s / 2, s / 3, 0, Math.PI * 2);
           ctx.fill();
         });
   
@@ -274,46 +275,40 @@
       /* ======================= RENDER LOOP ======================= */
       function render() {
         if (!gameJsonData) return;
-      
+  
         const rd = gameJsonData.rounds[currentRound];
-      
+  
         document.getElementById('roundInfo').textContent =
           `Round ${currentRound}/${maxRounds - 1}`;
         document.getElementById('progressBar').value = currentRound;
-      
+  
         ['1', '2'].forEach(pid => {
-          // --- NEW: Save current expanded state before update
+          // Save current expanded state before update
           const thoughtEl = document.getElementById(`player${pid}Thoughts`);
           const wasOpen = thoughtEl.querySelector('details')?.open ?? false;
-      
-          /* Update score & apple icons */
-          const score = rd.scores?.[pid] ?? 0;
-          document.getElementById(`player${pid}Score`).textContent = score;
-          document.getElementById(`player${pid}Apples`).textContent = '🍎'.repeat(score);
-      
+  
           /* Update alive / eliminated status */
           const alive = rd.alive?.[pid];
           const st    = document.getElementById(`player${pid}Status`);
           st.textContent = alive ? 'ALIVE' : 'ELIMINATED';
           st.className   = `${alive ? 'text-green-500' : 'text-red-500'} font-bold text-sm`;
-      
+  
           /* Populate thoughts panel via innerHTML */
           thoughtEl.innerHTML = thoughtLines(rd, pid).join('');
-      
-          // --- NEW: Restore expand/collapse state after update
+  
+          // Restore expand/collapse state after update
           const newDetails = thoughtEl.querySelector('details');
           if (newDetails) {
             newDetails.open = wasOpen;
           }
         });
-      
+  
         /* Toggle play/pause label */
         document.getElementById('playBtn').textContent =
           playing ? '⏸️ Pause' : '▶️ Play';
-      
+  
         drawRound();
       }
-      
   
       /* ======================= CONTROLS ========================== */
       const on = (id, fn) => document.getElementById(id).addEventListener('click', fn);
