@@ -215,7 +215,7 @@
   
       /**
        * Build an array of HTML snippets for this player's rationales,
-       * with a toggle <details> for the “Thought” content.
+       * with a <details> toggle for “Thought” content.
        */
       function thoughtLines(rd, pid) {
         const snippets = [];
@@ -236,14 +236,17 @@
           const mWorst = worstRegex.exec(txt);
   
           if (mThink && mThink[1]) {
-            const content = mThink[1].trim().split('\n').map(line =>
-              escapeHTML(line)
-            ).join('<br>');
+            const content = mThink[1]
+              .trim()
+              .split('\n')
+              .map(line => escapeHTML(line))
+              .join('<br>');
   
             snippets.push(`
-              <details class="group mb-1">
-                <summary class="font-mono text-xs cursor-pointer list-none flex items-center gap-1">
-                  <svg class="w-3 h-3 stroke-current text-gray-600 group-open:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 12 12">
+              <details class="toggle-thought mb-1">
+                <summary class="font-mono text-xs cursor-pointer flex items-center gap-1">
+                  <svg class="toggle-arrow w-3 h-3 stroke-current text-gray-600 transition-transform" 
+                       fill="none" stroke="currentColor" viewBox="0 0 12 12">
                     <path d="M3 4.5l3 3 3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                   <span>Thought:</span>

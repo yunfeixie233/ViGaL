@@ -48,3 +48,29 @@
 .player2-bg {
     background-color: #036C8E;
 }
+/* Hide the default disclosure triangle */
+details summary {
+    list-style: none;       /* remove default marker */
+    margin: 0; 
+    padding: 0;
+  }
+  
+  /* Remove default marker in WebKit/Blink */
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  /* Style our own SVG so it rotates on open */
+  details.toggle-thought summary .toggle-arrow {
+    transition: transform 0.2s ease;
+  }
+  
+  details.toggle-thought[open] summary .toggle-arrow {
+    transform: rotate(90deg);
+  }
+  
+  /* Optional: Add a little padding/cursor style */
+  details.toggle-thought summary {
+    cursor: pointer;
+  }
+  
