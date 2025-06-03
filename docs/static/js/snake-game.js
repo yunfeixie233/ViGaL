@@ -274,36 +274,46 @@
       /* ======================= RENDER LOOP ======================= */
       function render() {
         if (!gameJsonData) return;
-  
+      
         const rd = gameJsonData.rounds[currentRound];
-  
+      
         document.getElementById('roundInfo').textContent =
           `Round ${currentRound}/${maxRounds - 1}`;
         document.getElementById('progressBar').value = currentRound;
-  
+      
         ['1', '2'].forEach(pid => {
+          // --- NEW: Save current expanded state before update
+          const thoughtEl = document.getElementById(`player${pid}Thoughts`);
+          const wasOpen = thoughtEl.querySelector('details')?.open ?? false;
+      
           /* Update score & apple icons */
           const score = rd.scores?.[pid] ?? 0;
           document.getElementById(`player${pid}Score`).textContent = score;
           document.getElementById(`player${pid}Apples`).textContent = '🍎'.repeat(score);
-  
+      
           /* Update alive / eliminated status */
           const alive = rd.alive?.[pid];
           const st    = document.getElementById(`player${pid}Status`);
           st.textContent = alive ? 'ALIVE' : 'ELIMINATED';
           st.className   = `${alive ? 'text-green-500' : 'text-red-500'} font-bold text-sm`;
-  
+      
           /* Populate thoughts panel via innerHTML */
-          document.getElementById(`player${pid}Thoughts`).innerHTML =
-            thoughtLines(rd, pid).join('');
+          thoughtEl.innerHTML = thoughtLines(rd, pid).join('');
+      
+          // --- NEW: Restore expand/collapse state after update
+          const newDetails = thoughtEl.querySelector('details');
+          if (newDetails) {
+            newDetails.open = wasOpen;
+          }
         });
-  
+      
         /* Toggle play/pause label */
         document.getElementById('playBtn').textContent =
           playing ? '⏸️ Pause' : '▶️ Play';
-  
+      
         drawRound();
       }
+      
   
       /* ======================= CONTROLS ========================== */
       const on = (id, fn) => document.getElementById(id).addEventListener('click', fn);
