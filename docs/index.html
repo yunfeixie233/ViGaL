@@ -380,13 +380,13 @@
         <p class="has-text-left">
           We evaluate ViGaL on Snake game and Rotation game for in-distribution performance, and on Atari games, an unseen game environment, to evaluate out-of-distribution generalization ability.
         </p>
-
-        <ul>
-          <li>(a) In Snake, ViGal achieves the highest win rate (6-9 wins out of 10 matches), surpassing larger proprietary models.</li>
-          <li>(b) In Rotation, ViGal demonstrates best performance with the best accuracy compared to leading commercial language models.</li>
-          <li>(c) In the Atari Games, ViGal training on Snake and Rotation games shows impressive zero-shot generalization to unseen Atari games, achieving nearly double the cumulative reward compared to Qwen2.5-VL-7B.</li>
-        </ul>
-
+        <div class="content has-text-justified">
+          <ul>
+            <li>(a) In Snake, ViGal achieves the highest win rate (6-9 wins out of 10 matches), surpassing larger proprietary models.</li>
+            <li>(b) In Rotation, ViGal demonstrates best performance with the best accuracy compared to leading commercial language models.</li>
+            <li>(c) In the Atari Games, ViGal training on Snake and Rotation games shows impressive zero-shot generalization to unseen Atari games, achieving nearly double the cumulative reward compared to Qwen2.5-VL-7B.</li>
+          </ul>
+        </div>
         <div class="columns">
           <!-- Snake -->
           <div class="column is-one-third">
@@ -464,12 +464,13 @@
         <p class="has-text-left">
           We evaluate ViGaL trained on game on out-of-domain tasks that demand mathematical reasoning, spatial reasoning and multi-discipline reasoning, including Math, CLEVR+, Geometry and MMMU series.
         </p>
-
-        <ul>
+        <div class="content has-text-justified">
+          <ul>
           <li><strong>Zero-shot generalization from gameplay to reasoning on other domains.</strong> ViGaL outperforms models specifically fine-tuned with RL on these reasoning tasks, showing remarkable generalization capabilities, despite having no exposure to in-domain training data during RL post-training.</li>
           <li><strong>Blending both games leads to better generalization.</strong> It indicates that Visual Gaming Learning has potential as a new training paradigm that can enhance generalizable reasoning performance without requiring extensive collection of domain-specific training data. Simply expanding the diversity of games during training leads to consistent performance scaling across various visual reasoning problems.</li>
-          <li><strong>Preserving general visual capabilities while reasoning enhancement.</strong> Experiments on more general and comprehensive multimodal benchmarks show that our gameplay-based approach enables math generalization without compromising other visual abilities.</li>
-        </ul>
+            <li><strong>Preserving general visual capabilities while reasoning enhancement.</strong> Experiments on more general and comprehensive multimodal benchmarks show that our gameplay-based approach enables math generalization without compromising other visual abilities.</li>
+          </ul>
+        </div>
 
         <div class="table-container">
           <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth table-small">
