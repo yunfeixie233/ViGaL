@@ -14,12 +14,17 @@
 
     /* ──────────────────────────────────────────────────────────────── */
     let gameJsonData = null;
+    let jsonList = ['./resources/game/o3-mini.json',
+        './resources/game/Claude-3.7-Sonnet.json',
+        './resources/game/Gemini-2.5-Pro.json',
+    ];
+    let currentJsonIndex = 0;
 
     document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('snake-game-container');
         if (!container) return;
         container.innerHTML = markup();    // inject template
-        const path = container.getAttribute('data-json') || DEFAULT_JSON;
+        const path = container.getAttribute('data-json');
         boot(path);                        // start boot sequence
     });
 
@@ -77,8 +82,11 @@
                   <button id="nextBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏭️ Next</button>
                   <button id="endBtn"   class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏩ End</button>
                 </div>
-                <input id="progressBar" type="range" min="0" max="100" value="0"
-                       class="w-full max-w-md mt-2" disabled>
+                <div class="flex justify-center items-center gap-4 mt-2">
+                  <input id="progressBar" type="range" min="0" max="100" value="0"
+                         class="flex-1 max-w-md" disabled>
+                  <button id="nextMatchBtn" class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm">Next Match</button>
+                </div>
                 <!-- Removed Game ID / Time display -->
                 <div class="mt-2">
                   <span id="gameInfo" class="font-mono text-xs text-gray-500"></span>
@@ -103,6 +111,14 @@
           })
           .then((json) => {
             gameJsonData = json;
+
+            // Build or update JSON list from metadata if provided
+            if (Array.isArray(gameJsonData.metadata?.file_list)) {
+              jsonList = gameJsonData.metadata.file_list.map(p => new URL(p, window.location.href).toString());
+            } else if (jsonList.length === 0) {
+              jsonList = [absoluteURL];
+            }
+            currentJsonIndex = jsonList.indexOf(absoluteURL);
 
             // Display "ViGaL (Ours) vs <OpponentName>" instead of Loaded URL
             const p1 = gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
@@ -152,6 +168,12 @@
 
           ['playBtn','prevBtn','nextBtn','endBtn']
             .forEach(id => document.getElementById(id).disabled = false);
+
+          // Attach Next Match handler
+          document.getElementById('nextMatchBtn').onclick = () => {
+            const nextIndex = (currentJsonIndex + 1) % jsonList.length;
+            boot(jsonList[nextIndex]);
+          };
 
           render();    // initial render
         }
@@ -221,7 +243,6 @@
         /**
          * Build an array of HTML snippets for this player's rationales,
          * with a <details> toggle for “Thought” content.
-         * Removed Score and Snake length from thought.
          */
         function thoughtLines(rd, pid) {
           const snippets = [];
@@ -249,7 +270,7 @@
 
               /* Insert a proper <details> / <summary> block */
               snippets.push(`
-                <details class="toggle-thought mb-1">
+                <details class="toggle-thought mb-1"${pid === '1' ? ' open' : ''}>
                   <summary class="font-mono text-xs cursor-pointer flex items-center gap-1">
                     <svg class="toggle-arrow w-3 h-3 stroke-current text-gray-600 transition-transform" 
                          fill="none" stroke="currentColor" viewBox="0 0 12 12">
@@ -302,13 +323,17 @@
             // Restore expand/collapse state after update
             const newDetails = thoughtEl.querySelector('details');
             if (newDetails) {
-              newDetails.open = wasOpen;
+              newDetails.open = pid === '1' ? true : false;
             }
           });
 
-          /* Toggle play/pause label */
-          document.getElementById('playBtn').textContent =
-            playing ? '⏸️ Pause' : '▶️ Play';
+          /* Toggle play/pause or replay label */
+          const playBtn = document.getElementById('playBtn');
+          if (!playing && currentRound === maxRounds - 1) {
+            playBtn.textContent = '🔄 Replay';
+          } else {
+            playBtn.textContent = playing ? '⏸️ Pause' : '▶️ Play';
+          }
 
           drawRound();
         }
@@ -318,8 +343,14 @@
 
         on('playBtn', () => {
           if (!gameJsonData) return;
-          playing = !playing;
-          render();
+          if (!playing && currentRound === maxRounds - 1) {
+            currentRound = 0;
+            playing = true;
+            render();
+          } else {
+            playing = !playing;
+            render();
+          }
         });
         on('prevBtn', () => {
           if (!gameJsonData) return;
