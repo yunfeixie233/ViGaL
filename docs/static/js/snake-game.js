@@ -37,7 +37,7 @@
                 <h2 id="player1Name" class="font-mono text-sm">Player 1</h2>
               </div>
               <div class="flex-1 p-4 overflow-auto">
-                <div id="player1Thoughts" class="font-mono text-xs space-y-1"></div>
+                <div id="player1Thoughts" class="font-mono text-xs"></div>
               </div>
               <div class="p-3 border-t border-gray-100 flex justify-between">
                 <span id="player1Status" class="text-green-500 font-bold text-sm">WAITING</span>
@@ -59,7 +59,7 @@
                 <h2 id="player2Name" class="font-mono text-sm">Player 2</h2>
               </div>
               <div class="flex-1 p-4 overflow-auto">
-                <div id="player2Thoughts" class="font-mono text-xs space-y-1"></div>
+                <div id="player2Thoughts" class="font-mono text-xs"></div>
               </div>
               <div class="p-3 border-t border-gray-100 flex justify-between">
                 <span id="player2Status" class="text-red-500 font-bold text-sm">WAITING</span>
@@ -242,6 +242,7 @@
               .map(line => escapeHTML(line))
               .join('<br>');
   
+            /* Insert a proper <details> / <summary> block */
             snippets.push(`
               <details class="toggle-thought mb-1">
                 <summary class="font-mono text-xs cursor-pointer flex items-center gap-1">
