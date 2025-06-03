@@ -10,7 +10,7 @@
     const DEFAULT_JSON = './resources/game/o3-mini.json';
 
     /* Adjustable frames-per-second variable */
-    let FPS = 1; // Change this value to adjust how many rounds per second are rendered
+    let FPS = 3; // Change this value to adjust how many rounds per second are rendered
 
     /* ──────────────────────────────────────────────────────────────── */
     let gameJsonData = null;
