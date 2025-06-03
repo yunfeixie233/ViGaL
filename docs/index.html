@@ -19,7 +19,7 @@
   <!-- Project-specific overrides -->
   <style>
     /* Highlight colour matching LaTeX \mycolor */
-    .mycolor{background-color:#7ac7ee;font-weight:600;}
+    .mycolor { background-color: #7ac7ee; font-weight: 600; }
 
     /* Controllable gray color variable */
     :root {
@@ -29,20 +29,21 @@
     }
 
     /* Utility classes */
-    .img-full{width:100%;object-fit:cover;max-width:100%;}
-    .img-responsive{width:100%;height:auto;display:block;margin:0 auto;}
-    .caption{caption-side:bottom;text-align:center;font-size:0.9rem;}
-    .table-small{font-size:0.85rem;}
-    .table-xs{font-size:0.8rem;}
-    .bg-light{background-color:#EEEEEE}
-    .max-w-800{max-width:800px;margin:auto;}
-    .subtitle-spacing{margin-top:20px;text-align:left;}
+    .img-full { width: 100%; object-fit: cover; max-width: 100%; }
+    .img-responsive { width: 100%; height: auto; display: block; margin: 0 auto; }
+    .caption { caption-side: bottom; text-align: center; font-size: 0.9rem; }
+    .table-small { font-size: 0.85rem; }
+    .table-xs { font-size: 0.8rem; }
+    .bg-light { background-color: #EEEEEE; }
+    .max-w-800 { max-width: 800px; margin: auto; }
+    .subtitle-spacing { margin-top: 20px; text-align: left; }
 
     /* Vertically centre multi-row header cells */
-    th[rowspan="2"]{vertical-align:middle!important;}
+    th[rowspan="2"] { vertical-align: middle !important; }
 
     /* Remove vertical borders from table cells, keep horizontal borders */
-    .table td, .table th {
+    .table td,
+    .table th {
       border-left: none !important;
       border-right: none !important;
     }
@@ -55,7 +56,7 @@
       background-color: white;
       padding: 15px;
       border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       z-index: 1000;
       width: 250px;
     }
@@ -103,7 +104,7 @@
       position: relative;
       overflow: hidden;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       display: block;
     }
 
@@ -135,7 +136,7 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.5);
       color: white;
       border: none;
       padding: 10px 15px;
@@ -146,7 +147,7 @@
     }
 
     .carousel-nav:hover {
-      background: rgba(0,0,0,0.8);
+      background: rgba(0, 0, 0, 0.8);
     }
 
     .carousel-prev {
@@ -170,7 +171,7 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255, 255, 255, 0.5);
       cursor: pointer;
       transition: background 0.3s;
     }
@@ -194,6 +195,13 @@
       width: 100%;
       margin: 20px 0;
     }
+
+    /* Restore default ordered list style (override Bulma) */
+    ol {
+      list-style-type: decimal;
+      margin-left: 1.5em;
+      padding-left: 0;
+    }
   </style>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -213,7 +221,7 @@
     <li><a href="#game-pipeline">Game Pipeline</a></li>
     <li><a href="#snake-game-visualization">Snake Game Visualization</a></li>
     <li><a href="#evaluation-benchmark">Generalization Evaluation Benchmark</a></li>
-    <li><a href="#in-distribution-results"> Excel at Seen and Unseen Games</a></li>
+    <li><a href="#in-distribution-results">Excel at Seen and Unseen Games</a></li>
     <li><a href="#out-of-domain-results">Improvement on Unseen Tasks</a></li>
     <li><a href="#different-games-benefit">Different Games Benefit Distinct Math Subfields</a></li>
     <li><a href="#games-visualization">Rotation Game Visualization</a></li>
@@ -252,7 +260,7 @@
                  class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="fa-solid fa-face-smiling-hands"></i>
-                  <img src="./resources/ar.svg" alt="img" style="width: 100%; height: 100%" /> 
+                  <img src="./resources/ar.svg" alt="img" style="width: 100%; height: 100%" />
                 </span>
                 <span>Paper</span>
               </a>
@@ -262,37 +270,45 @@
                  class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="fa-solid fa-face-smiling-hands"></i>
-                  <img src="./resources/gr.svg" alt="img" style="width: 100%; height: 100%" /> 
+                  <img src="./resources/gr.svg" alt="img" style="width: 100%; height: 100%" />
                 </span>
                 <span>Data</span>
               </a>
-            </span>              
+            </span>
             <!-- Code Link. -->
             <span class="link-block">
               <a href="https://github.com/UCSC-VLAA/MedTrinity-25M"
                  class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
-                    <i class="fab fa-github"></i>
+                  <i class="fab fa-github"></i>
                 </span>
                 <span>Code</span>
-                </a>
+              </a>
             </span>
-
-          </div>          
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 <!-- ---------- TEASER ---------- -->
 <section class="hero teaser">
   <div class="container">
     <div class="hero-body">
       <img src="./resources/teaser.gif" alt="Teaser" class="img-full">
-      <h2 class="subtitle has-text-left subtitle-spacing">
-        <em>Left:</em><strong> We propose Visual Game Learning (ViGaL),</strong> a novel post-training paradigm where multimodal large language models are tuned via reinforcement learning to play arcade-style games such as Snake. This gameplay post-training enables MLLMs to achieve out-of-domain generalization and boosts performance on downstream multimodal reasoning tasks that require mathematical and spatial reasoning. 
-        <br><em>Right:</em> As shown in bar figure, <strong>rule-based RL on visual games outperforms rule-based RL on math data on visual math benchmarks, even without explicit training on mathematical datasets.</strong>
-      </h2>
+      <div class="columns subtitle-spacing">
+        <div class="column is-half">
+          <p class="has-text-left">
+            <strong>We propose Visual Game Learning (ViGaL),</strong> a novel post-training paradigm where multimodal large language models are tuned via reinforcement learning to play arcade-style games such as Snake. This gameplay post-training enables MLLMs to achieve out-of-domain generalization and boosts performance on downstream multimodal reasoning tasks that require mathematical and spatial reasoning.
+          </p>
+        </div>
+        <div class="column is-half">
+          <p class="has-text-left">
+            <strong>As shown in bar figure, rule-based RL on visual games outperforms rule-based RL on math data on visual math benchmarks, even without explicit training on mathematical datasets.</strong>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -302,6 +318,9 @@
   <div class="container">
     <h2 class="title is-3 has-text-left">Snake Game Visualization</h2>
     <div id="snake-game-container"></div>
+    <h2 class="subtitle has-text-left subtitle-spacing">
+      With RL finetuning, ViGaL can beat proprietary models like o3-mini, claude-3.7-sonnet and gemini-2.5-flash on Snake game.
+    </h2>
   </div>
 </section>
 
@@ -343,7 +362,7 @@
               Out-of-domain generalization (b), where the same models are assessed on multimodal reasoning datasets spanning mathematics, 3D understanding in CLEVR+, geometric problem solving, and multi-discipline on MMMU series.
             </li>
           </ul>
-          
+
           <img src="./resources/dataset_card.png" alt="Dataset Card" class="img-responsive">
         </div>
       </div>
@@ -361,7 +380,7 @@
         <p class="has-text-left">
           We evaluate ViGaL on Snake game and Rotation game for in-distribution performance, and on Atari games, an unseen game environment, to evaluate out-of-distribution generalization ability.
         </p>
-        
+
         <ul class="has-text-left">
           <li>(a) In Snake, ViGal achieves the highest win rate (6-9 wins out of 10 matches), surpassing larger proprietary models.</li>
           <li>(b) In Rotation, ViGal demonstrates best performance with the best accuracy compared to leading commercial language models.</li>
@@ -372,7 +391,9 @@
           <!-- Snake -->
           <div class="column is-one-third">
             <table class="table is-bordered is-narrow is-fullwidth table-xs">
-              <thead><tr><th>Model</th><th>Wins (10)</th></tr></thead>
+              <thead>
+                <tr><th>Model</th><th>Wins (10)</th></tr>
+              </thead>
               <tbody>
                 <tr><td class="mycolor">ViGaL vs.</td><td class="mycolor"></td></tr>
                 <tr><td style="padding-left:0.8em;">Qwen2.5-VL-7B</td><td>9</td></tr>
@@ -390,7 +411,9 @@
           <!-- Rotation -->
           <div class="column is-one-third">
             <table class="table is-bordered is-narrow is-fullwidth table-xs">
-              <thead><tr><th>Model</th><th>Acc. (%)</th></tr></thead>
+              <thead>
+                <tr><th>Model</th><th>Acc. (%)</th></tr>
+              </thead>
               <tbody>
                 <tr><td class="mycolor">ViGaL</td><td class="mycolor">71.9</td></tr>
                 <tr><td style="padding-left:0.8em;">Qwen2.5-VL-7B</td><td>47.4</td></tr>
@@ -408,7 +431,9 @@
           <!-- Atari -->
           <div class="column is-one-third">
             <table class="table is-bordered is-narrow is-fullwidth table-xs">
-              <thead><tr><th>Game</th><th>ViGaL</th><th>Qwen2.5-7B</th></tr></thead>
+              <thead>
+                <tr><th>Game</th><th>ViGaL</th><th>Qwen2.5-7B</th></tr>
+              </thead>
               <tbody>
                 <tr><td>Space Invaders</td><td>280.0</td><td>85.0</td></tr>
                 <tr><td>Ms. Pacman</td><td>1370.0</td><td>670.0</td></tr>
@@ -435,14 +460,15 @@
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3 has-text-left">Improvement on Unseen Tasks</h2>
-        
+
         <p class="has-text-left">
-          We evaluate ViGaL trained on game on out-of-domain tasks that demand mathematical reasoning, spatial reasoning and multi-discipline reasoning, including Math, CLEVR+, Geomery and MMMU series.
+          We evaluate ViGaL trained on game on out-of-domain tasks that demand mathematical reasoning, spatial reasoning and multi-discipline reasoning, including Math, CLEVR+, Geometry and MMMU series.
         </p>
-        
+
         <ul class="has-text-left">
           <li><strong>Zero-shot generalization from gameplay to reasoning on other domains.</strong> ViGaL outperforms models specifically fine-tuned with RL on these reasoning tasks, showing remarkable generalization capabilities, despite having no exposure to in-domain training data during RL post-training.</li>
           <li><strong>Blending both games leads to better generalization.</strong> It indicates that Visual Gaming Learning has potential as a new training paradigm that can enhance generalizable reasoning performance without requiring extensive collection of domain-specific training data. Simply expanding the diversity of games during training leads to consistent performance scaling across various visual reasoning problems.</li>
+          <li><strong>Preserving general visual capabilities while reasoning enhancement.</strong> Experiments on more general and comprehensive multimodal benchmarks show that our gameplay-based approach enables math generalization without compromising other visual abilities.</li>
         </ul>
 
         <div class="table-container">
@@ -511,7 +537,7 @@
         <h2 class="title is-3 has-text-left">Different Games Benefit Distinct Math Subfields</h2>
         <div class="content has-text-justified">
           <p>
-            <strong>Snake <em>vs.</em> Rotation: subfield differences on MathVerse.</strong> Positive values ​​indicate better results from ViGal-Snake, and negative values ​​measure how much ViGal-Rotation performs better. Interestingly, Snake enhances most on Expressions and Coordinates, tasks aligned with Snake's 2D grid. Rotation improves angle and length reasoning, reflecting its focus on 3D object rotations.
+            <strong>Snake <em>vs.</em> Rotation: subfield differences on MathVerse.</strong> Positive values indicate better results from ViGal-Snake, and negative values measure how much ViGal-Rotation performs better. Interestingly, Snake enhances most on Expressions and Coordinates, tasks aligned with Snake's 2D grid. Rotation improves angle and length reasoning, reflecting its focus on 3D object rotations.
           </p>
           <img src="./resources/acc_diff.png" alt="Accuracy Differences" class="img-responsive">
         </div>
@@ -526,7 +552,6 @@
     <div class="columns is-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3 has-text-left">Rotation Game Visualization</h2>
-        
 
         <div class="carousel-wrapper">
           <!-- Rotation Game Carousel -->
@@ -545,11 +570,11 @@
                 <img src="./resources/rotation_4.png" alt="Rotation Game Example 4">
               </div>
             </div>
-            
+
             <!-- Navigation buttons -->
             <button class="carousel-nav carousel-prev" onclick="changeSlide('rotation-carousel', -1)">&#10094;</button>
             <button class="carousel-nav carousel-next" onclick="changeSlide('rotation-carousel', 1)">&#10095;</button>
-            
+
             <!-- Indicators -->
             <div class="carousel-indicators">
               <span class="carousel-indicator active" onclick="goToSlide('rotation-carousel', 0)"></span>
@@ -584,21 +609,6 @@
     </div>
   </div>
 </section>
-
-<!-- ---------- BIBTEX ---------- -->
-<!-- <section class="section" id="BibTeX">
-  <div class="container is-max-desktop content main-content-with-sidebar">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>
-@article{vigal2025,
-  title      ={ViGaL: Visual Game Learning Unlocks Generalizable Multimodal Reasoning},
-  author     ={Anonymous},
-  journal    ={arXiv preprint},
-  year       ={2025}
-}
-    </code></pre>
-  </div>
-</section> -->
 
 <!-- ---------- FOOTER ---------- -->
 <footer class="footer">
