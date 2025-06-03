@@ -31,10 +31,10 @@
   
           <!-- Grid -->
           <div class="grid grid-cols-1 lg:grid-cols-[1fr_min-content_1fr] gap-4 mb-6">
-            <!-- Player 1 thoughts / status -->
+            <!-- ViGaL (Ours) thoughts / status -->
             <div class="thoughts-panel player1-border flex flex-col">
               <div class="p-3 border-b border-gray-100 sticky top-0 z-10 text-center player1-bg bg-opacity-50">
-                <h2 id="player1Name" class="font-mono text-sm">Player 1</h2>
+                <h2 id="player1Name" class="font-mono text-sm">ViGaL (Ours)</h2>
               </div>
               <div class="flex-1 p-4 overflow-auto">
                 <div id="player1Thoughts" class="font-mono text-xs"></div>
@@ -132,8 +132,9 @@
         maxRounds = gameJsonData.metadata?.actual_rounds || gameJsonData.rounds.length;
         ({ width: W = 10, height: H = 10 } = gameJsonData.rounds[0] || {});
   
+        // Use metadata name or fallback to "ViGaL (Ours)"
         document.getElementById('player1Name').textContent =
-          gameJsonData.metadata?.models?.['1'] || 'Player 1';
+          gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
         document.getElementById('player2Name').textContent =
           gameJsonData.metadata?.models?.['2'] || 'Player 2';
   
@@ -216,6 +217,7 @@
       /**
        * Build an array of HTML snippets for this player's rationales,
        * with a <details> toggle for “Thought” content.
+       * Removed Score and Snake length from thought.
        */
       function thoughtLines(rd, pid) {
         const snippets = [];
@@ -223,7 +225,6 @@
         /* If eliminated, show elimination info */
         if (!rd.alive?.[pid]) {
           snippets.push(`<p>Round ${rd.round_number}: ELIMINATED</p>`);
-          snippets.push(`<p>Score: ${rd.scores[pid]}</p>`);
           return snippets;
         }
   
@@ -266,11 +267,6 @@
             snippets.push(`<p class="font-mono text-xs">Worst move: <b>${content}</b></p>`);
           }
         }
-  
-        /* Always include score & snake length */
-        snippets.push(`<p class="font-mono text-xs">Score: ${rd.scores[pid]}</p>`);
-        const length = rd.snake_positions?.[pid]?.length ?? 0;
-        snippets.push(`<p class="font-mono text-xs">Snake length: ${length}</p>`);
   
         return snippets;
       }
