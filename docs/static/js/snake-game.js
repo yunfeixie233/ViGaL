@@ -24,9 +24,7 @@
     function markup() {
       return `
         <div>
-          <!-- Title -->
-          <h1 class="text-center text-2xl font-bold mb-4 font-mono">Snake Game Visualization</h1>
-  
+          <!-- Title -->  
           <div class="bg-gray-100 py-6 rounded-lg">
             <!-- Status line -->
             <div class="bg-white shadow rounded-lg p-4 mb-4 text-center">
@@ -106,7 +104,7 @@
           const p1 = gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
           const p2 = gameJsonData.metadata?.models?.['2'] || 'Opponent';
           fileStatus.textContent = `${p1} vs ${p2}`;
-          fileStatus.className   = 'font-mono text-sm text-black font-bold';
+          fileStatus.className   = 'font-mono text-lg text-black font-bold';
   
           initGame();
         })
