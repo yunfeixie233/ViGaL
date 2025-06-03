@@ -18,7 +18,7 @@
         './resources/game/Claude-3.7-Sonnet.json',
         './resources/game/Gemini-2.5-Pro.json',
     ];
-    let currentJsonIndex = 0; // Will be updated in boot based on the loaded JSON's presence in jsonList
+    let currentJsonIndex = 0; // Will be updated in boot based on the loaded JSON
 
     /**
      * Helper function to update the file status message.
@@ -108,30 +108,35 @@
         if (!jsonPath || typeof jsonPath !== 'string') {
             console.error('Boot aborted: Invalid JSON path provided.', jsonPath);
             updateFileStatus('Error: Invalid JSON path.', true);
-            const nextMatchBtnEl = document.getElementById('nextMatchBtn');
-            if (nextMatchBtnEl) nextMatchBtnEl.disabled = true;
+            const nextMatchBtn = document.getElementById('nextMatchBtn');
+            if (nextMatchBtn) nextMatchBtn.disabled = true; // Disable if path is fundamentally wrong
             return;
         }
 
         const absoluteURL = new URL(jsonPath, window.location.href).toString();
+
+        // Initial status update
         updateFileStatus(`Loading: ${jsonPath.split('/').pop()}...`);
 
+        /* Fetch and parse JSON */
         fetch(absoluteURL, { cache: 'no-cache' })
             .then(async (res) => {
                 if (!res.ok) throw new Error(`HTTP ${res.status} while fetching ${absoluteURL}`);
                 const raw = await res.text();
-                const clean = raw.replace(/^\uFEFF/, '').trim();
+                const clean = raw.replace(/^\uFEFF/, '').trim(); // strip BOM if present
                 return JSON.parse(clean);
             })
             .then((json) => {
                 gameJsonData = json;
 
+                // Build or update JSON list from metadata if provided
                 if (Array.isArray(gameJsonData.metadata?.file_list)) {
                     const metadataFiles = gameJsonData.metadata.file_list
                         .map(p => {
                             if (p && typeof p === 'string') {
                                 try {
                                     const resolvedUrl = new URL(p, window.location.href).toString();
+                                    // Prevent URLs that literally end with "/null"
                                     if (resolvedUrl.endsWith('/null')) {
                                         console.warn(`Path in metadata.file_list resolved to an URL ending with '/null': '${p}' -> '${resolvedUrl}'. Skipping.`);
                                         return null;
@@ -142,56 +147,60 @@
                                     return null;
                                 }
                             }
-                            return null;
+                            return null; // Non-string or empty entries are invalid
                         })
-                        .filter(p => p !== null);
+                        .filter(p => p !== null); // Remove invalid paths
 
                     if (metadataFiles.length > 0) {
-                        jsonList = metadataFiles;
+                        jsonList = metadataFiles; // Replace global jsonList
                     }
+                    // If metadataFiles is empty, we keep the pre-existing global jsonList.
                 }
 
+                // If jsonList ended up empty (e.g. initial was empty and metadata was invalid/empty)
+                // and we have a valid absoluteURL for the current file, use it as a fallback.
                 if (jsonList.length === 0 && absoluteURL && !absoluteURL.endsWith('/null')) {
                     jsonList = [absoluteURL];
                 }
 
+                // Update currentJsonIndex based on the (potentially new) jsonList
                 currentJsonIndex = jsonList.indexOf(absoluteURL);
+                // If absoluteURL isn't in jsonList (e.g., it was a one-off load and metadata replaced the list),
+                // index will be -1. This is handled by "Next Match" logic.
 
                 const p1 = gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
                 const p2 = gameJsonData.metadata?.models?.['2'] || 'Opponent';
                 updateFileStatus(`${p1} vs ${p2}`);
 
-                const nextMatchBtnEl = document.getElementById('nextMatchBtn');
-                if (nextMatchBtnEl) {
-                    if (jsonList.length === 0) {
-                        nextMatchBtnEl.disabled = true;
-                    } else {
-                        const uniquePaths = new Set(jsonList);
-                        nextMatchBtnEl.disabled = uniquePaths.size <= 1;
-                    }
+                // Enable or disable Next Match button based on list content
+                const nextMatchBtn = document.getElementById('nextMatchBtn');
+                if (nextMatchBtn) {
+                   nextMatchBtn.disabled = (jsonList.length <= 1 && currentJsonIndex !== -1) || jsonList.length === 0;
                 }
-                initGame(absoluteURL); // Pass absoluteURL to initGame for context
+                initGame();
             })
             .catch((err) => {
                 console.error(err);
                 updateFileStatus(`Error: ${err.message}`, true);
+                // Optionally disable controls if a game can't load
                 ['playBtn','prevBtn','nextBtn','endBtn', 'progressBar', 'nextMatchBtn'].forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.disabled = true;
                 });
             });
 
+        /* Local state (reset for each boot if necessary, or manage globally) */
         let maxRounds = 0,
             currentRound = 0,
             playing = false,
-            W = 10, H = 10;
+            W = 10,
+            H = 10;
 
         const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById('gameCanvas'));
         const ctx = canvas.getContext('2d');
 
         /* ======================= GAME INIT ========================= */
-        // Pass currentLoadedURL (which is absoluteURL from boot) for the click handler's closure
-        function initGame(currentLoadedURL) {
+        function initGame() {
             if (!gameJsonData || !Array.isArray(gameJsonData.rounds)) {
                 updateFileStatus('Error: Game data is invalid or missing rounds.', true);
                 throw new Error('Game data is invalid or missing rounds array in JSON');
@@ -200,137 +209,285 @@
             maxRounds = gameJsonData.metadata?.actual_rounds || gameJsonData.rounds.length;
             ({ width: W = 10, height: H = 10 } = gameJsonData.rounds[0] || {});
 
-            document.getElementById('player1Name').textContent = gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
-            document.getElementById('player2Name').textContent = gameJsonData.metadata?.models?.['2'] || 'Opponent';
+            document.getElementById('player1Name').textContent =
+                gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
+            document.getElementById('player2Name').textContent =
+                gameJsonData.metadata?.models?.['2'] || 'Opponent';
 
             const pb = document.getElementById('progressBar');
-            pb.max = Math.max(0, maxRounds - 1);
-            pb.value = 0;
-            currentRound = 0;
-            playing = false;
+            pb.max = Math.max(0, maxRounds - 1); // Ensure max is not negative
+            pb.value = 0; // Reset progress bar
+            currentRound = 0; // Reset current round
+            playing = false; // Reset playing state
 
             pb.disabled = (maxRounds === 0);
             ['playBtn', 'prevBtn', 'nextBtn', 'endBtn']
                 .forEach(id => document.getElementById(id).disabled = (maxRounds === 0));
 
-            const nextMatchBtnEl = document.getElementById('nextMatchBtn');
-            nextMatchBtnEl.onclick = () => {
-                // This handler assumes the button is enabled, meaning jsonList has >1 unique paths.
-                
-                // Determine the starting index for our search.
-                // If currentJsonIndex is -1 (current file not in list), start search from index 0.
-                // Otherwise, start search from currentJsonIndex.
-                const searchStartIndex = (currentJsonIndex === -1) ? 0 : currentJsonIndex;
-
-                let nextPathToLoad = null;
-                // Iterate through jsonList to find the next *different* URL.
-                // We check up to jsonList.length items to ensure we cycle through the list.
-                for (let i = 1; i <= jsonList.length; i++) {
-                    const nextTryIndex = (searchStartIndex + i) % jsonList.length;
-                    if (jsonList[nextTryIndex] !== currentLoadedURL) {
-                        nextPathToLoad = jsonList[nextTryIndex];
-                        break; // Found a different URL
-                    }
+            // Attach Next Match handler (or ensure it's correctly set up)
+            const nextMatchBtn = document.getElementById('nextMatchBtn');
+            nextMatchBtn.onclick = () => {
+                if (jsonList.length === 0) {
+                    console.error('JSON list is empty. Cannot switch to next match.');
+                    updateFileStatus('Error: No game files available for "Next Match".', true);
+                    return;
                 }
 
-                if (nextPathToLoad) {
-                    boot(nextPathToLoad);
+                let nextIdx;
+                if (currentJsonIndex === -1 || jsonList.length === 1) {
+                    // If current file not in list, or only one file, "next" is the first (or only).
+                    // Or if current file is the only one in the list.
+                    nextIdx = 0;
                 } else {
-                    // This case implies all items in jsonList are identical to currentLoadedURL,
-                    // or no distinct next item was found.
-                    // The button should have been disabled by the uniquePaths.size <= 1 check in boot().
-                    console.warn("Next Match clicked, but no different JSON file found to switch to. This might indicate an issue if the button was expected to be enabled.");
+                    nextIdx = (currentJsonIndex + 1) % jsonList.length;
+                }
+                
+                // Safety: if nextIdx is same as currentJsonIndex (e.g. list of 1), do not reload same file via Next Match.
+                // However, the button should ideally be disabled if only one unique option.
+                // The current logic for disabling nextMatchBtn should handle this mostly.
+                // For robustness, if next calculated path is same as current, and list has more, try again.
+                if (jsonList.length > 1 && jsonList[nextIdx] === absoluteURL) {
+                    nextIdx = (nextIdx + 1) % jsonList.length; // Try one more ahead
+                }
+
+
+                const nextJsonPath = jsonList[nextIdx];
+                if (nextJsonPath && typeof nextJsonPath === 'string') {
+                    boot(nextJsonPath);
+                } else {
+                    console.error('Next JSON path is invalid or jsonList is problematic. Path:', nextJsonPath);
+                    updateFileStatus('Error: Could not determine next valid match.', true);
                 }
             };
-            render();
+             // Update Next Match button disabled state after list processing
+            nextMatchBtn.disabled = (jsonList.length <= 1 && currentJsonIndex !== -1 && jsonList.includes(absoluteURL)) || jsonList.length === 0;
+
+
+            render(); // initial render
         }
 
         /* ======================= DRAW HELPERS ====================== */
         function drawBoard() {
             const s = Math.min(canvas.width / W, canvas.height / H);
-            ctx.fillStyle = '#f9fafb';
+            ctx.fillStyle = '#f9fafb'; // Light gray background for the board
             ctx.fillRect(0, 0, W * s, H * s);
-            ctx.strokeStyle = '#e5e7eb';
-            for (let i = 0; i <= W; i++) { ctx.beginPath(); ctx.moveTo(i * s, 0); ctx.lineTo(i * s, H * s); ctx.stroke(); }
-            for (let j = 0; j <= H; j++) { ctx.beginPath(); ctx.moveTo(0, j * s); ctx.lineTo(W * s, j * s); ctx.stroke(); }
+            ctx.strokeStyle = '#e5e7eb'; // Grid line color
+
+            for (let i = 0; i <= W; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * s, 0);
+                ctx.lineTo(i * s, H * s);
+                ctx.stroke();
+            }
+            for (let j = 0; j <= H; j++) {
+                ctx.beginPath();
+                ctx.moveTo(0, j * s);
+                ctx.lineTo(W * s, j * s);
+                ctx.stroke();
+            }
         }
 
         function drawRound() {
             if (!gameJsonData || !gameJsonData.rounds || !gameJsonData.rounds[currentRound]) {
-                 console.warn("drawRound called with invalid game data or currentRound out of bounds."); return;
+                 console.warn("drawRound called with invalid game data or currentRound out of bounds.");
+                 return; // Prevent errors if data is not ready
             }
             const rd = gameJsonData.rounds[currentRound];
             const s = Math.min(canvas.width / W, canvas.height / H);
+
             drawBoard();
-            ctx.fillStyle = '#ef4444';
-            rd.apples?.forEach(([x, y]) => { ctx.beginPath(); ctx.arc(x * s + s / 2, (H - 1 - y) * s + s / 2, s / 3, 0, Math.PI * 2); ctx.fill(); });
-            const colors = { '1': '#4F7022', '2': '#036C8E' };
+
+            /* Draw apples */
+            ctx.fillStyle = '#ef4444'; // Red for apples
+            rd.apples?.forEach(([x, y]) => {
+                ctx.beginPath();
+                ctx.arc(x * s + s / 2, (H - 1 - y) * s + s / 2, s / 3, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            /* Draw snakes */
+            const colors = { '1': '#4F7022', '2': '#036C8E' }; // P1 Green, P2 Blue
             Object.entries(rd.snake_positions || {}).forEach(([pid, segs]) => {
                 const alive = rd.alive?.[pid];
-                ctx.fillStyle = alive ? colors[pid] : '#9ca3af';
+                ctx.fillStyle = alive ? colors[pid] : '#9ca3af'; // Gray for eliminated
+
                 segs.forEach(([x, y], i) => {
-                    ctx.globalAlpha = i ? Math.max(0.3, 0.8 - i * 0.1) : 1;
+                    ctx.globalAlpha = i ? Math.max(0.3, 0.8 - i * 0.1) : 1; // Fade tail
                     ctx.fillRect(x * s + 2, (H - 1 - y) * s + 2, s - 4, s - 4);
                 });
-                ctx.globalAlpha = 1;
+                ctx.globalAlpha = 1; // Reset alpha
             });
         }
 
         /* ======================= THOUGHT PARSER ==================== */
-        function escapeHTML(str) { return str.replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch])); }
+        function escapeHTML(str) {
+            return str.replace(/[&<>"']/g, ch => (
+                { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
+            ));
+        }
+
         const thinkRegex = /<think>([\s\S]*?)<\/think>/i;
         const bestRegex = /<best_answer>([\s\S]*?)<\/best_answer>/i;
         const worstRegex = /<worst_answer>([\s\S]*?)<\/worst_answer>/i;
+
         function thoughtLines(rd, pid) {
-            const snippets = []; if (!rd) return snippets;
-            if (!rd.alive?.[pid]) { snippets.push(`<p>Round ${rd.round_number ?? currentRound}: ELIMINATED</p>`); return snippets; }
-            const mv = rd.move_history?.find(m => m[pid])?.[pid] || rd.move_history?.at(-1)?.[pid];
+            const snippets = [];
+            if (!rd) return snippets; // Safety check
+
+            if (!rd.alive?.[pid]) {
+                snippets.push(`<p>Round ${rd.round_number ?? currentRound}: ELIMINATED</p>`);
+                return snippets;
+            }
+
+            const mv = rd.move_history?.find(m => m[pid])?.[pid] || rd.move_history?.at(-1)?.[pid]; // Try to find latest move for pid
             if (mv && mv.rationale) {
-                const txt = mv.rationale; const mThink = thinkRegex.exec(txt); const mBest = bestRegex.exec(txt); const mWorst = worstRegex.exec(txt);
-                if (mThink && mThink[1]) { const content = mThink[1].trim().split('\n').map(line => escapeHTML(line)).join('<br>');
-                    snippets.push(`<details class="toggle-thought mb-1"${pid === '1' ? ' open' : ''}><summary class="font-mono text-xs cursor-pointer flex items-center gap-1"><svg class="toggle-arrow w-3 h-3 stroke-current text-gray-600 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Thought:</span></summary><div class="pl-4 text-xs text-gray-700 mt-1">${content}</div></details>`);
+                const txt = mv.rationale;
+                const mThink = thinkRegex.exec(txt);
+                const mBest = bestRegex.exec(txt);
+                const mWorst = worstRegex.exec(txt);
+
+                if (mThink && mThink[1]) {
+                    const content = mThink[1].trim().split('\n').map(line => escapeHTML(line)).join('<br>');
+                    snippets.push(`
+                      <details class="toggle-thought mb-1"${pid === '1' ? ' open' : ''}>
+                        <summary class="font-mono text-xs cursor-pointer flex items-center gap-1">
+                          <svg class="toggle-arrow w-3 h-3 stroke-current text-gray-600 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 12 12">
+                            <path d="M3 4.5l3 3 3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                          <span>Thought:</span>
+                        </summary>
+                        <div class="pl-4 text-xs text-gray-700 mt-1">${content}</div>
+                      </details>
+                    `);
                 }
-                if (mBest && mBest[1]) { snippets.push(`<p class="font-mono text-xs">Best move: <b>${escapeHTML(mBest[1].trim())}</b></p>`); }
-                if (mWorst && mWorst[1]) { snippets.push(`<p class="font-mono text-xs">Worst move: <b>${escapeHTML(mWorst[1].trim())}</b></p>`); }
-            } return snippets;
+                if (mBest && mBest[1]) {
+                    snippets.push(`<p class="font-mono text-xs">Best move: <b>${escapeHTML(mBest[1].trim())}</b></p>`);
+                }
+                if (mWorst && mWorst[1]) {
+                    snippets.push(`<p class="font-mono text-xs">Worst move: <b>${escapeHTML(mWorst[1].trim())}</b></p>`);
+                }
+            }
+            return snippets;
         }
 
         /* ======================= RENDER LOOP ======================= */
         function render() {
             if (!gameJsonData || !gameJsonData.rounds || currentRound < 0 || currentRound >= maxRounds ) {
-                 if (ctx) { ctx.fillStyle = '#f3f4f6'; ctx.fillRect(0, 0, canvas.width, canvas.height); } return;
+                 // If data is not ready or currentRound is out of bounds, don't render game state.
+                 // Initial blank draw or a loading state might be handled elsewhere or by default canvas state.
+                 if (ctx) { // Draw a blank board if context is available
+                    ctx.fillStyle = '#f3f4f6'; // Page background color
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                 }
+                return;
             }
-            const rd = gameJsonData.rounds[currentRound]; if (!rd) { console.warn(`No data for round ${currentRound}.`); return; }
-            document.getElementById('roundInfo').textContent = `Round ${currentRound}/${Math.max(0, maxRounds - 1)}`;
+
+            const rd = gameJsonData.rounds[currentRound];
+             if (!rd) { // Safety check for the specific round data
+                console.warn(`No data for round ${currentRound}.`);
+                return;
+            }
+
+
+            document.getElementById('roundInfo').textContent =
+                `Round ${currentRound}/${Math.max(0, maxRounds - 1)}`;
             document.getElementById('progressBar').value = currentRound;
+
             ['1', '2'].forEach(pid => {
                 const thoughtEl = document.getElementById(`player${pid}Thoughts`);
-                const alive = rd.alive?.[pid]; const st = document.getElementById(`player${pid}Status`);
-                st.textContent = alive ? 'ALIVE' : 'ELIMINATED'; st.className = `${alive ? 'text-green-500' : 'text-red-500'} font-bold text-sm`;
+                // const wasOpen = thoughtEl.querySelector('details')?.open ?? (pid === '1'); // Default P1 open
+
+                const alive = rd.alive?.[pid];
+                const st = document.getElementById(`player${pid}Status`);
+                st.textContent = alive ? 'ALIVE' : 'ELIMINATED';
+                st.className = `${alive ? 'text-green-500' : 'text-red-500'} font-bold text-sm`;
+
                 thoughtEl.innerHTML = thoughtLines(rd, pid).join('');
-                const newDetails = thoughtEl.querySelector('details'); if (newDetails) { newDetails.open = pid === '1' ? true : false; }
+
+                const newDetails = thoughtEl.querySelector('details');
+                if (newDetails) {
+                    // Always open P1 thoughts, P2 closed by default, or maintain previous state if preferred.
+                    newDetails.open = pid === '1' ? true : false; 
+                }
             });
+
             const playBtn = document.getElementById('playBtn');
-            if (!playing && currentRound === maxRounds - 1 && maxRounds > 0) { playBtn.textContent = '🔄 Replay'; }
-            else { playBtn.textContent = playing ? '⏸️ Pause' : '▶️ Play'; }
+            if (!playing && currentRound === maxRounds - 1 && maxRounds > 0) {
+                playBtn.textContent = '🔄 Replay';
+            } else {
+                playBtn.textContent = playing ? '⏸️ Pause' : '▶️ Play';
+            }
+
             drawRound();
         }
 
         /* ======================= CONTROLS ========================== */
-        const on = (id, event, fn) => { const el = document.getElementById(id); if (el) el.addEventListener(event, fn); };
-        on('playBtn', 'click', () => { if (!gameJsonData || maxRounds === 0) return; if (!playing && currentRound === maxRounds - 1) { currentRound = 0; playing = true; } else { playing = !playing; } render(); });
-        on('prevBtn', 'click', () => { if (!gameJsonData || maxRounds === 0) return; currentRound = Math.max(currentRound - 1, 0); playing = false; render(); });
-        on('nextBtn', 'click', () => { if (!gameJsonData || maxRounds === 0) return; currentRound = Math.min(currentRound + 1, maxRounds - 1); playing = false; render(); });
-        on('endBtn', 'click', () => { if (!gameJsonData || maxRounds === 0) return; currentRound = maxRounds - 1; playing = false; render(); });
-        on('progressBar', 'input', (e) => { if (!gameJsonData || maxRounds === 0) return; currentRound = +e.target.value; playing = false; render(); });
+        const on = (id, event, fn) => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener(event, fn);
+        };
+        
+        // Clear previous listeners if any, or ensure they are added once.
+        // For simplicity here, we rely on the fact that initGame (where controls are set up)
+        // is called inside boot(), and boot() redefines these event handlers.
 
-        if (!window.snakeGameInterval) {
+        on('playBtn', 'click', () => {
+            if (!gameJsonData || maxRounds === 0) return;
+            if (!playing && currentRound === maxRounds - 1) { // Replay
+                currentRound = 0;
+                playing = true;
+            } else {
+                playing = !playing;
+            }
+            render();
+        });
+        on('prevBtn', 'click', () => {
+            if (!gameJsonData || maxRounds === 0) return;
+            currentRound = Math.max(currentRound - 1, 0);
+            playing = false; // Stop playing on manual navigation
+            render();
+        });
+        on('nextBtn', 'click', () => {
+            if (!gameJsonData || maxRounds === 0) return;
+            currentRound = Math.min(currentRound + 1, maxRounds - 1);
+            playing = false; // Stop playing on manual navigation
+            render();
+        });
+        on('endBtn', 'click', () => {
+            if (!gameJsonData || maxRounds === 0) return;
+            currentRound = maxRounds - 1;
+            playing = false;
+            render();
+        });
+
+        on('progressBar', 'input', (e) => {
+            if (!gameJsonData || maxRounds === 0) return;
+            currentRound = +e.target.value;
+            playing = false; // Stop playing on manual seek
+            render();
+        });
+
+        /* Advance the “playing” loop based on FPS */
+        // Ensure interval is managed (cleared and set) if boot can be called multiple times
+        // For now, assuming one main interval.
+        if (!window.snakeGameInterval) { // Basic guard against multiple intervals
              window.snakeGameInterval = setInterval(() => {
                 if (playing && gameJsonData && maxRounds > 0) {
-                    if (currentRound < maxRounds - 1) { currentRound++; } else { playing = false; } render();
+                    if (currentRound < maxRounds - 1) {
+                        currentRound++;
+                    } else {
+                        playing = false; // End of game
+                    }
+                    render();
                 }
             }, 1000 / FPS);
         }
-        if (ctx) { ctx.fillStyle = '#f3f4f6'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+
+
+        /* Draw a blank background immediately, before JSON loads fully if canvas is ready */
+        if (ctx) {
+            ctx.fillStyle = '#f3f4f6'; // Page background color
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
     } // End of boot function
 })();
