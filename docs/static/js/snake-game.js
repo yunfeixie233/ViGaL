@@ -24,7 +24,7 @@
         const container = document.getElementById('snake-game-container');
         if (!container) return;
         container.innerHTML = markup();    // inject template
-        const path = container.getAttribute('data-json');
+        const path = container.getAttribute('data-json') || DEFAULT_JSON;
         boot(path);                        // start boot sequence
     });
 
@@ -82,9 +82,11 @@
                   <button id="nextBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏭️ Next</button>
                   <button id="endBtn"   class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏩ End</button>
                 </div>
-                <div class="flex justify-center items-center gap-4 mt-2">
+                <div class="flex justify-center items-center mt-2">
                   <input id="progressBar" type="range" min="0" max="100" value="0"
                          class="flex-1 max-w-md" disabled>
+                </div>
+                <div class="flex justify-center items-center mt-2">
                   <button id="nextMatchBtn" class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm">Next Match</button>
                 </div>
                 <!-- Removed Game ID / Time display -->
@@ -231,7 +233,7 @@
         /** Escape HTML special characters */
         function escapeHTML(str) {
           return str.replace(/[&<>"']/g, ch => (
-            { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]
+            { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":"&#39;" }[ch]
           ));
         }
 
