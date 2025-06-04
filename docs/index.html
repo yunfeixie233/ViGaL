@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Play to Reason: Learning Math through Visual Games</title>
 
-  <!-- Bulma &amp; site CSS -->
+  <!-- Bulma & site CSS -->
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
@@ -14,10 +13,13 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
 
+  <!-- Snake Game CSS -->
+  <link rel="stylesheet" href="./static/css/snake-game.css">
+
   <!-- Project-specific overrides -->
   <style>
     /* Highlight colour matching LaTeX \mycolor */
-    .mycolor{background-color:#7ac7ee;font-weight:600;}
+    .mycolor { background-color: #7ac7ee; font-weight: 600; }
 
     /* Controllable gray color variable */
     :root {
@@ -27,20 +29,21 @@
     }
 
     /* Utility classes */
-    .img-full{width:100%;object-fit:cover;max-width:100%;}
-    .img-responsive{width:100%;height:auto;display:block;margin:0 auto;}
-    .caption{caption-side:bottom;text-align:center;font-size:0.9rem;}
-    .table-small{font-size:0.85rem;}
-    .table-xs{font-size:0.8rem;}
-    .bg-light{background-color:#EEEEEE}
-    .max-w-800{max-width:800px;margin:auto;}
-    .subtitle-spacing{margin-top:20px;text-align:left;}
+    .img-full { width: 100%; object-fit: cover; max-width: 100%; }
+    .img-responsive { width: 100%; height: auto; display: block; margin: 0 auto; }
+    .caption { caption-side: bottom; text-align: center; font-size: 0.9rem; }
+    .table-small { font-size: 0.85rem; }
+    .table-xs { font-size: 0.8rem; }
+    .bg-light { background-color: #EEEEEE; }
+    .max-w-800 { max-width: 800px; margin: auto; }
+    .subtitle-spacing { margin-top: 20px; text-align: left; }
 
     /* Vertically centre multi-row header cells */
-    th[rowspan="2"]{vertical-align:middle!important;}
+    th[rowspan="2"] { vertical-align: middle !important; }
 
     /* Remove vertical borders from table cells, keep horizontal borders */
-    .table td, .table th {
+    .table td,
+    .table th {
       border-left: none !important;
       border-right: none !important;
     }
@@ -53,7 +56,7 @@
       background-color: white;
       padding: 15px;
       border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       z-index: 1000;
       width: 250px;
     }
@@ -101,7 +104,7 @@
       position: relative;
       overflow: hidden;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       display: block;
     }
 
@@ -133,7 +136,7 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.5);
       color: white;
       border: none;
       padding: 10px 15px;
@@ -144,7 +147,7 @@
     }
 
     .carousel-nav:hover {
-      background: rgba(0,0,0,0.8);
+      background: rgba(0, 0, 0, 0.8);
     }
 
     .carousel-prev {
@@ -168,7 +171,7 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255, 255, 255, 0.5);
       cursor: pointer;
       transition: background 0.3s;
     }
@@ -192,6 +195,13 @@
       width: 100%;
       margin: 20px 0;
     }
+
+    /* Restore default ordered list style (override Bulma) */
+    ol {
+      list-style-type: decimal;
+      margin-left: 1.5em;
+      padding-left: 0;
+    }
   </style>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -199,6 +209,8 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -206,12 +218,13 @@
 <div class="sidebar-nav">
   <h3>CONTENTS</h3>
   <ul>
-    <li><a href="#game-pipeline">Game Pipeline</a></li>
+    <li><a href="#snake-game-visualization">Snake Game Visualization</a></li>
+    <li><a href="#game-pipeline">How MLLMs Play Games in RL</a></li>
     <li><a href="#evaluation-benchmark">Generalization Evaluation Benchmark</a></li>
-    <li><a href="#in-distribution-results"> Out-of-Distribution Results</a></li>
-    <li><a href="#out-of-domain-results">Out-of-Domain Results</a></li>
-    <li><a href="#different-games-benefit">Different Games Benefit Distinct Math Subfields</a></li>
-    <li><a href="#games-visualization">Games Visualization</a></li>
+    <li><a href="#in-distribution-results">Excel at Seen and Unseen Games</a></li>
+    <li><a href="#out-of-domain-results">Improvement on Unseen Tasks</a></li>
+    <li><a href="#different-games-benefit">Will Different Games Benefit Distinct Reasoning Abilities?</a></li>
+    <li><a href="#games-visualization">Rotation Game Visualization</a></li>
     <li><a href="#case-study">Case Study</a></li>
     <!-- <li><a href="#BibTeX">BibTeX</a></li> -->
   </ul>
@@ -247,7 +260,7 @@
                  class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="fa-solid fa-face-smiling-hands"></i>
-                  <img src="./resources/ar.svg" alt="img" style="width: 100%; height: 100%" /> 
+                  <img src="./resources/ar.svg" alt="img" style="width: 100%; height: 100%" />
                 </span>
                 <span>Paper</span>
               </a>
@@ -257,63 +270,66 @@
                  class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="fa-solid fa-face-smiling-hands"></i>
-                  <img src="./resources/gr.svg" alt="img" style="width: 100%; height: 100%" /> 
+                  <img src="./resources/gr.svg" alt="img" style="width: 100%; height: 100%" />
                 </span>
                 <span>Data</span>
               </a>
-            </span>              
+            </span>
             <!-- Code Link. -->
             <span class="link-block">
               <a href="https://github.com/yunfeixie233/ViGaL"
                  class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
-                    <i class="fab fa-github"></i>
+                  <i class="fab fa-github"></i>
                 </span>
                 <span>Code</span>
-                </a>
+              </a>
             </span>
-
-          </div>          
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 <!-- ---------- TEASER ---------- -->
 <section class="hero teaser">
   <div class="container">
     <div class="hero-body">
       <img src="./resources/teaser.gif" alt="Teaser" class="img-full">
-      <h2 class="subtitle has-text-left subtitle-spacing">
-        <em>Left:</em><strong> We propose Visual Game Learning (ViGaL),</strong> a novel post-training paradigm where multimodal large language models are tuned via reinforcement learning to play arcade-style games such as Snake. This gameplay post-training enables MLLMs to achieve out-of-domain generalization and boosts performance on downstream multimodal reasoning tasks that require mathematical and spatial reasoning. 
-        <br><em>Right:</em> As shown in bar figure, <strong>rule-based RL on visual games outperforms rule-based RL on math data on visual math benchmarks, even without explicit training on mathematical datasets.</strong>
-      </h2>
-    </div>
-  </div>
-</section>
-
-<!-- ---------- ABSTRACT ---------- -->
-<!-- <section class="section">
-  <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            Developing generalizable reasoning capabilities in multimodal large language models (MLLMs) remains challenging. Motivated by cognitive-science findings that gameplay promotes transferable cognitive skills, we introduce <em>Visual Game Learning</em> (ViGaL), a post-training paradigm in which an MLLM develops out-of-domain multimodal reasoning abilities by playing arcade-like games. Concretely, we post-train a 7-billion-parameter MLLM with reinforcement learning on two simple games--Snake and a Rotation puzzle--without exposing it to any worked equations, diagrams, or step-by-step solutions. The resulting model exhibits substantial gains on diverse multimodal reasoning benchmarks, including MathVista, MathVerse, and MathVision, outperforming much larger proprietary models and models fine-tuned directly on visual-math corpora. Ablation studies show that each game cultivates complementary reasoning skills that combine synergistically. Our results suggest that synthetic, rule-based games are an effective, scalable pre-text task for unlocking generalizable multimodal reasoning in MLLMs.
+      <div class="columns subtitle-spacing">
+        <div class="column is-half">
+          <p class="has-text-left">
+            <strong>TL;DR: We propose Visual Game Learning (ViGaL),</strong> a novel post-training paradigm where multimodal large language models are tuned via reinforcement learning to play arcade-style games such as Snake. This gameplay post-training enables MLLMs to achieve out-of-domain generalization and boosts performance on downstream multimodal reasoning tasks that require mathematical and spatial reasoning.
+          </p>
+        </div>
+        <div class="column is-half">
+          <p class="has-text-left">
+            <strong>As shown in bar figure, rule-based RL on visual games outperforms rule-based RL on math data on visual math benchmarks, even without explicit training on mathematical datasets.</strong>
           </p>
         </div>
       </div>
     </div>
   </div>
-</section> -->
+</section>
+
+<!-- ---------- SNAKE GAME DEMO ---------- -->
+<section id="snake-game-visualization" class="section">
+  <div class="container">
+    <h2 class="title is-3 has-text-left">Snake Game Visualization</h2>
+    <div id="snake-game-container"></div>
+    <h3 class="subtitle has-text-left subtitle-spacing">
+      With RL finetuning, ViGaL can beat proprietary models like o3-mini, Claude-3.7-Sonnet and Gemini-2.5-Pro on Snake game.
+    </h3>
+  </div>
+</section>
 
 <!-- ---------- GAME PIPELINE ---------- -->
 <section id="game-pipeline" class="section">
   <div class="container main-content-with-sidebar">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-left">Game Pipeline</h2>
+        <h2 class="title is-3 has-text-left">How MLLMs Play Games in Reinforcement Learning</h2>
         <div class="content has-text-justified">
           <ul>
             <li>We propose post-training MLLMs via RL by playing visual games. We demonstrate this with two games: the classic arcade game Snake, and Rotation, a self-designed task to investigate spatial reasoning.</li>
@@ -336,14 +352,24 @@
         <h2 class="title is-3 has-text-left">Generalization Evaluation Benchmark</h2>
         <div class="content has-text-justified">
           <p>
-            <strong>Samples from our benchmark to evaluate generalization.</strong>
+            <strong>Samples from our reasoning generalization benchmark.</strong> We evaluate ViGaL on two kinds of generalization:
           </p>
-          <p>
-            (a) out-of-distribution generalization, where models trained on our visual games are tested on unseen Atari games.
-          </p>
-          <p>
-            (b) out-of-domain generalization, where the same models are assessed on multimodal reasoning datasets spanning mathematics, 3D understanding in CLEVR+, geometric problem solving and multi-discipline on MMMU series.
-          </p>
+          <ul>
+            <li>
+              <strong>Out-of-distribution generalization (Fig. a)</strong>, where models trained on our visual games are tested on unseen Atari games.
+              <ul>
+                <li>In this kind of generalization, the training and testing data are within the same domain.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Out-of-domain generalization (Fig. b)</strong>, where the same models are assessed on multimodal reasoning datasets spanning mathematics, 3D understanding in CLEVR+, geometric problem solving, and multi-discipline on MMMU series.
+              <ul>
+                <li>In this kind of generalization, the training and testing data are from completely different domains.</li>
+              </ul>
+            </li>
+          </ul>
+          
+
           <img src="./resources/dataset_card.png" alt="Dataset Card" class="img-responsive">
         </div>
       </div>
@@ -356,23 +382,25 @@
   <div class="container main-content-with-sidebar">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-left">In-Distribution And Out-of-Distribution Generalization Results</h2>
+        <h2 class="title is-3 has-text-left">Excel at Seen and Unseen Games</h2>
 
         <p class="has-text-left">
           We evaluate ViGaL on Snake game and Rotation game for in-distribution performance, and on Atari games, an unseen game environment, to evaluate out-of-distribution generalization ability.
         </p>
-        
-        <ul class="has-text-left">
-          <li>(a) In Snake, ViGal achieves the highest win rate (6-9 wins out of 10 matches), surpassing larger proprietary models.</li>
-          <li>(b) In Rotation, ViGal demonstrates best performance with the best accuracy compared to leading commercial language models.</li>
-          <li>(c) In the Atari Games, ViGal training on Snake and Rotation games shows impressive zero-shot generalization to unseen Atari games, achieving nearly double the cumulative reward compared to Qwen2.5-VL-7B.</li>
-        </ul>
-
+        <div class="content has-text-justified">
+          <ul>
+            <li>In Snake Game (Tab. a), ViGal achieves the highest win rate (6-9 wins out of 10 matches), surpassing larger proprietary models.</li>
+            <li>In Rotation Game (Tab. b), ViGal demonstrates best performance with the best accuracy compared to leading commercial language models.</li>
+            <li>In the Atari Games (Tab. c), ViGal training on Snake and Rotation games shows impressive zero-shot generalization to unseen Atari games, achieving nearly double the cumulative reward compared to Qwen2.5-VL-7B, the base model without RL finetuning.</li>
+          </ul>
+        </div>
         <div class="columns">
           <!-- Snake -->
           <div class="column is-one-third">
             <table class="table is-bordered is-narrow is-fullwidth table-xs">
-              <thead><tr><th>Model</th><th>Wins (10)</th></tr></thead>
+              <thead>
+                <tr><th>Model</th><th>Wins (10)</th></tr>
+              </thead>
               <tbody>
                 <tr><td class="mycolor">ViGaL vs.</td><td class="mycolor"></td></tr>
                 <tr><td style="padding-left:0.8em;">Qwen2.5-VL-7B</td><td>9</td></tr>
@@ -390,7 +418,9 @@
           <!-- Rotation -->
           <div class="column is-one-third">
             <table class="table is-bordered is-narrow is-fullwidth table-xs">
-              <thead><tr><th>Model</th><th>Acc. (%)</th></tr></thead>
+              <thead>
+                <tr><th>Model</th><th>Acc. (%)</th></tr>
+              </thead>
               <tbody>
                 <tr><td class="mycolor">ViGaL</td><td class="mycolor">71.9</td></tr>
                 <tr><td style="padding-left:0.8em;">Qwen2.5-VL-7B</td><td>47.4</td></tr>
@@ -408,7 +438,9 @@
           <!-- Atari -->
           <div class="column is-one-third">
             <table class="table is-bordered is-narrow is-fullwidth table-xs">
-              <thead><tr><th>Game</th><th>ViGaL</th><th>Qwen2.5-7B</th></tr></thead>
+              <thead>
+                <tr><th>Game</th><th>ViGaL</th><th>Qwen2.5-7B</th></tr>
+              </thead>
               <tbody>
                 <tr><td>Space Invaders</td><td>280.0</td><td>85.0</td></tr>
                 <tr><td>Ms. Pacman</td><td>1370.0</td><td>670.0</td></tr>
@@ -434,16 +466,18 @@
   <div class="container main-content-with-sidebar">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-left">Out-of-Domain Generalization Results</h2>
-        
+        <h2 class="title is-3 has-text-left">Improvement on Unseen Tasks</h2>
+
         <p class="has-text-left">
-          We evaluate ViGaL trained on game on out-of-domain tasks that demand mathematical reasoning, spatial reasoning and multi-discipline reasoning, including Math, CLEVR+, Geomery and MMMU series.
+          We evaluate ViGaL trained on games on out-of-domain tasks that demand reasoning spanning mathematics, 3D understanding in CLEVR+, geometric problem solving, and multi-discipline on MMMU series. Here is our findings:
         </p>
-        
-        <ul class="has-text-left">
-          <li><strong>Zero-shot generalization from gameplay to reasoning on other domains.</strong> ViGaL outperforms models specifically fine-tuned with RL on these reasoning tasks, showing remarkable generalization capabilities, despite having no exposure to in-domain training data during RL post-training.</li>
+        <div class="content has-text-justified">
+          <ul>
+          <li><strong>Zero-shot generalization from gameplay to math reasoning and beyond.</strong> ViGaL outperforms models specifically fine-tuned with RL on mathematical, spatial and multi-discipline reasoning tasks, showing remarkable generalization capabilities, despite having no exposure to in-domain training data during RL post-training.</li>
           <li><strong>Blending both games leads to better generalization.</strong> It indicates that Visual Gaming Learning has potential as a new training paradigm that can enhance generalizable reasoning performance without requiring extensive collection of domain-specific training data. Simply expanding the diversity of games during training leads to consistent performance scaling across various visual reasoning problems.</li>
-        </ul>
+            <li><strong>Preserving general visual capabilities while reasoning enhancement.</strong> Experiments on more general and comprehensive multimodal benchmarks show that our gameplay-based approach enables math generalization without compromising other visual abilities.</li>
+          </ul>
+        </div>
 
         <div class="table-container">
           <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth table-small">
@@ -452,50 +486,110 @@
                 <th rowspan="2">Model</th>
                 <th rowspan="2">Avg.</th>
                 <th colspan="4">Math</th>
-                <th colspan="3">CLEVR+</th>
                 <th colspan="3">Geometry</th>
+                <th colspan="3">CLEVR+</th>
+                <th colspan="3">Multi-Discipline</th>
               </tr>
               <tr>
                 <th>Avg.</th>
                 <th>MathVista</th><th>MathVerse</th><th>MathVision</th>
                 <th>Avg.</th>
+                <th>GeoMath</th><th>Geo3K</th>
+                <th>Avg.</th>
                 <th>CLEVR-M</th><th>S-CLEVR</th>
                 <th>Avg.</th>
-                <th>GeoMath</th><th>Geo3K</th>
+                <th>MMMU<sub>val</sub></th><th>MMMU-Pro<sub>overall</sub></th>
               </tr>
             </thead>
 
             <tbody>
               <!-- ---------- Proprietary ---------- -->
-              <tr><td colspan="12" class="has-text-centered" style="font-style:italic;">Proprietary Model</td></tr>
-              <tr><td>GPT-4o</td><td>48.7</td><td>48.1</td><td>61.4</td><td>50.2</td><td>30.4</td><td>51.2</td><td>68.1</td><td>34.3</td><td>46.8</td><td>50.2</td><td>43.5</td></tr>
-              <tr><td>Gemini-2.0-Flash</td><td>52.4</td><td>56.4</td><td>73.4</td><td>54.6</td><td>41.3</td><td>46.3</td><td>64.9</td><td>27.6</td><td>54.4</td><td>55.3</td><td>53.5</td></tr>
+              <tr><td colspan="15" class="has-text-centered" style="font-style:italic;">Proprietary Model</td></tr>
+              <tr><td>GPT-4o</td><td>55.9</td><td>48.1</td><td>61.4</td><td>50.2</td><td>30.4</td><td>46.8</td><td>50.2</td><td>43.5</td><td>51.2</td><td>68.1</td><td>34.3</td><td>60.5</td><td>69.1</td><td>51.9</td></tr>
+              <tr><td>Gemini-2.0-Flash</td><td>--</td><td>56.4</td><td>73.4</td><td>54.6</td><td>41.3</td><td>54.4</td><td>55.3</td><td>53.5</td><td>46.3</td><td>64.9</td><td>27.6</td><td>--</td><td>71.9</td><td>--</td></tr>
 
               <!-- ---------- General MLLM ---------- -->
-              <tr><td colspan="12" class="has-text-centered" style="font-style:italic;">General Multimodal Language Model</td></tr>
-              <tr><td>InternVL2.5-8B</td><td>53.6</td><td>41.2</td><td>64.4</td><td>39.5</td><td>19.7</td><td>64.4</td><td>93.5</td><td>35.3</td><td>55.2</td><td>63.0</td><td>47.3</td></tr>
-              <tr><td>Llava-OV-7B</td><td>55.0</td><td>--</td><td>63.2</td><td>26.2</td><td>--</td><td>49.4</td><td>69.7</td><td>29.1</td><td>60.7</td><td>77.6</td><td>43.7</td></tr>
-              <tr><td>Qwen2.5-VL-7B</td><td>49.1</td><td>47.7</td><td>68.0</td><td>49.0</td><td>26.0</td><td>54.9</td><td>74.6</td><td>35.2</td><td>44.8</td><td>44.0</td><td>45.6</td></tr>
+              <tr><td colspan="15" class="has-text-centered" style="font-style:italic;">General Multimodal Language Model</td></tr>
+              <tr><td>InternVL2.5-8B</td><td>54.8</td><td>41.2</td><td>64.4</td><td>39.5</td><td>19.7</td><td>55.2</td><td>63.0</td><td>47.3</td><td>64.4</td><td>93.5</td><td>35.3</td><td>45.2</td><td>56.0</td><td>34.3</td></tr>
+              <tr><td>Llava-OV-7B</td><td>43.0</td><td>--</td><td>63.2</td><td>26.2</td><td>--</td><td>60.7</td><td>77.6</td><td>43.7</td><td>49.4</td><td>69.7</td><td>29.1</td><td>36.5</td><td>48.8</td><td>24.1</td></tr>
+              <tr><td>Qwen2.5-VL-7B</td><td>50.3</td><td>47.7</td><td>68.0</td><td>49.0</td><td>26.0</td><td>44.8</td><td>44.0</td><td>45.6</td><td>54.9</td><td>74.6</td><td>35.2</td><td>45.7</td><td>54.3</td><td>37.0</td></tr>
 
               <!-- ---------- Post-trained on Qwen ---------- -->
-              <tr><td colspan="12" class="has-text-centered" style="font-style:italic;">Multimodal Reasoning Model Post-Trained on Qwen2.5-VL-7B</td></tr>
-              <tr><td>R1-Onevision-7B</td><td>49.0</td><td><span style="color:var(--gray-color);">46.8</span></td><td><span style="color:var(--gray-color);">64.1</span></td><td><span style="color:var(--gray-color);">46.4</span></td><td><span style="color:var(--gray-color);">29.9</span></td><td><span style="color:var(--gray-color);">65.1</span></td><td><span style="color:var(--gray-color);">75.5</span></td><td><span style="color:var(--gray-color);">54.7</span></td><td>35.0</td><td>45.4</td><td>24.5</td></tr>
-              <tr><td>R1-VL-7B</td><td>49.9</td><td><span style="color:var(--gray-color);">42.7</span></td><td><span style="color:var(--gray-color);">63.5</span></td><td><span style="color:var(--gray-color);">40.0</span></td><td><span style="color:var(--gray-color);">24.7</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">87.4</span></td><td><span style="color:var(--gray-color);">48.6</span></td><td><span style="color:var(--gray-color);">39.0</span></td><td><span style="color:var(--gray-color);">42.0</span></td><td><span style="color:var(--gray-color);">36.1</span></td></tr>
-              <tr><td>MM-Eureka-Qwen-7B</td><td>52.6</td><td><span style="color:var(--gray-color);">50.1</span></td><td><span style="color:var(--gray-color);">73.0</span></td><td><span style="color:var(--gray-color);">50.3</span></td><td><span style="color:var(--gray-color);">26.9</span></td><td><strong>79.3</strong></td><td><strong>98.4</strong></td><td><strong>60.1</strong></td><td><span style="color:var(--gray-color);">28.4</span></td><td><span style="color:var(--gray-color);">53.1</span></td><td><span style="color:var(--gray-color);">3.8</span></td></tr>
-              <tr><td>Reason-RFT-Zero-7B</td><td>56.4</td><td>38.1</td><td>60.7</td><td>35.3</td><td>18.3</td><td><span style="color:var(--gray-color);">76.2</span></td><td><span style="color:var(--gray-color);">99.4</span></td><td><span style="color:var(--gray-color);">53.0</span></td><td><span style="color:var(--gray-color);">54.9</span></td><td><span style="color:var(--gray-color);">55.0</span></td><td><span style="color:var(--gray-color);">54.8</span></td></tr>
-              <tr><td>VLAA-Thinker-7B</td><td>62.0</td><td><span style="color:var(--gray-color);">48.7</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">51.7</span></td><td><span style="color:var(--gray-color);">26.4</span></td><td><span style="color:var(--gray-color);">83.4</span></td><td><span style="color:var(--gray-color);">94.7</span></td><td><span style="color:var(--gray-color);">72.1</span></td><td><span style="color:var(--gray-color);">53.9</span></td><td><span style="color:var(--gray-color);">51.1</span></td><td><span style="color:var(--gray-color);">56.6</span></td></tr>
-              <tr><td>OpenVLThinker-7B</td><td>62.2</td><td><span style="color:var(--gray-color);">47.8</span></td><td><span style="color:var(--gray-color);">70.2</span></td><td><span style="color:var(--gray-color);">47.9</span></td><td><span style="color:var(--gray-color);">25.3</span></td><td><span style="color:var(--gray-color);">82.4</span></td><td><span style="color:var(--gray-color);">93.8</span></td><td><span style="color:var(--gray-color);">71.0</span></td><td><span style="color:var(--gray-color);">56.4</span></td><td><span style="color:var(--gray-color);">49.2</span></td><td><span style="color:var(--gray-color);">63.5</span></td></tr>
+              <tr><td colspan="15" class="has-text-centered" style="font-style:italic;">Multimodal Reasoning Model Post-Trained on Qwen2.5-VL-7B</td></tr>
+              <tr><td>R1-Onevision-7B</td><td>53.7</td><td><span style="color:var(--gray-color);">46.8</span></td><td><span style="color:var(--gray-color);">64.1</span></td><td><span style="color:var(--gray-color);">46.4</span></td><td><span style="color:var(--gray-color);">29.9</span></td><td>35.0</td><td>45.4</td><td>24.5</td><td><span style="color:var(--gray-color);">65.1</span></td><td><span style="color:var(--gray-color);">75.5</span></td><td><span style="color:var(--gray-color);">54.7</span></td><td>42.3</td><td>51.9</td><td>32.6</td></tr>
+              <tr><td>R1-VL-7B</td><td>53.9</td><td><span style="color:var(--gray-color);">42.7</span></td><td><span style="color:var(--gray-color);">63.5</span></td><td><span style="color:var(--gray-color);">40.0</span></td><td><span style="color:var(--gray-color);">24.7</span></td><td><span style="color:var(--gray-color);">39.0</span></td><td><span style="color:var(--gray-color);">42.0</span></td><td><span style="color:var(--gray-color);">36.1</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">87.4</span></td><td><span style="color:var(--gray-color);">48.6</span></td><td>39.7</td><td>50.0</td><td>29.4</td></tr>
+              <tr><td>MM-Eureka-Qwen-7B</td><td>62.9</td><td><span style="color:var(--gray-color);">50.1</span></td><td><span style="color:var(--gray-color);">73.0</span></td><td><span style="color:var(--gray-color);">50.3</span></td><td><span style="color:var(--gray-color);">26.9</span></td><td><span style="color:var(--gray-color);">28.4</span></td><td><span style="color:var(--gray-color);">53.1</span></td><td><span style="color:var(--gray-color);">3.8</span></td><td><strong>79.3</strong></td><td><strong>98.4</strong></td><td><strong>60.1</strong></td><td>46.4</td><td>55.8</td><td>36.9</td></tr>
+              <tr><td>Reason-RFT-Zero-7B</td><td>58.6</td><td>38.1</td><td>60.7</td><td>35.3</td><td>18.3</td><td><span style="color:var(--gray-color);">54.9</span></td><td><span style="color:var(--gray-color);">55.0</span></td><td><span style="color:var(--gray-color);">54.8</span></td><td><span style="color:var(--gray-color);">76.2</span></td><td><span style="color:var(--gray-color);">99.4</span></td><td><span style="color:var(--gray-color);">53.0</span></td><td>40.9</td><td>51.2</td><td>30.6</td></tr>
+              <tr><td>VLAA-Thinker-7B</td><td>61.8</td><td><span style="color:var(--gray-color);">48.7</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">51.7</span></td><td><span style="color:var(--gray-color);">26.4</span></td><td><span style="color:var(--gray-color);">53.9</span></td><td><span style="color:var(--gray-color);">51.1</span></td><td><span style="color:var(--gray-color);">56.6</span></td><td><span style="color:var(--gray-color);">83.4</span></td><td><span style="color:var(--gray-color);">94.7</span></td><td><span style="color:var(--gray-color);">72.1</span></td><td>40.1</td><td>48.2</td><td>31.9</td></tr>
+              <tr><td>OpenVLThinker-7B</td><td>60.5</td><td><span style="color:var(--gray-color);">47.8</span></td><td><span style="color:var(--gray-color);">70.2</span></td><td><span style="color:var(--gray-color);">47.9</span></td><td><span style="color:var(--gray-color);">25.3</span></td><td><span style="color:var(--gray-color);">56.4</span></td><td><span style="color:var(--gray-color);">49.2</span></td><td><span style="color:var(--gray-color);">63.5</span></td><td><span style="color:var(--gray-color);">82.4</span></td><td><span style="color:var(--gray-color);">93.8</span></td><td><span style="color:var(--gray-color);">71.0</span></td><td>38.5</td><td>54.8</td><td>22.1</td></tr>
 
               <!-- ---------- ViGaL ---------- -->
-              <tr><td>ViGaL Snake</td><td>61.4</td><td>49.4</td><td>70.9</td><td>49.7</td><td>27.5</td><td><strong>82.8</strong></td><td>92.7</td><td>72.8</td><td>52.1</td><td>47.5</td><td>56.8</td></tr>
-              <tr><td>ViGaL Rotation</td><td>62.2</td><td>49.6</td><td>71.0</td><td>51.0</td><td>27.3</td><td>81.0</td><td>91.7</td><td>70.2</td><td>56.1</td><td>51.3</td><td>60.9</td></tr>
-              <tr><td><strong>ViGaL Snake + Rotation</strong></td><td><strong>63.1</strong></td><td><strong>50.6</strong></td><td>71.9</td><td>52.4</td><td>27.5</td><td>81.7</td><td>91.9</td><td>71.4</td><td><strong>57.1</strong></td><td>51.0</td><td>63.3</td></tr>
+              <tr><td>ViGaL Snake</td><td>61.4</td><td>49.4</td><td>70.9</td><td>49.7</td><td>27.5</td><td>52.1</td><td>47.5</td><td>56.8</td><td><strong>82.8</strong></td><td>92.7</td><td>72.8</td><td>--</td><td>--</td><td>--</td></tr>
+              <tr><td>ViGaL Rotation</td><td>62.2</td><td>49.6</td><td>71.0</td><td>51.0</td><td>27.3</td><td>56.1</td><td>51.3</td><td>60.9</td><td>81.0</td><td>91.7</td><td>70.2</td><td>--</td><td>--</td><td>--</td></tr>
+              <tr><td><strong>ViGaL Snake + Rotation</strong></td><td><strong>64.7</strong></td><td><strong>50.6</strong></td><td>71.9</td><td>52.4</td><td>27.5</td><td><strong>57.1</strong></td><td>51.0</td><td>63.3</td><td>81.7</td><td>91.9</td><td>71.4</td><td><strong>47.7</strong></td><td>58.0</td><td>37.4</td></tr>
             </tbody>
           </table>
         </div>
 
         <p class="has-text-left">
-          Main results on multimodal reasoning benchmarks. CLEVR-M denotes CLEVR-Math and S-CLEVR stands for Super-CLEVR. We primarily compare with multimodal reasoning models post-trained on Qwen2.5-VL-7B. Results from reasoning models post-trained with in-domain data are <span style="color:var(--gray-color);">de-emphasized</span>, while our ViGaL models are exclusively post-trained using visual games. Best scores of post-trained model in each average column are highlighted in <strong>bold</strong>.
+          Main results on multimodal reasoning benchmarks beyond mathematics. We extend our evaluation to non-mathematical reasoning tasks, comparing with multimodal reasoning models post-trained on domain-specific data based on Qwen2.5-VL-7B. We evaluate on CLEVR+ for 3D reasoning and MMMU series for multi-discipline reasoning. CLEVR-M denotes CLEVR-Math, and S-CLEVR stands for Super-CLEVR. Results from reasoning models post-trained with corresponding in-domain data are <span style="color:var(--gray-color);">de-emphasized</span>, while our ViGaL models remain exclusively post-trained using visual games. Best scores of post-trained models in each "Avg." column are highlighted in <strong>bold</strong>.
+        </p>
+
+        <!-- Second Table: Vision & OCR/Chart Benchmarks -->
+        <div class="table-container" style="margin-top: 40px;">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth table-small">
+            <thead>
+              <tr>
+                <th rowspan="2">Model</th>
+                <th rowspan="2">Avg.</th>
+                <th colspan="3">General</th>
+                <th colspan="6">Vision-Centric</th>
+                <th colspan="5">OCR &amp; Chart</th>
+              </tr>
+              <tr>
+                <th>Avg.</th>
+                <th>Muir-Bench</th>
+                <th>CRPE<sub>rel.</sub></th>
+                <th>Avg.</th>
+                <th>MMVP</th>
+                <th>Real-WorldQA</th>
+                <th>MMStar</th>
+                <th>MME<sub>p</sub></th>
+                <th>BLINK<sub>val</sub></th>
+                <th>Avg.</th>
+                <th>AI2D<sub>w. M.</sub></th>
+                <th>SEED-Bench-2-Plus</th>
+                <th>DocVQA<sub>val</sub></th>
+                <th>OCR-Bench</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <!-- ---------- Proprietary ---------- -->
+              <tr><td colspan="16" class="has-text-centered" style="font-style:italic;">Proprietary Model</td></tr>
+              <tr><td>GPT-4o</td><td>74.8</td><td>72.3</td><td>68.0</td><td>76.6</td><td>69.4</td><td>--</td><td>75.4</td><td>64.7</td><td>2328</td><td>68.0</td><td>82.6</td><td>84.6</td><td>72.0</td><td>91.1</td><td>736</td></tr>
+
+              <!-- ---------- General MLLM ---------- -->
+              <tr><td colspan="16" class="has-text-centered" style="font-style:italic;">General Multimodal Language Model</td></tr>
+              <tr><td>Qwen2.5-VL-7B</td><td>72.4</td><td>68.0</td><td>59.6</td><td>76.4</td><td>65.8</td><td>74.3</td><td>68.5</td><td>63.9</td><td>2347</td><td>56.4</td><td>83.3</td><td>83.9</td><td>70.4</td><td>95.7</td><td>864</td></tr>
+
+              <!-- ---------- Post-trained on Qwen ---------- -->
+              <tr><td colspan="16" class="has-text-centered" style="font-style:italic;">Multimodal Reasoning Model Post-Trained on Qwen2.5-VL-7B</td></tr>
+              <tr><td>R1-Onevision-7B</td><td>--</td><td>66.8</td><td>46.3</td><td>87.3</td><td>56.5</td><td>61.3</td><td>58.0</td><td>57.8</td><td>1504</td><td>48.7</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td></tr>
+              <tr><td>R1-VL-7B</td><td>67.4</td><td>63.3</td><td>54.1</td><td>72.4</td><td>59.6</td><td>70.3</td><td>61.4</td><td>55.6</td><td>1657</td><td>51.0</td><td>79.2</td><td>81.7</td><td>66.4</td><td>89.4</td><td>81.0</td></tr>
+              <tr><td>MM-Eureka-Qwen-7B</td><td>71.8</td><td><strong>68.9</strong></td><td>61.1</td><td>76.7</td><td>65.1</td><td>74.3</td><td>66.1</td><td>65.9</td><td>1626</td><td>54.0</td><td>81.5</td><td>84.3</td><td>68.2</td><td>92.0</td><td>87.0</td></tr>
+              <tr><td>Reason-RFT-Zero-7B</td><td>68.4</td><td>66.9</td><td>58.5</td><td>75.2</td><td>58.5</td><td>58.0</td><td>65.3</td><td>59.1</td><td>1653</td><td>51.6</td><td>79.8</td><td>83.3</td><td>68.0</td><td>88.1</td><td>82.0</td></tr>
+              <tr><td>VLAA-Thinker-7B</td><td>69.7</td><td>65.9</td><td>57.1</td><td>74.6</td><td>62.6</td><td>71.6</td><td>65.4</td><td>60.4</td><td>1593</td><td>53.0</td><td>80.6</td><td>83.4</td><td>67.4</td><td>90.9</td><td>84.5</td></tr>
+              <tr><td>OpenVLThinker-7B</td><td>--</td><td>64.3</td><td>52.8</td><td>75.8</td><td>50.4</td><td>32.3</td><td>60.2</td><td>59.1</td><td>1513</td><td>49.9</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td></tr>
+
+              <!-- ---------- ViGaL ---------- -->
+              <tr><td><strong>ViGaL Snake + Rotation</strong></td><td><strong>72.2</strong></td><td>68.6</td><td>60.5</td><td>76.7</td><td><strong>65.7</strong></td><td>74.6</td><td>67.3</td><td>65.4</td><td>1685</td><td>55.6</td><td><strong>82.2</strong></td><td>84.8</td><td>69.1</td><td>92.7</td><td>86.6</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="has-text-left">
+          Main results on multimodal language benchmarks targeting more general and comprehensive visual ability. We compare with models post-trained on Qwen2.5-VL-7B. Best category averages are highlighted in <strong>bold</strong>.
         </p>
 
       </div>
@@ -508,10 +602,10 @@
   <div class="container main-content-with-sidebar">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-left">Different Games Benefit Distinct Math Subfields</h2>
+        <h2 class="title is-3 has-text-left">Will Different Games Benefit Distinct Reasoning Abilities?</h2>
         <div class="content has-text-justified">
           <p>
-            <strong>Snake <em>vs.</em> Rotation: subfield differences on MathVerse.</strong> Positive values ​​indicate better results from ViGal-Snake, and negative values ​​measure how much ViGal-Rotation performs better. Interestingly, Snake enhances most on Expressions and Coordinates, tasks aligned with Snake's 2D grid. Rotation improves angle and length reasoning, reflecting its focus on 3D object rotations.
+            <strong>Snake <em>vs.</em> Rotation: subfield differences on MathVerse.</strong> Positive values indicate better results from ViGal-Snake, and negative values measure how much ViGal-Rotation performs better. Interestingly, Snake enhances most on Expressions and Coordinates, tasks aligned with Snake's 2D grid. Rotation improves angle and length reasoning, reflecting its focus on 3D object rotations.
           </p>
           <img src="./resources/acc_diff.png" alt="Accuracy Differences" class="img-responsive">
         </div>
@@ -525,36 +619,8 @@
   <div class="container main-content-with-sidebar">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-left">Games Visualization</h2>
-        
-        <!-- Snake Game Subsection -->
-        <h3 class="title is-4 has-text-left">Snake Game</h3>
-        <div class="carousel-wrapper">
-          <!-- Snake Game Carousel -->
-          <div class="game-carousel" id="snake-carousel">
-            <div class="carousel-container">
-              <div class="carousel-slide active">
-                <img src="./resources/snake_claude3-7.gif" alt="Snake Game - Claude 3.7">
-              </div>
-              <div class="carousel-slide">
-                <img src="./resources/snake_o4mini.gif" alt="Snake Game - o4mini">
-              </div>
-            </div>
-            
-            <!-- Navigation buttons -->
-            <button class="carousel-nav carousel-prev" onclick="changeSlide('snake-carousel', -1)">&#10094;</button>
-            <button class="carousel-nav carousel-next" onclick="changeSlide('snake-carousel', 1)">&#10095;</button>
-            
-            <!-- Indicators -->
-            <div class="carousel-indicators">
-              <span class="carousel-indicator active" onclick="goToSlide('snake-carousel', 0)"></span>
-              <span class="carousel-indicator" onclick="goToSlide('snake-carousel', 1)"></span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Rotation Game Subsection -->
-        <h3 class="title is-4 has-text-left">Rotation Game</h3>
+        <h2 class="title is-3 has-text-left">Rotation Game Visualization</h2>
+
         <div class="carousel-wrapper">
           <!-- Rotation Game Carousel -->
           <div class="game-carousel" id="rotation-carousel">
@@ -572,11 +638,11 @@
                 <img src="./resources/rotation_4.png" alt="Rotation Game Example 4">
               </div>
             </div>
-            
+
             <!-- Navigation buttons -->
             <button class="carousel-nav carousel-prev" onclick="changeSlide('rotation-carousel', -1)">&#10094;</button>
             <button class="carousel-nav carousel-next" onclick="changeSlide('rotation-carousel', 1)">&#10095;</button>
-            
+
             <!-- Indicators -->
             <div class="carousel-indicators">
               <span class="carousel-indicator active" onclick="goToSlide('rotation-carousel', 0)"></span>
@@ -612,21 +678,6 @@
   </div>
 </section>
 
-<!-- ---------- BIBTEX ---------- -->
-<!-- <section class="section" id="BibTeX">
-  <div class="container is-max-desktop content main-content-with-sidebar">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>
-@article{vigal2025,
-  title      ={ViGaL: Visual Game Learning Unlocks Generalizable Multimodal Reasoning},
-  author     ={Anonymous},
-  journal    ={arXiv preprint},
-  year       ={2025}
-}
-    </code></pre>
-  </div>
-</section> -->
-
 <!-- ---------- FOOTER ---------- -->
 <footer class="footer">
   <div class="container">
@@ -641,6 +692,9 @@
     </div>
   </div>
 </footer>
+
+<!-- Snake Game JavaScript -->
+<script src="./static/js/snake-game.js"></script>
 
 <!-- Carousel JavaScript -->
 <script>
