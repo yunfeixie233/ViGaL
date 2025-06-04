@@ -1,11 +1,11 @@
 
 <div align="center">
 
-#  🎲 *Play to Reason*:<br>  Learning Math through Visual Games
+#  🎮 *Play to Generalize*:<br>  Learning to Reason Through Game Play
 
 
 <p>
-    <img src="fig/teaser.png" alt="ViGaL" width="300" height="auto">
+    <img src="fig/teaser.jpg" alt="ViGaL" width="300" height="auto">
 </p>
 
 
