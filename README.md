@@ -5,7 +5,7 @@
 
 
 <p>
-    <img src="fig/teaser.jpg" alt="ViGaL" width="300" height="auto">
+    <img src="fig/teaser.jpg" alt="ViGaL" width="800" height="auto">
 </p>
 
 
