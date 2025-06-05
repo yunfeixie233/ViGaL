@@ -30,8 +30,8 @@
     <a href="https://yunfeixie233.github.io/" target="_blank">Yunfei Xie</a>,
     <a href="https://openreview.net/profile?id=~Yinsong_Ma1" target="_blank">Yinsong Ma</a>,
     <a href="https://voidrank.github.io/" target="_blank">Shiyi Lan</a>,
-    <br>
     <a href="https://www.cs.jhu.edu/~ayuille/" target="_blank">Alan Yuille</a>,
+    <br>
     <a href="https://lambert-x.github.io/" target="_blank">Junfei Xiao†</a>,
     <a href="https://weichen582.github.io/" target="_blank">Chen Wei§</a>
 </div>
