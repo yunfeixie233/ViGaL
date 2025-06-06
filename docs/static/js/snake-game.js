@@ -427,11 +427,11 @@
             return snippets;
         }
 
-        // Fix the move history lookup - look for the player's move in the current round
+        // Fix the move history lookup - get the most recent move for this round
         let mv = null;
         if (rd.move_history && Array.isArray(rd.move_history) && rd.move_history.length > 0) {
-            // move_history is an array with one object containing all players' moves
-            const moveObj = rd.move_history[0]; // Get the first (and usually only) move object
+            // move_history contains all moves leading up to this round, get the last (most recent) one
+            const moveObj = rd.move_history[rd.move_history.length - 1]; // Get the last move object
             if (moveObj && moveObj[pid]) {
                 mv = moveObj[pid];
             }
@@ -476,9 +476,12 @@
             }
         }
         
-        // Add debug info if no move found (can be removed later)
-        if (!mv && rd.move_history) {
-            console.log(`No move found for player ${pid} in round ${currentRound}. Move history structure:`, rd.move_history);
+        // Add debug info if no move found
+        if (!mv) {
+            console.log(`No move found for player ${pid} in round ${currentRound}. Move history length: ${rd.move_history ? rd.move_history.length : 'N/A'}`);
+            if (rd.move_history && rd.move_history.length > 0) {
+                console.log('Move history structure:', rd.move_history);
+            }
         }
         
         return snippets;
