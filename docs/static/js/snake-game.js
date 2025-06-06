@@ -142,7 +142,7 @@
 
               <div class="grid grid-cols-1 lg:grid-cols-[1fr_min-content_1fr] gap-4 mb-6 h-full">
                 <div class="thoughts-panel player1-border flex flex-col border rounded-lg overflow-hidden">
-                  <div class="p-3 border-b border-gray-100 sticky top-0 z-10 text-center player1-bg bg-opacity-50 bg-green-50">
+                  <div class="p-3 border-b border-gray-100 sticky top-0 z-10 text-center player1-bg">
                     <h2 id="player1Name" class="font-mono text-sm text-black font-bold">ViGaL (Ours)</h2>
                   </div>
                   <div class="flex-1 p-4 overflow-auto">
@@ -158,7 +158,7 @@
                 </div>
 
                 <div class="thoughts-panel player2-border flex flex-col border rounded-lg overflow-hidden">
-                  <div class="p-3 border-b border-gray-100 sticky top-0 z-10 text-center player2-bg bg-opacity-50 bg-blue-50">
+                  <div class="p-3 border-b border-gray-100 sticky top-0 z-10 text-center player2-bg">
                     <h2 id="player2Name" class="font-mono text-sm text-black font-bold">Player 2</h2>
                   </div>
                   <div class="flex-1 p-4 overflow-auto">
