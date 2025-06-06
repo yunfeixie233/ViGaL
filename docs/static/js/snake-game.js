@@ -427,7 +427,27 @@
             return snippets;
         }
 
-        const mv = rd.move_history?.find(m => m[pid])?.[pid] || rd.move_history?.at(-1)?.[pid]; // Try to find latest move for pid
+        // Fix the move history lookup - look for the player's move in the current round
+        let mv = null;
+        if (rd.move_history) {
+            // Try different possible structures for move_history
+            if (Array.isArray(rd.move_history)) {
+                // If move_history is an array, look for player's move
+                mv = rd.move_history.find(m => m && m[pid])?.[pid];
+            } else if (rd.move_history[pid]) {
+                // If move_history is an object with player IDs as keys
+                mv = rd.move_history[pid];
+            }
+        }
+        
+        // Also check if there's a direct moves or actions property
+        if (!mv && rd.moves && rd.moves[pid]) {
+            mv = rd.moves[pid];
+        }
+        if (!mv && rd.actions && rd.actions[pid]) {
+            mv = rd.actions[pid];
+        }
+
         if (mv && mv.rationale) {
             const txt = mv.rationale;
             const mThink = thinkRegex.exec(txt);
@@ -455,6 +475,12 @@
                 snippets.push(`<p class="font-mono text-xs">Worst move: <b>${escapeHTML(mWorst[1].trim())}</b></p>`);
             }
         }
+        
+        // Add debug info if no move found (can be removed later)
+        if (!mv && rd.move_history) {
+            console.log(`No move found for player ${pid} in round ${currentRound}`, rd.move_history);
+        }
+        
         return snippets;
     }
 
