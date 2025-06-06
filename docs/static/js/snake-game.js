@@ -356,6 +356,35 @@
         });
     }
 
+    /* ======================= HELPER FUNCTIONS ====================== */
+    
+    /**
+     * Format death reason for better display
+     * @param {string} reason - Raw death reason from JSON
+     * @returns {string} - Formatted death reason
+     */
+    function formatDeathReason(reason) {
+        if (!reason) return 'unknown';
+        
+        switch (reason.toLowerCase()) {
+            case 'wall':
+                return 'collide into the wall';
+            case 'body_collision':
+                return 'collide with itself or another snake';
+            default:
+                return reason; // Return original if not recognized
+        }
+    }
+
+    /**
+     * Format apple count with emoji
+     * @param {number} count - Number of apples
+     * @returns {string} - Formatted string with apple emoji
+     */
+    function formatAppleCount(count) {
+        return count === 1 ? '1 🍎' : `${count} 🍎`;
+    }
+
     /* ======================= DRAW HELPERS ====================== */
     function drawBoard() {
         const s = Math.min(canvas.width / W, canvas.height / H);
@@ -534,9 +563,33 @@
         // Update round display
         if (isFinalDisplay) {
             document.getElementById('roundInfo').textContent = `FINAL RESULT`;
+            
+            // Update player names to show Winner/Loser in final display
+            const player1Name = gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
+            const player2Name = gameJsonData.metadata?.models?.['2'] || 'Opponent';
+            const gameResult1 = gameJsonData.metadata?.game_result?.['1'];
+            const gameResult2 = gameJsonData.metadata?.game_result?.['2'];
+            
+            if (gameResult1 === 'won') {
+                document.getElementById('player1Name').textContent = `Winner: ${player1Name}`;
+                document.getElementById('player2Name').textContent = `Loser: ${player2Name}`;
+            } else if (gameResult2 === 'won') {
+                document.getElementById('player1Name').textContent = `Loser: ${player1Name}`;
+                document.getElementById('player2Name').textContent = `Winner: ${player2Name}`;
+            } else {
+                // Fallback if no clear winner
+                document.getElementById('player1Name').textContent = player1Name;
+                document.getElementById('player2Name').textContent = player2Name;
+            }
         } else {
             document.getElementById('roundInfo').textContent =
                 `Round ${currentRound}/${Math.max(0, actualRounds - 1)}`;
+            
+            // Reset player names to normal display during gameplay
+            document.getElementById('player1Name').textContent =
+                gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
+            document.getElementById('player2Name').textContent =
+                gameJsonData.metadata?.models?.['2'] || 'Opponent';
         }
         document.getElementById('progressBar').value = currentRound;
 
@@ -580,7 +633,7 @@
             }
             
             // Always show apple count
-            scoreText = ` (${appleCount} apples)`;
+            scoreText = ` (${formatAppleCount(appleCount)})`;
             
             // In final display state, show winner/loser status
             if (isFinalDisplay && gameJsonData.metadata?.game_result) {
@@ -623,10 +676,10 @@
                     summaryHtml += `<p class="text-red-600 font-bold text-lg mb-2">💀 DEFEATED</p>`;
                 }
                 
-                summaryHtml += `<p class="font-mono text-sm mb-2">Final Score: ${finalScore} apples</p>`;
+                summaryHtml += `<p class="font-mono text-sm mb-2">Final Score: ${formatAppleCount(finalScore)}</p>`;
                 
                 if (deathInfo) {
-                    summaryHtml += `<p class="font-mono text-xs text-gray-600">Death: ${deathInfo.reason} (Round ${deathInfo.round})</p>`;
+                    summaryHtml += `<p class="font-mono text-xs text-gray-600">Death reason: ${formatDeathReason(deathInfo.reason)} (Round ${deathInfo.round})</p>`;
                 }
                 
                 summaryHtml += `</div>`;
@@ -662,7 +715,7 @@
                 
                 if (meta.final_scores) {
                     if (infoText) infoText += ' • ';
-                    const scores = Object.entries(meta.final_scores).map(([pid, score]) => `P${pid}: ${score}`).join(' vs ');
+                    const scores = Object.entries(meta.final_scores).map(([pid, score]) => `P${pid}: ${formatAppleCount(score)}`).join(' vs ');
                     infoText += `Final Scores: ${scores}`;
                 }
                 
