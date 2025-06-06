@@ -285,6 +285,8 @@
         }
 
         maxRounds = gameJsonData.metadata?.actual_rounds || gameJsonData.rounds.length;
+        // Add one extra round for the final display state
+        maxRounds = maxRounds + 1;
         ({ width: W = 10, height: H = 10 } = gameJsonData.rounds[0] || {});
 
         document.getElementById('player1Name').textContent =
@@ -376,11 +378,24 @@
     }
 
     function drawRound() {
-        if (!gameJsonData || !gameJsonData.rounds || !gameJsonData.rounds[currentRound]) {
-             console.warn("drawRound called with invalid game data or currentRound out of bounds.");
+        if (!gameJsonData || !gameJsonData.rounds) {
+             console.warn("drawRound called with invalid game data.");
              return; // Prevent errors if data is not ready
         }
-        const rd = gameJsonData.rounds[currentRound];
+        
+        // Check if we're in the final display state (beyond actual rounds)
+        const actualRounds = gameJsonData.metadata?.actual_rounds || gameJsonData.rounds.length;
+        const isFinalDisplay = currentRound >= actualRounds;
+        
+        // Use the last actual round's data for the final display
+        const roundIndex = isFinalDisplay ? actualRounds - 1 : currentRound;
+        const rd = gameJsonData.rounds[roundIndex];
+        
+        if (!rd) {
+            console.warn(`No data for round ${roundIndex}.`);
+            return;
+        }
+        
         const s = Math.min(canvas.width / W, canvas.height / H);
 
         drawBoard();
@@ -396,7 +411,13 @@
         /* Draw snakes */
         const colors = { '1': '#4F7022', '2': '#036C8E' }; // P1 Green, P2 Blue
         Object.entries(rd.snake_positions || {}).forEach(([pid, segs]) => {
-            const alive = rd.alive?.[pid];
+            let alive = rd.alive?.[pid];
+            
+            // In final display state, override alive status based on game result
+            if (isFinalDisplay && gameJsonData.metadata?.game_result) {
+                alive = gameJsonData.metadata.game_result[pid] === 'won';
+            }
+            
             ctx.fillStyle = alive ? colors[pid] : '#9ca3af'; // Gray for eliminated
 
             segs.forEach(([x, y], i) => {
@@ -499,58 +520,117 @@
             return;
         }
 
-        const rd = gameJsonData.rounds[currentRound];
-         if (!rd) { // Safety check for the specific round data
-            console.warn(`No data for round ${currentRound}.`);
+        // Check if we're in the final display state
+        const actualRounds = gameJsonData.metadata?.actual_rounds || gameJsonData.rounds.length;
+        const isFinalDisplay = currentRound >= actualRounds;
+        const roundIndex = isFinalDisplay ? actualRounds - 1 : currentRound;
+        const rd = gameJsonData.rounds[roundIndex];
+        
+        if (!rd) { // Safety check for the specific round data
+            console.warn(`No data for round ${roundIndex}.`);
             return;
         }
 
-        document.getElementById('roundInfo').textContent =
-            `Round ${currentRound}/${Math.max(0, maxRounds - 1)}`;
+        // Update round display
+        if (isFinalDisplay) {
+            document.getElementById('roundInfo').textContent = `FINAL RESULT`;
+        } else {
+            document.getElementById('roundInfo').textContent =
+                `Round ${currentRound}/${Math.max(0, actualRounds - 1)}`;
+        }
         document.getElementById('progressBar').value = currentRound;
 
         ['1', '2'].forEach(pid => {
             const thoughtEl = document.getElementById(`player${pid}Thoughts`);
 
-            const alive = rd.alive?.[pid];
+            let alive = rd.alive?.[pid];
             const st = document.getElementById(`player${pid}Status`);
             
             // Calculate apple count/score
+            let appleCount = 0;
             let scoreText = '';
-            if (alive) {
-                // Try to get score from different possible sources
-                let appleCount = 0;
-                
-                // Method 1: Check if there's a direct score field
-                if (rd.scores && rd.scores[pid] !== undefined) {
-                    appleCount = rd.scores[pid];
-                } 
-                // Method 2: Check if there's an apple_count field
-                else if (rd.apple_count && rd.apple_count[pid] !== undefined) {
-                    appleCount = rd.apple_count[pid];
+            
+            // Try different methods to get apple count
+            if (rd.scores && typeof rd.scores[pid] === 'number') {
+                appleCount = rd.scores[pid];
+            } 
+            else if (rd.apple_count && typeof rd.apple_count[pid] === 'number') {
+                appleCount = rd.apple_count[pid];
+            }
+            else if (rd.snake_lengths && typeof rd.snake_lengths[pid] === 'number') {
+                // Get initial snake length from first round
+                let initialLength = 1; // default
+                if (gameJsonData.rounds && gameJsonData.rounds[0] && 
+                    gameJsonData.rounds[0].snake_lengths && 
+                    typeof gameJsonData.rounds[0].snake_lengths[pid] === 'number') {
+                    initialLength = gameJsonData.rounds[0].snake_lengths[pid];
                 }
-                // Method 3: Calculate from snake length (snake length - initial length = apples eaten)
-                else if (rd.snake_positions && rd.snake_positions[pid] && Array.isArray(rd.snake_positions[pid])) {
-                    // Assume initial snake length is 1, so apples eaten = current length - 1
-                    appleCount = Math.max(0, rd.snake_positions[pid].length - 1);
+                appleCount = Math.max(0, rd.snake_lengths[pid] - initialLength);
+            }
+            else if (rd.snake_positions && rd.snake_positions[pid] && Array.isArray(rd.snake_positions[pid])) {
+                // Get initial snake length from first round
+                let initialLength = 1; // default
+                if (gameJsonData.rounds && gameJsonData.rounds[0] && 
+                    gameJsonData.rounds[0].snake_positions && 
+                    gameJsonData.rounds[0].snake_positions[pid] && 
+                    Array.isArray(gameJsonData.rounds[0].snake_positions[pid])) {
+                    initialLength = gameJsonData.rounds[0].snake_positions[pid].length;
                 }
-                // Method 4: Check for snake_lengths field
-                else if (rd.snake_lengths && rd.snake_lengths[pid] !== undefined) {
-                    appleCount = Math.max(0, rd.snake_lengths[pid] - 1);
-                }
-                
-                scoreText = ` (🍎 ${appleCount})`;
+                appleCount = Math.max(0, rd.snake_positions[pid].length - initialLength);
             }
             
-            st.textContent = alive ? `ALIVE${scoreText}` : 'ELIMINATED';
-            st.className = `${alive ? 'text-green-500' : 'text-red-500'} font-bold text-sm`;
+            // Always show apple count
+            scoreText = ` (${appleCount} apples)`;
+            
+            // In final display state, show winner/loser status
+            if (isFinalDisplay && gameJsonData.metadata?.game_result) {
+                const result = gameJsonData.metadata.game_result[pid];
+                if (result === 'won') {
+                    st.textContent = `WINNER${scoreText}`;
+                    st.className = 'text-green-600 font-bold text-sm animate-pulse';
+                } else if (result === 'lost') {
+                    st.textContent = `LOSER${scoreText}`;
+                    st.className = 'text-red-600 font-bold text-sm';
+                } else {
+                    st.textContent = `UNKNOWN${scoreText}`;
+                    st.className = 'text-gray-500 font-bold text-sm';
+                }
+            } else {
+                // Normal round display
+                st.textContent = alive ? `ALIVE${scoreText}` : `ELIMINATED${scoreText}`;
+                st.className = `${alive ? 'text-green-500' : 'text-red-500'} font-bold text-sm`;
+            }
 
-            thoughtEl.innerHTML = thoughtLines(rd, pid).join('');
+            // Show thoughts only for non-final display rounds
+            if (!isFinalDisplay) {
+                thoughtEl.innerHTML = thoughtLines(rd, pid).join('');
 
-            const newDetails = thoughtEl.querySelector('details');
-            if (newDetails) {
-                // Always open P1 thoughts, P2 closed by default, or maintain previous state if preferred.
-                newDetails.open = pid === '1' ? true : false; 
+                const newDetails = thoughtEl.querySelector('details');
+                if (newDetails) {
+                    // Always open P1 thoughts, P2 closed by default, or maintain previous state if preferred.
+                    newDetails.open = pid === '1' ? true : false; 
+                }
+            } else {
+                // Show final game summary in thoughts panel
+                const gameResult = gameJsonData.metadata?.game_result?.[pid];
+                const deathInfo = gameJsonData.metadata?.death_info?.[pid];
+                const finalScore = gameJsonData.metadata?.final_scores?.[pid] || appleCount;
+                
+                let summaryHtml = `<div class="text-center">`;
+                if (gameResult === 'won') {
+                    summaryHtml += `<p class="text-green-600 font-bold text-lg mb-2">🏆 VICTORY!</p>`;
+                } else if (gameResult === 'lost') {
+                    summaryHtml += `<p class="text-red-600 font-bold text-lg mb-2">💀 DEFEATED</p>`;
+                }
+                
+                summaryHtml += `<p class="font-mono text-sm mb-2">Final Score: ${finalScore} apples</p>`;
+                
+                if (deathInfo) {
+                    summaryHtml += `<p class="font-mono text-xs text-gray-600">Death: ${deathInfo.reason} (Round ${deathInfo.round})</p>`;
+                }
+                
+                summaryHtml += `</div>`;
+                thoughtEl.innerHTML = summaryHtml;
             }
         });
 
@@ -559,6 +639,38 @@
             playBtn.textContent = '🔄 Replay';
         } else {
             playBtn.textContent = playing ? '⏸️ Pause' : '▶️ Play';
+        }
+
+        // Update game info section
+        const gameInfoEl = document.getElementById('gameInfo');
+        if (gameInfoEl) {
+            if (isFinalDisplay && gameJsonData.metadata) {
+                // Show final game statistics
+                const meta = gameJsonData.metadata;
+                let infoText = '';
+                
+                if (meta.time_taken) {
+                    const minutes = Math.floor(meta.time_taken / 60);
+                    const seconds = Math.round(meta.time_taken % 60);
+                    infoText += `Game Duration: ${minutes}m ${seconds}s`;
+                }
+                
+                if (meta.actual_rounds) {
+                    if (infoText) infoText += ' • ';
+                    infoText += `Total Rounds: ${meta.actual_rounds}`;
+                }
+                
+                if (meta.final_scores) {
+                    if (infoText) infoText += ' • ';
+                    const scores = Object.entries(meta.final_scores).map(([pid, score]) => `P${pid}: ${score}`).join(' vs ');
+                    infoText += `Final Scores: ${scores}`;
+                }
+                
+                gameInfoEl.textContent = infoText;
+            } else {
+                // Clear game info for normal rounds
+                gameInfoEl.textContent = '';
+            }
         }
 
         drawRound();
