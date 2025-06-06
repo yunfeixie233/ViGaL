@@ -563,34 +563,29 @@
         // Update round display
         if (isFinalDisplay) {
             document.getElementById('roundInfo').textContent = `FINAL RESULT`;
-            
-            // Update player names to show Winner/Loser in final display
-            const player1Name = gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
-            const player2Name = gameJsonData.metadata?.models?.['2'] || 'Opponent';
-            const gameResult1 = gameJsonData.metadata?.game_result?.['1'];
-            const gameResult2 = gameJsonData.metadata?.game_result?.['2'];
-            
-            if (gameResult1 === 'won') {
-                document.getElementById('player1Name').textContent = `Winner: ${player1Name}`;
-                document.getElementById('player2Name').textContent = `Loser: ${player2Name}`;
-            } else if (gameResult2 === 'won') {
-                document.getElementById('player1Name').textContent = `Loser: ${player1Name}`;
-                document.getElementById('player2Name').textContent = `Winner: ${player2Name}`;
-            } else {
-                // Fallback if no clear winner
-                document.getElementById('player1Name').textContent = player1Name;
-                document.getElementById('player2Name').textContent = player2Name;
-            }
         } else {
             document.getElementById('roundInfo').textContent =
                 `Round ${currentRound}/${Math.max(0, actualRounds - 1)}`;
-            
-            // Reset player names to normal display during gameplay
-            document.getElementById('player1Name').textContent =
-                gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
-            document.getElementById('player2Name').textContent =
-                gameJsonData.metadata?.models?.['2'] || 'Opponent';
         }
+        
+        // Update player names to show Winner/Loser at all rounds
+        const player1Name = gameJsonData.metadata?.models?.['1'] || 'ViGaL (Ours)';
+        const player2Name = gameJsonData.metadata?.models?.['2'] || 'Opponent';
+        const gameResult1 = gameJsonData.metadata?.game_result?.['1'];
+        const gameResult2 = gameJsonData.metadata?.game_result?.['2'];
+        
+        if (gameResult1 === 'won') {
+            document.getElementById('player1Name').textContent = `Winner: ${player1Name}`;
+            document.getElementById('player2Name').textContent = `Loser: ${player2Name}`;
+        } else if (gameResult2 === 'won') {
+            document.getElementById('player1Name').textContent = `Loser: ${player1Name}`;
+            document.getElementById('player2Name').textContent = `Winner: ${player2Name}`;
+        } else {
+            // Fallback if no clear winner
+            document.getElementById('player1Name').textContent = player1Name;
+            document.getElementById('player2Name').textContent = player2Name;
+        }
+        
         document.getElementById('progressBar').value = currentRound;
 
         ['1', '2'].forEach(pid => {
