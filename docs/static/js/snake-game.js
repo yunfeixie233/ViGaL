@@ -429,15 +429,15 @@
 
         // Fix the move history lookup - look for the player's move in the current round
         let mv = null;
-        if (rd.move_history) {
-            // Try different possible structures for move_history
-            if (Array.isArray(rd.move_history)) {
-                // If move_history is an array, look for player's move
-                mv = rd.move_history.find(m => m && m[pid])?.[pid];
-            } else if (rd.move_history[pid]) {
-                // If move_history is an object with player IDs as keys
-                mv = rd.move_history[pid];
+        if (rd.move_history && Array.isArray(rd.move_history) && rd.move_history.length > 0) {
+            // move_history is an array with one object containing all players' moves
+            const moveObj = rd.move_history[0]; // Get the first (and usually only) move object
+            if (moveObj && moveObj[pid]) {
+                mv = moveObj[pid];
             }
+        } else if (rd.move_history && rd.move_history[pid]) {
+            // If move_history is an object with player IDs as keys
+            mv = rd.move_history[pid];
         }
         
         // Also check if there's a direct moves or actions property
@@ -478,7 +478,7 @@
         
         // Add debug info if no move found (can be removed later)
         if (!mv && rd.move_history) {
-            console.log(`No move found for player ${pid} in round ${currentRound}`, rd.move_history);
+            console.log(`No move found for player ${pid} in round ${currentRound}. Move history structure:`, rd.move_history);
         }
         
         return snippets;
