@@ -514,7 +514,35 @@
 
             const alive = rd.alive?.[pid];
             const st = document.getElementById(`player${pid}Status`);
-            st.textContent = alive ? 'ALIVE' : 'ELIMINATED';
+            
+            // Calculate apple count/score
+            let scoreText = '';
+            if (alive) {
+                // Try to get score from different possible sources
+                let appleCount = 0;
+                
+                // Method 1: Check if there's a direct score field
+                if (rd.scores && rd.scores[pid] !== undefined) {
+                    appleCount = rd.scores[pid];
+                } 
+                // Method 2: Check if there's an apple_count field
+                else if (rd.apple_count && rd.apple_count[pid] !== undefined) {
+                    appleCount = rd.apple_count[pid];
+                }
+                // Method 3: Calculate from snake length (snake length - initial length = apples eaten)
+                else if (rd.snake_positions && rd.snake_positions[pid] && Array.isArray(rd.snake_positions[pid])) {
+                    // Assume initial snake length is 1, so apples eaten = current length - 1
+                    appleCount = Math.max(0, rd.snake_positions[pid].length - 1);
+                }
+                // Method 4: Check for snake_lengths field
+                else if (rd.snake_lengths && rd.snake_lengths[pid] !== undefined) {
+                    appleCount = Math.max(0, rd.snake_lengths[pid] - 1);
+                }
+                
+                scoreText = ` (🍎 ${appleCount})`;
+            }
+            
+            st.textContent = alive ? `ALIVE${scoreText}` : 'ELIMINATED';
             st.className = `${alive ? 'text-green-500' : 'text-red-500'} font-bold text-sm`;
 
             thoughtEl.innerHTML = thoughtLines(rd, pid).join('');
