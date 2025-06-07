@@ -176,9 +176,9 @@
                          class="block w-full max-w-md mx-auto" disabled> </div>
 
                 <div class="mt-4 flex justify-center gap-2"> 
-                    <button id="matchBtn1" class="bg-purple-200 hover:bg-purple-300 text-gray-800 px-3 py-2 rounded font-mono text-sm transition-colors duration-200 flex-1 max-w-[180px] border border-purple-300">vs. o3-mini</button>
-                    <button id="matchBtn2" class="bg-orange-200 hover:bg-orange-300 text-gray-800 px-3 py-2 rounded font-mono text-sm transition-colors duration-200 flex-1 max-w-[180px] border border-orange-300">vs. Claude-3.7-Sonnet</button>
-                    <button id="matchBtn3" class="bg-blue-200 hover:bg-blue-300 text-gray-800 px-3 py-2 rounded font-mono text-sm transition-colors duration-200 flex-1 max-w-[180px] border border-blue-300">vs. Gemini-2.5-Pro</button>
+                    <button id="matchBtn1" class="bg-purple-200 hover:bg-purple-300 text-gray-800 px-3 py-2 rounded font-mono text-sm transition-colors duration-200 flex-1 max-w-[180px]">vs. o3-mini</button>
+                    <button id="matchBtn2" class="bg-orange-200 hover:bg-orange-300 text-gray-800 px-3 py-2 rounded font-mono text-sm transition-colors duration-200 flex-1 max-w-[180px]">vs. Claude-3.7-Sonnet</button>
+                    <button id="matchBtn3" class="bg-blue-200 hover:bg-blue-300 text-gray-800 px-3 py-2 rounded font-mono text-sm transition-colors duration-200 flex-1 max-w-[180px]">vs. Gemini-2.5-Pro</button>
                 </div>
 
                 <div class="mt-2 text-center">
