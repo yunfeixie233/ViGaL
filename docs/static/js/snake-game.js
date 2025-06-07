@@ -45,71 +45,64 @@
     }
 
     /**
-     * Set up the Next Match button handler (only once)
+     * Set up the Match buttons handler (only once)
      */
-    function setupNextMatchButton() {
-        const nextMatchBtn = document.getElementById('nextMatchBtn');
-        if (!nextMatchBtn) return;
+    function setupMatchButtons() {
+        const matchButtons = [
+            { id: 'matchBtn1', path: './resources/game/o3-mini.json' },
+            { id: 'matchBtn2', path: './resources/game/Claude-3.7-Sonnet.json' },
+            { id: 'matchBtn3', path: './resources/game/Gemini-2.5-Pro.json' }
+        ];
 
-        // Remove any existing event listeners to prevent duplicates
-        nextMatchBtn.onclick = null;
-        
-        nextMatchBtn.onclick = () => {
-            console.log('Next Match clicked. Current index:', currentJsonIndex, 'JSON list length:', jsonList.length);
-            console.log('Current absolute URL:', currentAbsoluteURL);
-            console.log('JSON list:', jsonList);
+        matchButtons.forEach(({ id, path }) => {
+            const btn = document.getElementById(id);
+            if (!btn) return;
+
+            // Remove any existing event listeners to prevent duplicates
+            btn.onclick = null;
             
-            if (jsonList.length === 0) {
-                console.error('JSON list is empty. Cannot switch to next match.');
-                updateFileStatus('Error: No game files available for "Next Match".', true);
-                return;
-            }
-
-            if (jsonList.length === 1) {
-                console.log('Only one file in list, staying on current file.');
-                updateFileStatus('Only one game file available.', false);
-                return;
-            }
-
-            // Calculate next index
-            let nextIdx;
-            if (currentJsonIndex === -1) {
-                // Current file not in list, start from beginning
-                nextIdx = 0;
-                console.log('Current file not found in list, starting from index 0');
-            } else {
-                // Move to next file in list
-                nextIdx = (currentJsonIndex + 1) % jsonList.length;
-                console.log('Moving from index', currentJsonIndex, 'to index', nextIdx);
-            }
-
-            const nextJsonPath = jsonList[nextIdx];
-            console.log('Loading next file:', nextJsonPath, 'at index:', nextIdx);
-            
-            if (nextJsonPath && typeof nextJsonPath === 'string') {
-                boot(nextJsonPath);
-            } else {
-                console.error('Next JSON path is invalid:', nextJsonPath);
-                updateFileStatus('Error: Could not determine next valid match.', true);
-            }
-        };
+            btn.onclick = () => {
+                console.log(`${id} clicked. Loading:`, path);
+                
+                if (path && typeof path === 'string') {
+                    boot(path);
+                } else {
+                    console.error('Invalid path for match button:', path);
+                    updateFileStatus('Error: Could not load the selected match.', true);
+                }
+            };
+        });
     }
 
     /**
-     * Update the Next Match button state
+     * Update the Match buttons state
      */
-    function updateNextMatchButton() {
-        const nextMatchBtn = document.getElementById('nextMatchBtn');
-        if (!nextMatchBtn) return;
+    function updateMatchButtons() {
+        const matchButtons = ['matchBtn1', 'matchBtn2', 'matchBtn3'];
+        const matchPaths = [
+            './resources/game/o3-mini.json',
+            './resources/game/Claude-3.7-Sonnet.json', 
+            './resources/game/Gemini-2.5-Pro.json'
+        ];
 
-        // Disable if we have 0 or 1 files
-        nextMatchBtn.disabled = jsonList.length <= 1;
-        
-        if (jsonList.length <= 1) {
-            nextMatchBtn.title = jsonList.length === 0 ? 'No game files available' : 'Only one game file available';
-        } else {
-            nextMatchBtn.title = `Switch to next game (${jsonList.length} files available)`;
-        }
+        matchButtons.forEach((btnId, index) => {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+
+            const absolutePath = new URL(matchPaths[index], window.location.href).toString();
+            const isCurrentMatch = currentAbsoluteURL === absolutePath;
+            
+            // Highlight the current match button
+            if (isCurrentMatch) {
+                btn.style.transform = 'scale(1.05)';
+                btn.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.5)';
+                btn.style.fontWeight = 'bold';
+            } else {
+                btn.style.transform = 'scale(1)';
+                btn.style.boxShadow = 'none';
+                btn.style.fontWeight = 'normal';
+            }
+        });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -124,8 +117,8 @@
         // Normalize jsonList to absolute URLs
         normalizeJsonList();
         
-        // Set up Next Match button (only once)
-        setupNextMatchButton();
+        // Set up Match buttons (only once)
+        setupMatchButtons();
         
         const path = container.getAttribute('data-json') || DEFAULT_JSON;
         boot(path);                      // start boot sequence
@@ -172,17 +165,20 @@
 
               <div class="bg-white shadow rounded-lg p-4 mb-4">
                 <div class="flex justify-center items-center gap-4">
-                  <button id="playBtn"  class="bg-blue-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏸️ Pause</button>
-                  <button id="prevBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏮️ Prev</button>
-                  <span id="roundInfo" class="font-mono text-sm text-gray-600">Round 0/0</span>
-                  <button id="nextBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏭️ Next</button>
-                  <button id="endBtn"   class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm" disabled>⏩ End</button>
+                    <button id="playBtn"  class="bg-blue-500 text-white px-4 py-2 rounded font-mono text-lg" disabled>⏸️ Pause</button>
+                    <button id="prevBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-lg" disabled>⏪️ Prev</button>
+                    <span id="roundInfo" class="font-mono text-lg text-gray-600">Round 0/0</span>
+                    <button id="nextBtn"  class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-lg" disabled>⏩ Next</button>
+                    <button id="endBtn"   class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-lg" disabled>⏭️ End</button>
                 </div>
 
                 <div class="mt-2"> <input id="progressBar" type="range" min="0" max="100" value="0"
                          class="block w-full max-w-md mx-auto" disabled> </div>
 
-                <div class="mt-2 flex justify-center"> <button id="nextMatchBtn" class="bg-gray-500 text-white px-4 py-2 rounded font-mono text-sm">Next Match</button>
+                <div class="mt-4 flex justify-center gap-2"> 
+                    <button id="matchBtn1" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded font-mono text-sm transition-colors duration-200 flex-1 max-w-[180px]">vs. o3-mini</button>
+                    <button id="matchBtn2" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded font-mono text-sm transition-colors duration-200 flex-1 max-w-[180px]">vs. Claude-3.7-Sonnet</button>
+                    <button id="matchBtn3" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded font-mono text-sm transition-colors duration-200 flex-1 max-w-[180px]">vs. Gemini-2.5-Pro</button>
                 </div>
 
                 <div class="mt-2 text-center">
@@ -198,7 +194,7 @@
         if (!jsonPath || typeof jsonPath !== 'string') {
             console.error('Boot aborted: Invalid JSON path provided.', jsonPath);
             updateFileStatus('Error: Invalid JSON path.', true);
-            updateNextMatchButton();
+            updateMatchButtons();
             return;
         }
 
@@ -260,8 +256,8 @@
                 const p2 = gameJsonData.metadata?.models?.['2'] || 'Opponent';
                 updateFileStatus(`${p1} vs ${p2}`);
 
-                // Update Next Match button state
-                updateNextMatchButton();
+                // Update Match buttons state
+                updateMatchButtons();
                 
                 initGame();
             })
@@ -273,7 +269,7 @@
                     const el = document.getElementById(id);
                     if (el) el.disabled = true;
                 });
-                updateNextMatchButton();
+                updateMatchButtons();
             });
     }
 
