@@ -98,8 +98,8 @@
 
     /* Carousel styling */
     .game-carousel {
-      width: var(--carousel-width);
-      height: var(--carousel-height);
+      width: 100%;
+      height: auto;
       margin: 0 auto;
       position: relative;
       overflow: hidden;
@@ -110,13 +110,13 @@
 
     .carousel-container {
       width: 100%;
-      height: 100%;
+      height: auto;
       position: relative;
     }
 
     .carousel-slide {
       width: 100%;
-      height: 100%;
+      height: auto;
       position: absolute;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
@@ -124,12 +124,14 @@
 
     .carousel-slide.active {
       opacity: 1;
+      position: relative;
     }
 
     .carousel-slide img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
+      display: block;
     }
 
     .carousel-nav {
