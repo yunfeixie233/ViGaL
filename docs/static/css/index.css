@@ -1,0 +1,204 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.footer .icon-link {
+    font-size: 25px;
+    color: #000;
+}
+
+.link-block a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.dnerf {
+  font-variant: small-caps;
+}
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.hero.teaser .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hero.teaser .hero-body {
+  width: 80%;       /* 设置容器宽度为 80% */
+  text-align: center; /* 确保文字居中 */
+}
+.hero.teaser img {
+  width: 100%;      /* 确保图像宽度填满容器 */
+  height: auto;     /* 自动调整高度以保持比例 */
+  display: block;   /* 使图像成为块级元素 */
+  margin: 0 auto;   /* 水平居中 */
+}
+.hero.teaser .subtitle {
+  margin-top: 20px; /* 调整文字与图片之间的间距 */
+  text-align: center; /* 使文字居中 */
+}
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-title {
+}
+
+.publication-banner {
+  max-height: parent;
+}
+
+.publication-banner video {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  object-fit: fit;
+}
+
+.publication-header .hero-body {
+}
+
+.publication-title {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+    font-family: 'Google Sans', sans-serif;
+    margin-bottom: 20px; /* 确保作者部分和链接部分有足够的间距 */
+}
+
+.publication-venue {
+    color: #555;
+    width: fit-content;
+    font-weight: bold;
+}
+
+.publication-awards {
+    color: #ff3860;
+    width: fit-content;
+    font-weight: bolder;
+}
+
+.publication-authors {
+   color: hsl(0, 0%, 0%) !important;
+}
+
+.publication-authors a {
+   color: hsl(0, 0%, 0%) !important;
+}
+
+.publication-authors a:hover {
+    text-decoration: underline;
+}
+
+.caption a {
+   color: hsl(204, 86%, 53%) !important;
+}
+
+.caption a:hover {
+    text-decoration: underline;
+}
+
+.content a {
+    color: hsl(204, 86%, 53%) !important;
+}
+
+.content a:hover {
+    text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.title-footnote-block {
+  font-size:small
+}
+
+.publication-banner img {
+}
+
+.publication-links {
+    margin-top: 20px; /* 增加间距以确保链接位于作者部分下方 */
+}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 5px;
+  overflow: hidden;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  padding: 0;
+  font-size: 0;
+}
+
+.results-carousel video {
+  margin: 0;
+}
+
+.interpolation-panel {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.interpolation-panel .interpolation-image {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.interpolation-video-column {
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+#interpolation-image-wrapper {
+  width: 100%;
+}
+#interpolation-image-wrapper img {
+  border-radius: 5px;
+}
+
+.image-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.image-item {
+  width: 80%;     /* 控制图片项的宽度，可以根据需要调整 */
+  margin-bottom: 60px;  /* 图片项之间的间距 */
+  text-align: center;
+}
+.image-item img {
+  max-width: 100%;   /* 确保图像不会超出其容器的宽度 */
+  height: auto;      /* 自动调整高度以保持比例 */
+  display: block;    /* 使图像成为块级元素 */
+  margin: 0 auto;    /* 水平居中 */
+}
+.image-item p {
+  font-size: 20px;   /* 设置图像下方文字的大小，可以根据需要调整 */
+  margin-top: 20px;  /* 调整文字与图片之间的间距 */
+  text-align: center;
+}
+
+
+.hero.publication-hero {
+  background-color: rgb(172, 221, 243);
+  background-image: url("../../resources/robot-snake-bg-blue-bg.png");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 25% auto;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+}
+
+.hero.publication-hero .publication-title {
+  color: black;
+}

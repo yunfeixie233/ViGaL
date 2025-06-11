@@ -1,0 +1,42 @@
+<!-- ---------- GAMES VISUALIZATION ---------- -->
+<section id="games-visualization" class="section">
+  <div class="container main-content-with-sidebar">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-left">Rotation Game Visualization</h2>
+
+        <div class="carousel-wrapper">
+          <!-- Rotation Game Carousel -->
+          <div class="game-carousel" id="rotation-carousel">
+            <div class="carousel-container">
+              <div class="carousel-slide active">
+                <img src="./resources/rotation_1.png" alt="Rotation Game Example 1">
+              </div>
+              <div class="carousel-slide">
+                <img src="./resources/rotation_2.png" alt="Rotation Game Example 2">
+              </div>
+              <div class="carousel-slide">
+                <img src="./resources/rotation_3.png" alt="Rotation Game Example 3">
+              </div>
+              <div class="carousel-slide">
+                <img src="./resources/rotation_4.png" alt="Rotation Game Example 4">
+              </div>
+            </div>
+
+            <!-- Navigation buttons -->
+            <button class="carousel-nav carousel-prev" onclick="changeSlide('rotation-carousel', -1)">&#10094;</button>
+            <button class="carousel-nav carousel-next" onclick="changeSlide('rotation-carousel', 1)">&#10095;</button>
+
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+              <span class="carousel-indicator active" onclick="goToSlide('rotation-carousel', 0)"></span>
+              <span class="carousel-indicator" onclick="goToSlide('rotation-carousel', 1)"></span>
+              <span class="carousel-indicator" onclick="goToSlide('rotation-carousel', 2)"></span>
+              <span class="carousel-indicator" onclick="goToSlide('rotation-carousel', 3)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 

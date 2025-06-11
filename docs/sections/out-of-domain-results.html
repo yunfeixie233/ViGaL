@@ -1,0 +1,153 @@
+<section id="out-of-domain-results" class="section">
+  <div class="container main-content-with-sidebar">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-left">Generalizing to Out-of-Domain Reasoning Tasks</h2>
+
+        <p class="has-text-left">
+          We evaluate ViGaL trained on games on out‑of‑domain tasks that demand reasoning capabilites, spanning mathematics, 3D understanding in CLEVR+, geometric problem solving, and multi‑discipline on MMMU series. Here are our findings:
+        </p>
+        <div class="content has-text-justified">
+          <ul>
+            <li><strong>Zero‑shot generalization from gameplay to math and multi-discipline reasoning.</strong> ViGaL outperforms models specifically fine‑tuned with RL on mathematical, spatial, and multi‑discipline reasoning tasks, showing remarkable generalization capabilities despite having no exposure to in‑domain training data during RL post‑training.</li>
+            <li><strong>Blending both games leads to better generalization.</strong> Visual Game Learning shows promise as a new training paradigm that can enhance generalizable reasoning performance without requiring extensive collections of domain‑specific training data. Simply expanding the diversity of games during training leads to consistent performance scaling across various visual‑reasoning problems.</li>
+            <li><strong>Preserving general visual capabilities while reasoning enhancement.</strong> Experiments on more general and comprehensive multimodal benchmarks show that our gameplay‑based approach enables math generalization without compromising other visual abilities.</li>
+          </ul>
+        </div>
+
+        <style>
+          .table-with-category-borders tbody tr td:nth-child(6):not([colspan]),
+          .table-with-category-borders tbody tr td:nth-child(9):not([colspan]),
+          .table-with-category-borders tbody tr td:nth-child(12):not([colspan]),
+          .table-with-category-borders thead tr:first-child th:nth-child(3),
+          .table-with-category-borders thead tr:first-child th:nth-child(4),
+          .table-with-category-borders thead tr:first-child th:nth-child(5),
+          .table-with-category-borders thead tr:last-child th:nth-child(4),
+          .table-with-category-borders thead tr:last-child th:nth-child(7),
+          .table-with-category-borders thead tr:last-child th:nth-child(10) {
+            border-right: 2px solid #dbdbdb !important;
+          }
+          .table-with-category-borders-vision tbody tr td:nth-child(1):not([colspan]),
+          .table-with-category-borders-vision tbody tr td:nth-child(2):not([colspan]),
+          .table-with-category-borders-vision tbody tr td:nth-child(5):not([colspan]),
+          .table-with-category-borders-vision tbody tr td:nth-child(11):not([colspan]),
+          .table-with-category-borders-vision thead tr:first-child th:nth-child(1),
+          .table-with-category-borders-vision thead tr:first-child th:nth-child(2),
+          .table-with-category-borders-vision thead tr:first-child th:nth-child(3),
+          .table-with-category-borders-vision thead tr:first-child th:nth-child(4),
+          .table-with-category-borders-vision thead tr:last-child th:nth-child(3),
+          .table-with-category-borders-vision thead tr:last-child th:nth-child(9) {
+            border-right: 2px solid #dbdbdb !important;
+          }
+        </style>
+
+        <div class="table-container mt-6">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth table-small table-with-category-borders">
+            <thead>
+              <tr>
+                <th rowspan="2">Model</th>
+                <th rowspan="2">Avg.</th>
+                <th colspan="4">Math</th>
+                <th colspan="3">Geometry</th>
+                <th colspan="3">CLEVR+</th>
+                <th colspan="3">Multi‑Discipline</th>
+              </tr>
+              <tr>
+                <th>Avg.</th>
+                <th>MathVista</th><th>MathVerse</th><th>MathVision</th>
+                <th>Avg.</th>
+                <th>GeoMath</th><th>Geo3K</th>
+                <th>Avg.</th>
+                <th>CLEVR‑M</th><th>S‑CLEVR</th>
+                <th>Avg.</th>
+                <th>MMMU<sub>val</sub></th><th>MMMU‑Pro<sub>overall</sub></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <!-- ---------- Proprietary ---------- -->
+              <tr><td colspan="15" class="has-text-centered">Proprietary Model</td></tr>
+              <tr><td>GPT‑4o</td><td>51.7</td><td>48.1</td><td>61.4</td><td>50.2</td><td>30.4</td><td>46.8</td><td>50.2</td><td>43.5</td><td>51.2</td><td>68.1</td><td>34.3</td><td>60.5</td><td>69.1</td><td>51.9</td></tr>
+              <tr><td>Gemini‑2.0‑Flash</td><td>-</td><td>56.4</td><td>73.4</td><td>54.6</td><td>41.3</td><td>54.4</td><td>55.3</td><td>53.5</td><td>46.3</td><td>64.9</td><td>27.6</td><td>-</td><td>71.9</td><td>-</td></tr>
+
+              <!-- ---------- General MLLM ---------- -->
+              <tr><td colspan="15" class="has-text-centered">General Multimodal Language Model</td></tr>
+              <tr><td>InternVL2.5‑8B</td><td>51.5</td><td>41.2</td><td>64.4</td><td>39.5</td><td>19.7</td><td>55.2</td><td>63.0</td><td>47.3</td><td>64.4</td><td>93.5</td><td>35.3</td><td>45.2</td><td>56.0</td><td>34.3</td></tr>
+              <tr><td>Llava‑OV‑7B</td><td>-</td><td>-</td><td>63.2</td><td>26.2</td><td>-</td><td>60.7</td><td>77.6</td><td>43.7</td><td>49.4</td><td>69.7</td><td>29.1</td><td>36.5</td><td>48.8</td><td>24.1</td></tr>
+              <tr><td>Qwen2.5‑VL‑7B</td><td>48.3</td><td>47.7</td><td>68.0</td><td>49.0</td><td>26.0</td><td>44.8</td><td>44.0</td><td>45.6</td><td>54.9</td><td>74.6</td><td>35.2</td><td>45.7</td><td>54.3</td><td>37.0</td></tr>
+
+              <!-- ---------- Post‑trained on Qwen ---------- -->
+              <tr><td colspan="15" class="has-text-centered">Multimodal Reasoning Model Post‑Trained on Qwen2.5‑VL‑7B</td></tr>
+              <tr><td>R1‑Onevision‑7B</td><td>47.3</td><td><span style="color:var(--gray-color);">46.8</span></td><td><span style="color:var(--gray-color);">64.1</span></td><td><span style="color:var(--gray-color);">46.4</span></td><td><span style="color:var(--gray-color);">29.9</span></td><td>35.0</td><td>45.4</td><td>24.5</td><td><span style="color:var(--gray-color);">65.1</span></td><td><span style="color:var(--gray-color);">75.5</span></td><td><span style="color:var(--gray-color);">54.7</span></td><td>42.3</td><td>51.9</td><td>32.6</td></tr>
+              <tr><td>R1‑VL‑7B</td><td>47.3</td><td><span style="color:var(--gray-color);">42.7</span></td><td><span style="color:var(--gray-color);">63.5</span></td><td><span style="color:var(--gray-color);">40.0</span></td><td><span style="color:var(--gray-color);">24.7</span></td><td><span style="color:var(--gray-color);">39.0</span></td><td><span style="color:var(--gray-color);">42.0</span></td><td><span style="color:var(--gray-color);">36.1</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">87.4</span></td><td><span style="color:var(--gray-color);">48.6</span></td><td>39.7</td><td>50.0</td><td>29.4</td></tr>
+              <tr><td>MM‑Eureka‑Qwen‑7B</td><td>51.1</td><td><span style="color:var(--gray-color);">50.1</span></td><td><span style="color:var(--gray-color);">73.0</span></td><td><span style="color:var(--gray-color);">50.3</span></td><td><span style="color:var(--gray-color);">26.9</span></td><td><span style="color:var(--gray-color);">28.4</span></td><td><span style="color:var(--gray-color);">53.1</span></td><td><span style="color:var(--gray-color);">3.8</span></td><td>79.3</td><td>98.4</td><td>60.1</td><td>46.4</td><td>55.8</td><td>36.9</td></tr>
+              <tr><td>Reason‑RFT‑Zero‑7B</td><td>52.5</td><td>38.1</td><td>60.7</td><td>35.3</td><td>18.3</td><td><span style="color:var(--gray-color);">54.9</span></td><td><span style="color:var(--gray-color);">55.0</span></td><td><span style="color:var(--gray-color);">54.8</span></td><td><span style="color:var(--gray-color);">76.2</span></td><td><span style="color:var(--gray-color);">99.4</span></td><td><span style="color:var(--gray-color);">53.0</span></td><td>40.9</td><td>51.2</td><td>30.6</td></tr>
+              <tr><td>VLAA‑Thinker‑7B</td><td>56.5</td><td><span style="color:var(--gray-color);">48.7</span></td><td><span style="color:var(--gray-color);">68.0</span></td><td><span style="color:var(--gray-color);">51.7</span></td><td><span style="color:var(--gray-color);">26.4</span></td><td><span style="color:var(--gray-color);">53.9</span></td><td><span style="color:var(--gray-color);">51.1</span></td><td><span style="color:var(--gray-color);">56.6</span></td><td><span style="color:var(--gray-color);">83.4</span></td><td><span style="color:var(--gray-color);">94.7</span></td><td><span style="color:var(--gray-color);">72.1</span></td><td>40.1</td><td>48.2</td><td>31.9</td></tr>
+              <tr><td>OpenVLThinker‑7B</td><td>56.3</td><td><span style="color:var(--gray-color);">47.8</span></td><td><span style="color:var(--gray-color);">70.2</span></td><td><span style="color:var(--gray-color);">47.9</span></td><td><span style="color:var(--gray-color);">25.3</span></td><td><span style="color:var(--gray-color);">56.4</span></td><td><span style="color:var(--gray-color);">49.2</span></td><td><span style="color:var(--gray-color);">63.5</span></td><td><span style="color:var(--gray-color);">82.4</span></td><td><span style="color:var(--gray-color);">93.8</span></td><td><span style="color:var(--gray-color);">71.0</span></td><td>38.5</td><td>54.8</td><td>22.1</td></tr>
+
+              <!-- ---------- ViGaL ---------- -->
+              <tr><td>ViGaL Snake</td><td>58.3</td><td>49.4</td><td>70.7</td><td>51.1</td><td>26.5</td><td>55.0</td><td>49.9</td><td>60.0</td><td><strong>82.6</strong></td><td>92.6</td><td>72.6</td><td>46.2</td><td>55.8</td><td>36.6</td></tr>
+              <tr><td>ViGaL Rotation</td><td>58.4</td><td>49.3</td><td>71.2</td><td>50.4</td><td>26.3</td><td><strong>57.9</strong></td><td>51.7</td><td>64.1</td><td>80.7</td><td>93.0</td><td>68.3</td><td>45.9</td><td>54.1</td><td>37.7</td></tr>
+              <tr><td><strong>ViGaL Snake + Rotation</strong></td><td><strong>59.3</strong></td><td><strong>50.6</strong></td><td>71.9</td><td>52.4</td><td>27.5</td><td>57.1</td><td>51.0</td><td>63.3</td><td>81.7</td><td>91.9</td><td>71.4</td><td><strong>47.7</strong></td><td>58.0</td><td>37.4</td></tr>
+            </tbody>
+          </table>
+    
+          <p class="has-text-left" style="font-size: 0.9rem">
+            <strong>Multimodal Benchmarks: Reasoning.</strong> We primarily compare with multimodal reasoning models post‑trained on math data based on Qwen2.5‑VL‑7B. CLEVR‑M denotes CLEVR‑Math, and S‑CLEVR stands for Super‑CLEVR. Results from reasoning models post‑trained with corresponding in‑domain data are <span style="color:var(--gray-color);">de‑emphasized</span>, while our ViGaL models remain exclusively post‑trained using visual games. Best scores of post‑trained models in each "Avg." column are highlighted in <strong>bold</strong>.
+          </p>
+        </div>
+
+        <!-- ---------- NEW TABLE FROM LATEX DATA ---------- -->
+
+        <div class="table-container mt-6">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth table-small table-with-category-borders-vision">
+            <thead>
+              <tr>
+                <th rowspan="2">Model</th>
+                <th rowspan="2">Avg.</th>
+                <th colspan="3">General</th>
+                <th colspan="6">Vision‑Centric</th>
+                <th colspan="5">OCR & Chart</th>
+              </tr>
+              <tr>
+                <th>Avg.</th>
+                <th>Muir‑Bench</th><th>CRPE<sub>rel.</sub></th>
+                <th>Avg.</th>
+                <th>MMVP</th><th>Real‑WorldQA</th><th>MMStar</th><th>BLINK<sub>val</sub></th><th>MME<sub>p</sub></th>
+                <th>Avg.</th>
+                <th>AI2D<sub>w. M.</sub></th><th>SEED‑Bench‑2+</th><th>DocVQA<sub>val</sub></th><th>OCR‑Bench</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <!-- ---------- Proprietary ---------- -->
+              <tr><td colspan="16" class="has-text-centered">Proprietary Model</td></tr>
+              <tr><td>GPT‑4o</td><td>74.8</td><td>72.3</td><td>68.0</td><td>76.6</td><td>69.4</td><td>-</td><td>75.4</td><td>64.7</td><td>68.0</td><td>1614</td><td>82.6</td><td>84.6</td><td>72.0</td><td>91.1</td><td>736</td></tr>
+
+              <!-- ---------- General MLLM ---------- -->
+              <tr><td colspan="16" class="has-text-centered">General Multimodal Language Model</td></tr>
+              <tr><td>Qwen2.5‑VL‑7B</td><td>72.4</td><td>68.0</td><td>59.6</td><td>76.4</td><td>65.8</td><td>74.3</td><td>68.5</td><td>63.9</td><td>56.4</td><td>1698</td><td>83.3</td><td>83.9</td><td>70.4</td><td>95.7</td><td>864</td></tr>
+
+              <!-- ---------- Post‑trained on Qwen ---------- -->
+              <tr><td colspan="16" class="has-text-centered">Multimodal Reasoning Model Post‑Trained on Qwen2.5‑VL‑7B</td></tr>
+              <tr><td>R1‑Onevision‑7B</td><td>-</td><td>66.8</td><td>46.3</td><td>87.3</td><td>56.5</td><td>61.3</td><td>58.0</td><td>57.8</td><td>48.7</td><td>1504</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+              <tr><td>R1‑VL‑7B</td><td>67.4</td><td>63.3</td><td>54.1</td><td>72.4</td><td>59.6</td><td>70.3</td><td>61.4</td><td>55.6</td><td>51.0</td><td>1657</td><td>79.2</td><td>81.7</td><td>66.4</td><td>89.4</td><td>81.0</td></tr>
+              <tr><td>MM‑Eureka‑Qwen‑7B</td><td>71.8</td><td><strong>68.9</strong></td><td>61.1</td><td>76.7</td><td>65.1</td><td>74.3</td><td>66.1</td><td>65.9</td><td>54.0</td><td>1626</td><td>81.5</td><td>84.3</td><td>68.2</td><td>92.0</td><td>87.0</td></tr>
+              <tr><td>Reason‑RFT‑Zero‑7B</td><td>68.4</td><td>66.9</td><td>58.5</td><td>75.2</td><td>58.5</td><td>58.0</td><td>65.3</td><td>59.1</td><td>51.6</td><td>1653</td><td>79.8</td><td>83.3</td><td>68.0</td><td>88.1</td><td>82.0</td></tr>
+              <tr><td>VLAA‑Thinker‑7B</td><td>69.7</td><td>65.9</td><td>57.1</td><td>74.6</td><td>62.6</td><td>71.6</td><td>65.4</td><td>60.4</td><td>53.0</td><td>1593</td><td>80.6</td><td>83.4</td><td>67.4</td><td>90.9</td><td>84.5</td></tr>
+              <tr><td>OpenVLThinker‑7B</td><td>-</td><td>64.3</td><td>52.8</td><td>75.8</td><td>50.4</td><td>32.3</td><td>60.2</td><td>59.1</td><td>49.9</td><td>1513</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+
+              <!-- ---------- ViGaL ---------- -->
+              <tr><td><strong>ViGaL Snake + Rotation</strong></td><td><strong>72.2</strong></td><td>68.6</td><td>60.5</td><td>76.7</td><td><strong>65.7</strong></td><td>74.6</td><td>67.3</td><td>65.4</td><td>55.6</td><td>1685</td><td><strong>82.2</strong></td><td>84.8</td><td>69.1</td><td>92.7</td><td>86.6</td></tr>
+            </tbody>
+          </table>
+
+          <p class="has-text-left" style="font-size: 0.9rem">
+            <strong>Multimodal Benchmarks: General Visual Ability. </strong> We compare with models post‑trained on Qwen2.5‑VL‑7B. Best category averages are highlighted in <strong>bold</strong>. Note that MME<sub>p</sub> is excluded from vision‑centric category average accuracy due to scale differences.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

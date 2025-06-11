@@ -1,0 +1,89 @@
+/* Snake Game Styles */
+.font-press-start {
+    font-family: 'Press Start 2P', monospace;
+  }
+  .font-mono {
+    font-family: 'Courier New', monospace;
+  }
+  
+  /* Custom animations */
+  @keyframes ping {
+    75%, 100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+  .animate-ping {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .5;
+    }
+  }
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  /* Game canvas styling */
+  .game-canvas {
+    border: 2px solid #374151;
+    background-color: #f9fafb;
+  }
+  
+  /* Player thoughts panel styling */
+  .thoughts-panel {
+    height: 400px;
+    background: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .player1-border {
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
+  }
+  
+  .player2-border {
+    border: 1px solid rgba(147, 51, 234, 0.2);
+    box-shadow: 0 0 15px rgba(147, 51, 234, 0.1);
+  }
+  
+  .player1-bg {
+    background-color: #4F7022;
+  }
+  
+  .player2-bg {
+    background-color: #036C8E;
+  }
+  
+  /* Hide the default disclosure triangle */
+  details summary {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Remove default marker in WebKit/Blink */
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  /* Rotate our SVG arrow when <details> is open */
+  details.toggle-thought summary .toggle-arrow {
+    transition: transform 0.2s ease;
+  }
+  
+  details.toggle-thought[open] summary .toggle-arrow {
+    transform: rotate(90deg);
+  }
+  
+  /* Make sure summary is clickable */
+  details.toggle-thought summary {
+    cursor: pointer;
+  }
+  

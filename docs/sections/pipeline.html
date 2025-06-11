@@ -1,0 +1,20 @@
+<!-- ---------- GAME PIPELINE ---------- -->
+<section id="game-pipeline" class="section">
+  <div class="container main-content-with-sidebar">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-left">Post-Training MLLMs to Play Visual Games</h2>
+        <div class="content has-text-justified">
+          <p>We propose to post-train MLLMs via RL to play visual games. We demonstrate this with two games: the classic arcade game Snake, and Rotation, a self-designed task to investigate spatial reasoning.</p>
+          <ul>
+            <li><strong>Observation</strong>: In each game, the model receives multimodal inputs, including images to provide visual cues and text to describe tasks.</li>
+            <li><strong>Reflection</strong>: It then reflects to choose an action, following carefully designed reasoning instructions.</li>
+            <li><strong>Action</strong>: After reflection, the model outputs chain-of-thoughts and its action decision, e.g., best/worst move or predicted angle. The action will receive a reward based on its performance.</li>
+            <li><strong>Generalization</strong>: Through game playing, the model obtains reasoning abilities that transfer to downstream multimodal tasks.</li>
+          </ul>
+          <img class="img-responsive" src="./resources/game_pipeline.png" alt="Game pipeline">
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 

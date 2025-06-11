@@ -1,0 +1,68 @@
+<!-- ---------- GAME PERFORMANCE ---------- -->
+<section id="in-distribution-results" class="section">
+  <div class="container main-content-with-sidebar">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-left">Generalizing to Out-of-Distribution Games</h2>
+        <p class="content has-text-left">
+            To evaluate out-of-distribution generalization, we test ViGaL on <a href="https://dev1nw.github.io/atari-gpt/">AtariGPT</a>,
+            a benchmark for evaluating MLLMs as decision-making agents.
+        </p>
+        <p class="content has-text-left">
+          Compared to its base model (<a href="https://github.com/QwenLM/Qwen2.5-VL">Qwen2.5-VL</a>), ViGaL demonstrates significant cumulative reward improvement on Atari games despite being trained only on Snake and Rotation games.
+          This is particularly notable because Atari games differ substantially from our training games in both visual appearance and gameplay strategies.
+          These results suggest that ViGaL has strong out-of-distribution generalization to entirely unseen game environments.
+        </p>
+        <div class="columns is-centered">
+          <!-- Snake -->
+          <!-- <div class="column is-one-third">
+            <table class="table is-bordered is-narrow is-fullwidth table-xs">
+              <thead>
+                <tr><th>Model</th><th>Wins (10)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mycolor">ViGaL vs.</td><td class="mycolor"></td></tr>
+                <tr><td style="padding-left:0.8em;">Qwen2.5-VL-7B</td><td>9</td></tr>
+                <tr><td style="padding-left:0.8em;">Qwen2.5-VL-72B</td><td>7</td></tr>
+                <tr><td style="padding-left:0.8em;">Llama-4-Maverick</td><td>7</td></tr>
+                <tr><td style="padding-left:0.8em;">Gemini-2.5-Pro</td><td>8</td></tr>
+                <tr><td style="padding-left:0.8em;">Claude-3.7-Sonnet</td><td>6</td></tr>
+                <tr><td style="padding-left:0.8em;">GPT-4o</td><td>8</td></tr>
+                <tr><td style="padding-left:0.8em;">o4-mini</td><td>6</td></tr>
+              </tbody>
+              <caption class="caption">(a) Snake game.</caption>
+            </table>
+          </div> -->
+
+          <div class="column is-one-second">
+            <video controls preload="auto" style="width: 100%; height: auto;">
+              <source src="./resources/GPT4o.mp4" type="video/mp4">
+            </video>
+            <p class="caption">Demo of Atari gameplay. Borrowed from <a href="https://dev1nw.github.io/atari-gpt/" target="_blank">AtariGPT</a>.</p>
+          </div>
+
+          <!-- Atari -->
+          <div class="column is-one-third">
+            <table class="table is-bordered is-narrow is-fullwidth table-xs">
+              <thead>
+                <tr><th>Game</th><th>ViGaL</th><th>Qwen2.5-7B</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Space Invaders</td><td>280.0</td><td>85.0</td></tr>
+                <tr><td>Ms. Pacman</td><td>1370.0</td><td>670.0</td></tr>
+                <tr><td>Seaquest</td><td>80.0</td><td>60.0</td></tr>
+                <tr><td>Alien</td><td>540.0</td><td>450.0</td></tr>
+                <tr><td>Frogger</td><td>7.0</td><td>5.0</td></tr>
+                <tr><td>Breakout</td><td>0.0</td><td>9.0</td></tr>
+                <tr><td>Pong</td><td>-26.0</td><td>-26.0</td></tr>
+                <tr style="font-weight:600;"><td>Cumulative Reward</td><td>2251.0</td><td>1253.0</td></tr>
+              </tbody>
+              <caption class="caption">Atari Game Scores</caption>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section> 

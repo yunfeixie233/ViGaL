@@ -1,0 +1,108 @@
+<!-- Snake Game JavaScript -->
+<script src="./static/js/snake-game.js"></script>
+
+<!-- Carousel JavaScript -->
+<script>
+// Global carousel state object
+window.carouselStates = {};
+
+// Function to initialize a specific carousel
+function initializeCarousel(carouselId) {
+  const carousel = document.getElementById(carouselId);
+  if (!carousel) return;
+  
+  const slides = carousel.querySelectorAll('.carousel-slide');
+  if (slides.length === 0) return;
+  
+  // Initialize state if not already done
+  if (!window.carouselStates[carouselId]) {
+    window.carouselStates[carouselId] = {
+      currentSlide: 0,
+      totalSlides: slides.length
+    };
+    
+    // Start auto-advance
+    setInterval(() => {
+      window.changeSlide(carouselId, 1);
+    }, 4000);
+  }
+}
+
+// Global function for carousel control - works even if not initialized
+window.changeSlide = function(carouselId, direction) {
+  // Try to initialize if not already done
+  if (!window.carouselStates[carouselId]) {
+    initializeCarousel(carouselId);
+  }
+  
+  const state = window.carouselStates[carouselId];
+  if (!state) return;
+  
+  const slides = document.querySelectorAll(`#${carouselId} .carousel-slide`);
+  const indicators = document.querySelectorAll(`#${carouselId} .carousel-indicator`);
+  
+  if (slides.length === 0) return;
+
+  // Update current slide index
+  state.currentSlide += direction;
+  if (state.currentSlide >= state.totalSlides) {
+    state.currentSlide = 0;
+  } else if (state.currentSlide < 0) {
+    state.currentSlide = state.totalSlides - 1;
+  }
+
+  // Update slides visibility
+  slides.forEach((slide, index) => {
+    slide.classList.toggle('active', index === state.currentSlide);
+  });
+
+  // Update indicators
+  indicators.forEach((indicator, index) => {
+    indicator.classList.toggle('active', index === state.currentSlide);
+  });
+};
+
+window.goToSlide = function(carouselId, slideIndex) {
+  // Try to initialize if not already done
+  if (!window.carouselStates[carouselId]) {
+    initializeCarousel(carouselId);
+  }
+  
+  const state = window.carouselStates[carouselId];
+  if (!state) return;
+  
+  const slides = document.querySelectorAll(`#${carouselId} .carousel-slide`);
+  const indicators = document.querySelectorAll(`#${carouselId} .carousel-indicator`);
+  
+  if (slides.length === 0) return;
+
+  state.currentSlide = slideIndex;
+
+  // Update slides visibility
+  slides.forEach((slide, index) => {
+    slide.classList.toggle('active', index === state.currentSlide);
+  });
+
+  // Update indicators
+  indicators.forEach((indicator, index) => {
+    indicator.classList.toggle('active', index === state.currentSlide);
+  });
+};
+
+// Initialize carousels when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  // Try immediate initialization
+  const carousels = ['snake-carousel', 'rotation-carousel'];
+  carousels.forEach(initializeCarousel);
+  
+  // Also try after a delay to catch async loaded content
+  setTimeout(function() {
+    carousels.forEach(initializeCarousel);
+  }, 500);
+  
+  // And try again after a longer delay as fallback
+  setTimeout(function() {
+    carousels.forEach(initializeCarousel);
+  }, 1000);
+});
+</script> 

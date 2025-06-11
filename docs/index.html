@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Play to Generalize: Learning to Reason Through Game Play</title>
+
+  <!-- Bulma & site CSS -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <!-- Snake Game CSS -->
+  <link rel="stylesheet" href="./static/css/snake-game.css">
+
+  <!-- Project-specific overrides -->
+  <style>
+    /* Highlight colour matching LaTeX \mycolor */
+    .mycolor { background-color: #7ac7ee; font-weight: 600; }
+
+    /* Controllable gray color variable */
+    :root {
+      --gray-color: #b6b6b6;
+      --carousel-width: 720px;
+      --carousel-height: 400px;
+    }
+
+    /* Utility classes */
+    .img-full { width: 100%; object-fit: cover; max-width: 100%; }
+    .img-responsive { width: 100%; height: auto; display: block; margin: 0 auto; }
+    .caption { caption-side: bottom; text-align: center; font-size: 0.9rem; }
+    .table-small { font-size: 0.85rem; }
+    .table-xs { font-size: 0.8rem; }
+    .bg-light { background-color: #EEEEEE; }
+    .max-w-800 { max-width: 800px; margin: auto; }
+    .subtitle-spacing { margin-top: 20px; text-align: left; }
+
+    /* Vertically centre multi-row header cells */
+    th[rowspan="2"] { vertical-align: middle !important; }
+
+    /* Remove vertical borders from table cells, keep horizontal borders */
+    .table td,
+    .table th {
+      border-left: none !important;
+      border-right: none !important;
+    }
+
+    /* Sidebar navigation */
+    .sidebar-nav {
+      position: fixed;
+      left: 20px;
+      top: 20%;
+      background-color: white;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      width: 250px;
+    }
+    .sidebar-nav h3 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar-nav li {
+      margin-bottom: 15px;
+    }
+    .sidebar-nav a {
+      color: #333;
+      text-decoration: none;
+      font-size: 18px;
+      display: block;
+      padding: 5px 0;
+      transition: color 0.3s;
+    }
+    .sidebar-nav a:hover {
+      color: #7ac7ee;
+    }
+    /* Adjust main content to not be hidden by sidebar */
+    @media screen and (min-width: 1024px) {
+      .main-content-with-sidebar {
+        margin-left: 310px;
+      }
+    }
+    @media screen and (max-width: 1023px) {
+      .sidebar-nav {
+        display: none;
+      }
+    }
+
+    /* Carousel styling */
+    .game-carousel {
+      width: 100%;
+      height: auto;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: block;
+    }
+
+    .carousel-container {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+
+    .carousel-slide {
+      width: 100%;
+      height: auto;
+      position: absolute;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .carousel-slide.active {
+      opacity: 1;
+      position: relative;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 18px;
+      border-radius: 3px;
+      z-index: 10;
+    }
+
+    .carousel-nav:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .carousel-prev {
+      left: 10px;
+    }
+
+    .carousel-next {
+      right: 10px;
+    }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+
+    .carousel-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .carousel-indicator.active {
+      background: white;
+    }
+
+    /* Center carousel sections */
+    .carousel-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .carousel-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    /* Restore default ordered list style (override Bulma) */
+    ol {
+      list-style-type: decimal;
+      margin-left: 1.5em;
+      padding-left: 0;
+    }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <!-- Ensure the Snake Game logic is loaded and executed -->
+  <script defer src="./static/js/snake-game.js"></script>
+</head>
+<body>
+
+<!-- Sidebar Navigation -->
+<div id="sidebar-container"></div>
+
+<!-- Header -->
+<div id="header-container"></div>
+
+<!-- Teaser -->
+<div id="teaser-container"></div>
+
+<!-- Snake Demo -->
+<div id="snake-demo-container"></div>
+
+<!-- Pipeline -->
+<div id="pipeline-container"></div>
+
+<!-- Evaluation Benchmark -->
+<div id="evaluation-benchmark-container"></div>
+
+<!-- In-Distribution Results -->
+<div id="in-distribution-results-container"></div>
+
+<!-- Out-of-Domain Results -->
+<div id="out-of-domain-results-container"></div>
+
+<!-- Different Games Benefit -->
+<div id="different-games-benefit-container"></div>
+
+<!-- Case Study -->
+<div id="case-study-container"></div>
+
+<!-- ---------- BIBTEX ---------- -->
+<section id="bibtex" class="section">
+  <div class="container main-content-with-sidebar">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-left">BibTeX</h2>
+        <div class="content">
+          <pre><code>@article{xie2025play,
+  title     = {Play to Generalize: Learning to Reason Through Game Play},
+  author    = {Xie, Yunfei and Ma, Yinsong and Lan, Shiyi and Yuille, Alan and Xiao, Junfei and Wei, Chen},
+  journal   = {arXiv preprint arXiv:2506.08011},
+  year      = {2025},
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<div id="footer-container"></div>
+
+<!-- Scripts -->
+<div id="scripts-container"></div>
+
+<script>
+// Function to load HTML content into containers
+async function loadSection(sectionName, containerId) {
+  try {
+    const response = await fetch(`./sections/${sectionName}.html`);
+    const html = await response.text();
+    document.getElementById(containerId).innerHTML = html;
+  } catch (error) {
+    console.error(`Error loading ${sectionName}:`, error);
+  }
+}
+
+// Load all sections when the page loads
+document.addEventListener('DOMContentLoaded', async function() {
+  await Promise.all([
+    loadSection('sidebar', 'sidebar-container'),
+    loadSection('header', 'header-container'),
+    loadSection('teaser', 'teaser-container'),
+    loadSection('snake-demo', 'snake-demo-container'),
+    loadSection('pipeline', 'pipeline-container'),
+    loadSection('evaluation-benchmark', 'evaluation-benchmark-container'),
+    loadSection('in-distribution-results', 'in-distribution-results-container'),
+    loadSection('out-of-domain-results', 'out-of-domain-results-container'),
+    loadSection('different-games-benefit', 'different-games-benefit-container'),
+    loadSection('case-study', 'case-study-container'),
+    loadSection('footer', 'footer-container'),
+    loadSection('scripts', 'scripts-container')
+  ]);
+});
+</script>
+
+</body>
+</html> 

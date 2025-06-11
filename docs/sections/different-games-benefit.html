@@ -1,0 +1,25 @@
+<!-- ---------- DIFFERENT GAMES BENEFIT ---------- -->
+<section id="different-games-benefit" class="section">
+  <div class="container main-content-with-sidebar">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-left">Different Games Benefit Distinct Reasoning Abilities</h2>
+        <div class="content has-text-justified">
+          <p>
+            We hypothesize that gameplay fosters fundamental skills like spatial modeling and sequential planning that can transfer to visual math questions.
+            Different games may enhance distinct reasoning abilities.
+            To investigate this hypothesis, we analyze accuracy differences across <a href="https://mathverse-cuhk.github.io/">MathVerse</a> subcategories between ViGaL models trained with Snake or Rotation, as shown in the figure below. 
+          </p>
+          <img src="./resources/acc_diff.png" alt="Accuracy Differences" class="img-responsive" style="width: 60%; height: auto;">
+
+          <ul>
+            <li>Training on the Snake improves performance on the <strong>Expressions</strong> and <strong>Coordinates</strong> subcategories. Both tasks involve coordinate-level interpretations of graphical representations, aligning with the spatial reasoning in Snake’s 2D-grid environment.</li>
+            <li>Training on Rotation notably enhances performance on questions about <strong>Angles</strong> and <strong>Lengths</strong>, consistent with Rotation’s requirement to reason about rotational angles of objects.</li>
+            <li>These results suggest that different games obtains specialized reasoning skills that correspond to their unique gameplay mechanics.</li>
+          </ul>
+          <img src="./resources/per_category_small.png" alt="Accuracy Differences" class="img-responsive">
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 
