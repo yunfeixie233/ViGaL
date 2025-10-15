@@ -19,7 +19,7 @@
 <a href="https://huggingface.co/yunfeixie/ViGaL-7B" target="_blank">
     <img alt="HF Model: ViGaL" src="https://img.shields.io/badge/%F0%9F%A4%97%20_Model-ViGaL-ffc107?color=ffc107&logoColor=white" height="25" />
 </a>
-<a href=https://huggingface.co/datasets/yunfeixie/vigal_data"" target="_blank">
+<a href="https://huggingface.co/yunfeixie/vigal_data" target="_blank">
     <img alt="HF Dataset: Snake & Rotation" src="https://img.shields.io/badge/%F0%9F%A4%97%20_Data-Snake%20%26%20Rotation-ffc107?color=ffc107&logoColor=white" height="25" />
 </a>
 
