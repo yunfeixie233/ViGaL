@@ -24,4 +24,4 @@ transformers
 transformers_stream_generator
 wandb
 wheel
-ray[default]==2.42.0
+ray[default]==2.40.0
