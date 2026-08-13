@@ -1,3 +1,5 @@
+
+
 <div align="center">
 
 #  🎮 *Play to Generalize*:<br>  Learning to Reason Through Game Play
@@ -49,7 +51,6 @@ We propose a novel post-training paradigm, **Visual Game Learning (ViGaL)**, whe
 
 
 ## 🗞️ News
-
 ## 📋 Contents
 - [Installation](#-installation)
 - [ViGaL Weights](#-vigal-weights)
@@ -70,7 +71,7 @@ pip install flash_attn --no-build-isolation
 Please see [ViGaL Weights](https://huggingface.co/yunfeixie/ViGaL-7B).
 
 ## 📂 Data Preparation
-You can download our training data from [ViGaL training data (Coming Soon)](#) (link will be available soon)
+You can download our training data from [ViGaL training data](https://huggingface.co/yunfeixie/vigal_data).
 
 ## 🌐 Train
 
